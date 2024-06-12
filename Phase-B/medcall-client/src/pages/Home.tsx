@@ -1,9 +1,9 @@
+import Hero from "../containers/Hero";
+
 const Home = () => {
   return (
     <>
-      <section className="h-screen">
-        <div className="text-3xl font-bold">Hello world!</div>
-      </section>
+      <Hero/>
     </>
   );
 };

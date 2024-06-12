@@ -15,12 +15,12 @@ const Navbar = () => {
 
         <div className="buttons-side flex flex-row gap-3">
           <Button
-            text={t("login")}
+            text={t("navbar-login-button")}
             type="secondary"
             onClick={() => navigate("/login")}
           />
           <Button
-            text={t("sign-up")}
+            text={t("navbar-sign-up-button")}
             type="primary"
             onClick={() => navigate("/sign-up")}
           />

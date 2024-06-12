@@ -5,6 +5,7 @@ export default {
     extend: {
       fontFamily: {
         DM: ['DM Sans', 'sans-serif'],
+        Pippins: ['Poppins', 'sans-serif'],
       },
       colors: {
         primary600: "#7A0101",
@@ -14,6 +15,8 @@ export default {
         textColor: "#F2F1EB",
         stroke: "#EEEEEB",
         lightBg: "#E4E4FD",
+        modalBackground: "#FAFAFC",
+        backText: "#1D1C2B",
       },
       
     },
