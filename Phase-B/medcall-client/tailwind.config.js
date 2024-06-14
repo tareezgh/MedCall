@@ -13,6 +13,7 @@ export default {
         secondary600: "#2A3454",
         secondary500: "#3C4B78",
         textColor: "#F2F1EB",
+        grey: "#8E8D8D",
         stroke: "#EEEEEB",
         lightBg: "#E4E4FD",
         modalBackground: "#FAFAFC",
