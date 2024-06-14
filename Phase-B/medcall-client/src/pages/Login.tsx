@@ -8,6 +8,7 @@ import Input from "../components/Input";
 
 import { EyeIcon, EyeOffIcon, LockIcon, MailIcon } from "../components/icons";
 import { SignInFormData } from "../interfaces/types";
+import { handleSignIn } from "../utils/authHandles";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -40,7 +41,10 @@ const Login = () => {
 
   const handleForgetPassword = () => {};
 
-  const handleSignIn = () => {};
+  const handleSignInClick = async () => {
+    const status = await handleSignIn(formData);
+    if (status) navigate("/dashboard");
+  };
 
   const handleGoogleSignIn = () => {};
 
@@ -95,7 +99,7 @@ const Login = () => {
             <Button
               text={t("login-form-button")}
               type="primary"
-              onClick={handleSignIn}
+              onClick={handleSignInClick}
               customClassName={"font-bold text-2xl"}
             />
             <div className="text-base">
