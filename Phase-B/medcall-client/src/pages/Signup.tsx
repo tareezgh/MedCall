@@ -6,7 +6,7 @@ import Divider from "../components/Divider";
 import GoogleButton from "../components/GoogleButton";
 import Input from "../components/Input";
 
-import { SignUpFormData } from "../interfaces/types";
+import { SignUpFormData, User } from "../interfaces/types";
 import {
   EyeIcon,
   EyeOffIcon,
@@ -16,6 +16,9 @@ import {
   UserIcon,
 } from "../components/icons";
 import Tab from "../components/Tab";
+import { toast } from "react-toastify";
+import { registerUser } from "../services/userService";
+import { handleSignUp } from "../utils/authHandles";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -29,7 +32,7 @@ const SignUp = () => {
   const [formData, setFormData] = useState<SignUpFormData>({
     firstName: "",
     lastName: "",
-    phone: "",
+    phoneNumber: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -55,7 +58,10 @@ const SignUp = () => {
     }
   };
 
-  const handleSignUp = () => {};
+  const handleSignUpClick = async () => {
+    const status = await handleSignUp(formData, activeTab);
+    if (status) navigate("/dashboard");
+  };
 
   const handleGoogleSignUp = () => {};
 
@@ -98,8 +104,8 @@ const SignUp = () => {
               <Input
                 type="text"
                 placeholder={t("sign-up-phone-placeholder")}
-                value={formData.phone}
-                onChange={handleChange("phone")}
+                value={formData.phoneNumber}
+                onChange={handleChange("phoneNumber")}
                 leftIcon={<PhoneIcon />}
               />
               <Input
@@ -138,7 +144,7 @@ const SignUp = () => {
             <Button
               text={t("sign-up-form-button")}
               type="primary"
-              onClick={handleSignUp}
+              onClick={handleSignUpClick}
               customClassName={"font-bold text-xl"}
             />
             <div className="text-base">
