@@ -6,7 +6,7 @@ import Divider from "../components/Divider";
 import GoogleButton from "../components/GoogleButton";
 import Input from "../components/Input";
 
-import { SignUpFormData, User } from "../interfaces/types";
+import { SignUpFormData } from "../interfaces/types";
 import {
   EyeIcon,
   EyeOffIcon,
@@ -16,8 +16,6 @@ import {
   UserIcon,
 } from "../components/icons";
 import Tab from "../components/Tab";
-import { toast } from "react-toastify";
-import { registerUser } from "../services/userService";
 import { handleSignUp } from "../utils/authHandles";
 
 const SignUp = () => {
@@ -77,6 +75,7 @@ const SignUp = () => {
               <Tab
                 key={tab.key}
                 title={tab.title}
+                type="primary"
                 active={activeTab === tab.key}
                 onClick={() => setActiveTab(tab.key as "user" | "driver")}
               />

@@ -22,9 +22,8 @@ export interface SignInFormData {
   password: string;
 }
 
-// Leen
-export interface ReqeustAmbulanceFormData{
-  name: string;
+export interface RequestAmbulanceFormData{
+  callerName: string;
   phoneNumber: string;
   patientAge: string;
 }

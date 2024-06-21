@@ -5,8 +5,10 @@ import { LocationIcon } from "../components/icons";
 import heroImg from "../assets/hero-image.webp";
 import { useTranslation } from "react-i18next";
 import { useState } from "preact/hooks";
+import { useNavigate } from "react-router";
 
 const Hero = () => {
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const [location, setLocation] = useState("");
 
@@ -14,8 +16,26 @@ const Hero = () => {
     setLocation((e.target as HTMLInputElement).value);
   };
 
-  const handleNewRequestClick = () => {};
+  const handleNewRequestClick = () => {
+    navigate("/request-ambulance")
+  };
 
+  const handleRightIconClick = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          // TODO make readable address by google
+          setLocation(`Lat: ${latitude}, Lon: ${longitude}`);
+        },
+        (error) => {
+          console.error("Error obtaining location", error);
+        }
+      );
+    } else {
+      alert("Geolocation is not supported by your browser.");
+    }
+  };
   return (
     <section className="flex justify-center items-center gap-20 my-20">
       <div className="flex justify-center text-start inset-0 flex-col gap-8 bg-modalBackground rounded-2xl w-fit h-fit min-h-[350px] p-12 shadow-xl">
@@ -28,7 +48,7 @@ const Hero = () => {
             value={location}
             onChange={handleLocationChange}
             rightIcon={<LocationIcon />}
-            onRightIconClick={() => {}}
+            onRightIconClick={handleRightIconClick}
           />
         </div>
         <Button

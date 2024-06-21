@@ -42,7 +42,7 @@ const Input = ({
           }}
         />
         {rightIcon && (
-          <span className="absolute right-5" onClick={onRightIconClick}>
+          <span className="absolute right-5 cursor-pointer" onClick={onRightIconClick}>
             {rightIcon}
           </span>
         )}
