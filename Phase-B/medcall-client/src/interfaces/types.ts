@@ -8,6 +8,18 @@ export interface User {
   requests?: Array<any>;
 }
 
+export interface AmbulanceRequest {
+  callerName: string;
+  phoneNumber: string;
+  patientAge: number;
+  emergencyType: string;
+  consciousness: string;
+  breathingStatus: string;
+  bleeding: string;
+  painLevel: string;
+  userId: string | null; // Allow null for anonymous users
+}
+
 export interface SignUpFormData {
   firstName: string;
   lastName: string;

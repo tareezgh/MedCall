@@ -12,7 +12,10 @@ import {
   bleedingTabs,
   painLevelTabs,
 } from "../data/requestData";
-import { RequestAmbulanceFormData } from "../interfaces/types";
+import {
+  AmbulanceRequest,
+  RequestAmbulanceFormData,
+} from "../interfaces/types";
 
 const RequestAmbulance = () => {
   const navigate = useNavigate();
@@ -67,6 +70,18 @@ const RequestAmbulance = () => {
 
   const handleRequestAmbulance = () => {
     console.log("🚀 ~ handleRequestAmbulance:");
+    const newRequestData: AmbulanceRequest = {
+      callerName: formData.callerName,
+      phoneNumber: formData.phoneNumber,
+      patientAge: parseInt(formData.patientAge),
+      emergencyType: tabsState.emergencyType,
+      consciousness: tabsState.consciousness,
+      breathingStatus: tabsState.breathingStatus,
+      bleeding: tabsState.bleeding,
+      painLevel: tabsState.painLevel,
+      userId: "",
+    };
+    console.log("🚀 ~ newRequestData:", newRequestData)
     navigate("/dashboard");
   };
 
