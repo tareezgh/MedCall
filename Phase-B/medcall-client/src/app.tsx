@@ -9,6 +9,7 @@ import Footer from "./components/common/Footer";
 import Login from "./pages/Login";
 import SignUp from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
+import RequestAmbulance from "./pages/RequestAmbulance";
 
 export function App() {
   return (
@@ -21,6 +22,7 @@ export function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/request-ambulance" element={<RequestAmbulance />} />
         </Routes>
         <Footer />
       </BrowserRouter>

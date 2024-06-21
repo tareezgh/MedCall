@@ -21,3 +21,10 @@ export interface SignInFormData {
   email: string;
   password: string;
 }
+
+// Leen
+export interface ReqeustAmbulanceFormData{
+  name: string;
+  phoneNumber: string;
+  patientAge: string;
+}
