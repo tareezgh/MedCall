@@ -18,6 +18,9 @@ export interface AmbulanceRequest {
   bleeding: string;
   painLevel: string;
   userId: string | null; // Allow null for anonymous users
+  optionalAllergies ?: string;
+  optionalMedications ?: string;
+  optionalActivities ?: string;
 }
 
 export interface SignUpFormData {
@@ -38,4 +41,7 @@ export interface RequestAmbulanceFormData{
   callerName: string;
   phoneNumber: string;
   patientAge: string;
+  optionalAllergies: string;
+  optionalMedications: string;
+  optionalActivities: string;
 }

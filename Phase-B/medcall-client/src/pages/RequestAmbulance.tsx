@@ -27,6 +27,10 @@ const RequestAmbulance = () => {
     callerName: "",
     phoneNumber: "",
     patientAge: "",
+    // leen
+    optionalAllergies: "",
+    optionalMedications: "",
+    optionalActivities: "",
   });
 
   const [tabsState, setTabsState] = useState({
@@ -80,6 +84,10 @@ const RequestAmbulance = () => {
       bleeding: tabsState.bleeding,
       painLevel: tabsState.painLevel,
       userId: "",
+      // leen
+      optionalAllergies: formData.optionalAllergies,
+      optionalMedications: formData.optionalMedications,
+      optionalActivities: formData.optionalActivities,
     };
     console.log("🚀 ~ newRequestData:", newRequestData)
     navigate("/dashboard");
@@ -164,7 +172,51 @@ const RequestAmbulance = () => {
 
   const renderOptionalInfo = () => {
     return (
-      <>{renderTitles(t("optional-info-title"), t("optional-info-subtitle"))}</>
+      <>
+      {renderTitles(t("optional-info-title"), t("optional-info-subtitle"))}
+      
+        <div className="flex flex-col gap-4 justify-start items-start">
+          <div className="flex flex-col gap-4 justify-start items-start w-full">
+            <h2 className="font-bold text-xl">
+              {t("optional-info-allergies")}
+            </h2>
+            <div className="flex flex-row gap-4 justify-start w-full">
+              <Input
+                type="text"
+                placeholder={t("optional-info-allergies-placeholder")}
+                value={formData.optionalAllergies}
+                onChange={handleChange("optionalAllergies")}
+              />
+            </div>
+          </div>
+          <div className="flex flex-col gap-4 justify-start items-start w-full">
+            <h2 className="font-bold text-xl">
+              {t("optional-info-medications")}
+            </h2>
+            <div className="flex flex-row gap-4 justify-start w-full">
+              <Input
+                type="text"
+                placeholder={t("optional-info-medications-placeholder")}
+                value={formData.optionalMedications}
+                onChange={handleChange("optionalMedications")}
+              />
+            </div>
+          </div>
+          <div className="flex flex-col gap-4 justify-start items-start w-full">
+            <h2 className="font-bold text-xl">
+              {t("optional-info-activities")}
+            </h2>
+            <div className="flex flex-row gap-4 justify-start w-full">
+              <Input
+                type="text"
+                placeholder={t("optional-info-activities-placeholder")}
+                value={formData.optionalActivities}
+                onChange={handleChange("optionalActivities")}
+              />
+            </div>
+          </div>
+        </div>
+      </>
     );
   };
 
@@ -174,7 +226,7 @@ const RequestAmbulance = () => {
         <div className="box-modal shadow-2x mx-[10%]">
           {isOptionalSection ? renderOptionalInfo() : renderNecessaryInfo()}
 
-          <div className={"flex flex-row gap-2 justify-center w-auto"}>
+          <div className={"flex flex-row gap-2 justify-start w-auto"}>
             {isOptionalSection && (
               <Button
                 text={t("back-button")}
