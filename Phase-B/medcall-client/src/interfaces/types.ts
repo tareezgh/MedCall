@@ -9,6 +9,7 @@ export interface User {
 }
 
 export interface AmbulanceRequest {
+  userId: string | null; // Allow null for anonymous users
   callerName: string;
   phoneNumber: string;
   patientAge: number;
@@ -17,10 +18,9 @@ export interface AmbulanceRequest {
   breathingStatus: string;
   bleeding: string;
   painLevel: string;
-  userId: string | null; // Allow null for anonymous users
-  optionalAllergies ?: string;
-  optionalMedications ?: string;
-  optionalActivities ?: string;
+  optionalAllergies?: string;
+  optionalMedications?: string;
+  optionalActivities?: string;
 }
 
 export interface SignUpFormData {
@@ -37,7 +37,7 @@ export interface SignInFormData {
   password: string;
 }
 
-export interface RequestAmbulanceFormData{
+export interface RequestAmbulanceFormData {
   callerName: string;
   phoneNumber: string;
   patientAge: string;

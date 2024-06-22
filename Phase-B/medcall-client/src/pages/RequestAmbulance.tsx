@@ -27,7 +27,6 @@ const RequestAmbulance = () => {
     callerName: "",
     phoneNumber: "",
     patientAge: "",
-    // leen
     optionalAllergies: "",
     optionalMedications: "",
     optionalActivities: "",
@@ -75,6 +74,7 @@ const RequestAmbulance = () => {
   const handleRequestAmbulance = () => {
     console.log("🚀 ~ handleRequestAmbulance:");
     const newRequestData: AmbulanceRequest = {
+      userId: "",
       callerName: formData.callerName,
       phoneNumber: formData.phoneNumber,
       patientAge: parseInt(formData.patientAge),
@@ -83,13 +83,11 @@ const RequestAmbulance = () => {
       breathingStatus: tabsState.breathingStatus,
       bleeding: tabsState.bleeding,
       painLevel: tabsState.painLevel,
-      userId: "",
-      // leen
       optionalAllergies: formData.optionalAllergies,
       optionalMedications: formData.optionalMedications,
       optionalActivities: formData.optionalActivities,
     };
-    console.log("🚀 ~ newRequestData:", newRequestData)
+    console.log("🚀 ~ newRequestData:", newRequestData);
     navigate("/dashboard");
   };
 
@@ -173,9 +171,9 @@ const RequestAmbulance = () => {
   const renderOptionalInfo = () => {
     return (
       <>
-      {renderTitles(t("optional-info-title"), t("optional-info-subtitle"))}
-      
-        <div className="flex flex-col gap-4 justify-start items-start">
+        {renderTitles(t("optional-info-title"), t("optional-info-subtitle"))}
+
+        <div className="flex flex-col gap-4 justify-start items-start w-full">
           <div className="flex flex-col gap-4 justify-start items-start w-full">
             <h2 className="font-bold text-xl">
               {t("optional-info-allergies")}
