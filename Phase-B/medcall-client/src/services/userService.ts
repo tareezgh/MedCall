@@ -2,6 +2,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { loginUrl, registerUrl } from "./constants";
 import { User } from "../interfaces/types";
+import { setSessionStorageWithExpiry } from "../utils/sessionStorageHandler";
 
 export const registerUser = async (user: User) => {
   console.log("🚀 ~ registerUser ~ user:", user);
@@ -31,7 +32,7 @@ export const loginUser = async (user: Partial<User>) => {
     password: user.password,
   };
 
-  const response = await axios.post(loginUrl, args);
+  const response = await axios.post(loginUrl, args, { withCredentials: true });
 
   if (response.data.status === "failure") {
     toast.error(response.data.message, {
@@ -40,7 +41,12 @@ export const loginUser = async (user: Partial<User>) => {
     });
     return;
   } else {
-    localStorage.setItem("role", response.data.role);
+    const token = response.data.token;
+    const role = response.data.role;
+
+    // Store the token in sessionStorage with an expiration time of 1 hour
+    setSessionStorageWithExpiry("token", token, 60); // 60 minutes
+    localStorage.setItem("role", role);
     return args;
   }
 };

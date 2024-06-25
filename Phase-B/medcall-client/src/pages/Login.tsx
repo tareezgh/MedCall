@@ -8,7 +8,7 @@ import Input from "../components/Input";
 
 import { EyeIcon, EyeOffIcon, LockIcon, MailIcon } from "../components/icons";
 import { SignInFormData } from "../interfaces/types";
-import { handleSignIn } from "../utils/authHandles";
+import { handleSignIn, isTokenValid } from "../utils/authHandles";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -42,8 +42,24 @@ const Login = () => {
   const handleForgetPassword = () => {};
 
   const handleSignInClick = async () => {
-    const status = await handleSignIn(formData);
-    if (status) navigate("/dashboard");
+    const success = await handleSignIn(formData);
+    if (success) {
+      const data = isTokenValid();
+      console.log("🚀 ~ handleSignInClick ~ data:", data);
+      switch (data?.role) { //TODO fix dashboard type
+        case "Admin":
+          navigate("/dashboard");
+          break;
+        case "User":
+          navigate("/dashboard");
+          break;
+        case "Driver":
+          navigate("/dashboard");
+          break;
+        default:
+          break;
+      }
+    }
   };
 
   const handleGoogleSignIn = () => {};

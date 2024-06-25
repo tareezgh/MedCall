@@ -1,7 +1,13 @@
+import jwt from "jsonwebtoken";
 import { UsersDal } from "../dal/users.dal";
-import { User } from "../interfaces/user.interface";
-
+import {
+  LoginFailureResult,
+  LoginSuccessResult,
+  User,
+} from "../interfaces/user.interface";
 const bcrypt = require("bcrypt");
+
+type LoginResult = LoginSuccessResult | LoginFailureResult;
 
 export class UsersService {
   private usersDal: UsersDal;
@@ -10,7 +16,11 @@ export class UsersService {
     this.usersDal = usersDal;
   }
 
-  public async login(user: Partial<User>) {
+  public async login(user: Partial<User>): Promise<LoginResult> {
+    const JWT_SECRET = process.env.JWT_SECRET_KEY;
+    if (!JWT_SECRET) {
+      throw new Error("JWT_SECRET is not defined in environment variables");
+    }
     const hashedPasswordFromDB = await this.usersDal.getUserPassword(user);
     if (!hashedPasswordFromDB)
       return { status: "failure", message: "User doesn't exist!!" };
@@ -23,10 +33,15 @@ export class UsersService {
     }
     const userRole = await this.usersDal.getUserRole(user);
 
+    // Create a JWT token
+    const token = jwt.sign({ email: user.email, role: userRole }, JWT_SECRET, {
+      expiresIn: "1h",
+    });
     return {
       status: "success",
       message: "User logged in",
-      role: userRole,
+      role: userRole!,
+      token,
     };
   }
 
@@ -47,5 +62,4 @@ export class UsersService {
     const res = await this.usersDal.findAll();
     return res;
   }
-
 }

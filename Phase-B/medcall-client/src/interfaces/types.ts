@@ -37,6 +37,13 @@ export interface SignInFormData {
   password: string;
 }
 
+export interface DecodedToken {
+  email: string;
+  role: string;
+  iat: number;
+  exp: number;
+}
+
 export interface RequestAmbulanceFormData {
   callerName: string;
   phoneNumber: string;
@@ -45,3 +52,4 @@ export interface RequestAmbulanceFormData {
   optionalMedications: string;
   optionalActivities: string;
 }
+

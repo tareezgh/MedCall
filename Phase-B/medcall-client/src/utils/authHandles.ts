@@ -1,6 +1,12 @@
 import { toast } from "react-toastify";
-import { SignInFormData, SignUpFormData } from "../interfaces/types";
+import {
+  DecodedToken,
+  SignInFormData,
+  SignUpFormData,
+} from "../interfaces/types";
 import { loginUser, registerUser } from "../services/userService";
+import { base64UrlDecode } from "./helpers";
+import { getSessionStorageWithExpiry } from "./sessionStorageHandler";
 
 export const handleSignUp = async (
   formData: SignUpFormData,
@@ -88,4 +94,37 @@ export const handleSignIn = async (formData: SignInFormData) => {
     });
   }
   return false;
+};
+
+export const decodeToken = (token: string): DecodedToken | null => {
+  try {
+    const parts = token.split(".");
+    if (parts.length !== 3) {
+      throw new Error("Invalid token format");
+    }
+
+    const payload = base64UrlDecode(parts[1]);
+    const decoded: DecodedToken = JSON.parse(payload);
+
+    console.log("Decoded Token:", decoded);
+    return decoded;
+  } catch (err) {
+    console.error("Error decoding token:", err);
+    throw err;
+  }
+};
+
+export const isTokenValid = () => {
+  const token = getSessionStorageWithExpiry("token");
+  console.log("🚀 ~ handleSignInClick ~ token:", token);
+
+  const decodedData = decodeToken(token);
+
+  if (decodedData) {
+    console.log(decodedData);
+    return decodedData;
+  } else {
+    console.log("Token is invalid or has expired");
+    return null;
+  }
 };

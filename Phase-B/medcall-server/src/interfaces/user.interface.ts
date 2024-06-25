@@ -7,3 +7,15 @@ export interface User {
   role: string;
   requests?: Array<any>;
 }
+
+export interface LoginSuccessResult {
+  status: "success";
+  message: string;
+  role: string;
+  token: string;
+}
+
+export interface LoginFailureResult {
+  status: "failure";
+  message: string;
+}
