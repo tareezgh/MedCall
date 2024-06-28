@@ -5,7 +5,6 @@ import { User } from "../interfaces/types";
 import { setSessionStorageWithExpiry } from "../utils/sessionStorageHandler";
 
 export const registerUser = async (user: User) => {
-  console.log("🚀 ~ registerUser ~ user:", user);
   const args = {
     firstName: user.firstName,
     lastName: user.lastName,
@@ -26,7 +25,6 @@ export const registerUser = async (user: User) => {
 };
 
 export const loginUser = async (user: Partial<User>) => {
-  console.log("🚀 ~ loginUser ~ user:", user);
   const args = {
     email: user.email,
     password: user.password,
@@ -42,11 +40,8 @@ export const loginUser = async (user: Partial<User>) => {
     return;
   } else {
     const token = response.data.token;
-    const role = response.data.role;
-
     // Store the token in sessionStorage with an expiration time of 1 hour
-    setSessionStorageWithExpiry("token", token, 60); // 60 minutes
-    localStorage.setItem("role", role);
+    setSessionStorageWithExpiry("token", token, 60);
     return args;
   }
 };

@@ -30,12 +30,14 @@ export class UsersDal {
     return data?.password;
   }
 
-  public async getUserRole(user: Partial<User>) {
-    const data = await Users.findOne({
+  public async getUserData(user: Partial<User>): Promise<User> {
+    const userData = await Users.findOne({
       email: user.email,
     });
-
-    return data?.role;
+    if (!userData) {
+      throw new Error("User not found");
+    }
+    return userData as User;
   }
 
   public async checkUser(user: Partial<User>) {

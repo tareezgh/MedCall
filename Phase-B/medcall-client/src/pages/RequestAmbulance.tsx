@@ -72,7 +72,6 @@ const RequestAmbulance = () => {
   };
 
   const handleRequestAmbulance = () => {
-    console.log("🚀 ~ handleRequestAmbulance:");
     const newRequestData: AmbulanceRequest = {
       userId: "",
       callerName: formData.callerName,

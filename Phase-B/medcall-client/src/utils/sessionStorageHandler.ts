@@ -1,4 +1,8 @@
-export const setSessionStorageWithExpiry = (key: string, value: string, expiryInMinutes: number) => {
+export const setSessionStorageWithExpiry = (
+  key: string,
+  value: string,
+  expiryInMinutes: number
+) => {
   const now = new Date();
   const expiryTime = now.getTime() + expiryInMinutes * 60 * 1000;
   const item = {
@@ -8,16 +12,15 @@ export const setSessionStorageWithExpiry = (key: string, value: string, expiryIn
   sessionStorage.setItem(key, JSON.stringify(item));
 };
 
-
 export const getSessionStorageWithExpiry = (key: string) => {
   const itemStr = sessionStorage.getItem(key);
   if (!itemStr) {
     return null;
   }
-  
+
   const item = JSON.parse(itemStr);
   const now = new Date();
-  
+
   // Compare the expiry time of the item with the current time
   if (now.getTime() > item.expiry) {
     // If the item is expired, remove it from storage and return null
@@ -25,4 +28,8 @@ export const getSessionStorageWithExpiry = (key: string) => {
     return null;
   }
   return item.value;
+};
+
+export const removeSessionStorageItem = (key: string) => {
+  sessionStorage.removeItem(key);
 };

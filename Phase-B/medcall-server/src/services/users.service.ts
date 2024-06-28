@@ -31,16 +31,27 @@ export class UsersService {
     if (!passwordMatch) {
       return { status: "failure", message: "Incorrect email or password" };
     }
-    const userRole = await this.usersDal.getUserRole(user);
-
+    const userData = await this.usersDal.getUserData(user);
+    if (!userData) {
+      return { status: "failure", message: "User data not found" };
+    }
     // Create a JWT token
-    const token = jwt.sign({ email: user.email, role: userRole }, JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign(
+      {
+        id: userData._id,
+        email: user.email,
+        role: userData.role,
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+      },
+      JWT_SECRET,
+      {
+        expiresIn: "1h",
+      }
+    );
     return {
       status: "success",
       message: "User logged in",
-      role: userRole!,
       token,
     };
   }
