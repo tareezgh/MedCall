@@ -6,7 +6,12 @@ import {
 } from "../interfaces/types";
 import { loginUser, registerUser } from "../services/userService";
 import { base64UrlDecode } from "./helpers";
-import { getSessionStorageWithExpiry } from "./sessionStorageHandler";
+import {
+  getSessionStorageWithExpiry,
+  removeSessionStorageItem,
+} from "./sessionStorageHandler";
+import { resetUser, setUser } from "../redux/Slicers";
+import store from "../redux/store";
 
 export const handleSignUp = async (
   formData: SignUpFormData,
@@ -96,6 +101,11 @@ export const handleSignIn = async (formData: SignInFormData) => {
   return false;
 };
 
+export const handleLogout = () => {
+  removeSessionStorageItem("token");
+  store.dispatch(resetUser());
+};
+
 export const decodeToken = (token: string): DecodedToken | null => {
   try {
     const parts = token.split(".");
@@ -106,7 +116,6 @@ export const decodeToken = (token: string): DecodedToken | null => {
     const payload = base64UrlDecode(parts[1]);
     const decoded: DecodedToken = JSON.parse(payload);
 
-    console.log("Decoded Token:", decoded);
     return decoded;
   } catch (err) {
     console.error("Error decoding token:", err);
@@ -116,15 +125,13 @@ export const decodeToken = (token: string): DecodedToken | null => {
 
 export const isTokenValid = () => {
   const token = getSessionStorageWithExpiry("token");
-  console.log("🚀 ~ handleSignInClick ~ token:", token);
+  if (token) {
 
-  const decodedData = decodeToken(token);
-
-  if (decodedData) {
-    console.log(decodedData);
-    return decodedData;
-  } else {
-    console.log("Token is invalid or has expired");
-    return null;
+    const userData = decodeToken(token);
+    if (userData) {
+      store.dispatch(setUser(userData));
+      return userData;
+    }
   }
+  return null;
 };

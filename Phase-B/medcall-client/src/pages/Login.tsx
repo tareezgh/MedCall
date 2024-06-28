@@ -5,7 +5,6 @@ import Button from "../components/Button";
 import Divider from "../components/Divider";
 import GoogleButton from "../components/GoogleButton";
 import Input from "../components/Input";
-
 import { EyeIcon, EyeOffIcon, LockIcon, MailIcon } from "../components/icons";
 import { SignInFormData } from "../interfaces/types";
 import { handleSignIn, isTokenValid } from "../utils/authHandles";
@@ -45,19 +44,9 @@ const Login = () => {
     const success = await handleSignIn(formData);
     if (success) {
       const data = isTokenValid();
-      console.log("🚀 ~ handleSignInClick ~ data:", data);
-      switch (data?.role) { //TODO fix dashboard type
-        case "Admin":
-          navigate("/dashboard");
-          break;
-        case "User":
-          navigate("/dashboard");
-          break;
-        case "Driver":
-          navigate("/dashboard");
-          break;
-        default:
-          break;
+      if (data) {
+        console.log("🚀 ~ handleSignInClick ~ data:", data);
+        navigate("/dashboard");
       }
     }
   };

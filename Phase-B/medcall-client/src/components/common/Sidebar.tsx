@@ -3,24 +3,39 @@ import logo from "../../assets/logo-img.webp";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 import { useState } from "preact/hooks";
-import DashboardIcon from "../icons/DashboardIcon";
-import TrackIcon from "../icons/TrackIcon";
+import {
+  ChatIcon,
+  DashboardIcon,
+  LogoutIcon,
+  SettingsIcon,
+  TrackIcon,
+} from "../icons";
+import { handleLogout } from "../../utils/authHandles";
 
 interface SidebarProps {
+  role: string;
+  activeTab: string;
+  setActiveTab: (tab: string) => void;
   items?: [];
   customClassName?: string;
 }
 
-const Sidebar = ({}: SidebarProps) => {
+const Sidebar = ({
+  role,
+  activeTab,
+  setActiveTab,
+  customClassName,
+}: SidebarProps) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const [activeTab, setActiveTab] = useState("dashboard");
 
-  const renderSidebarTab = (text: string, icon: React.ReactNode, onClick: () => void) => {
+  const renderSidebarTab = (
+    text: string,
+    icon: React.ReactNode,
+    onClick: () => void
+  ) => {
     const buttonStyle = `${
-      activeTab == text.toLowerCase()
-        ? "bg-lightBg"
-        : "hover:opacity-70"
+      activeTab == text.toLowerCase() ? "bg-lightBg" : "hover:opacity-70"
     }`;
 
     return (
@@ -35,7 +50,7 @@ const Sidebar = ({}: SidebarProps) => {
   };
   return (
     <>
-      <nav className="flex flex-col items-center justify-between h-screen w-1/5 p-6 border-l custom-border shadow">
+      <nav className="flex flex-col items-start justify-between h-screen fixed bg-white top-0 w-1/6 p-6 border-l custom-border shadow">
         <div className="flex flex-col gap-6 ">
           <div
             className="logo-side hover:cursor-pointer"
@@ -43,37 +58,18 @@ const Sidebar = ({}: SidebarProps) => {
           >
             <img src={logo} alt={"MedCall Logo"} className="h-[2.5rem]" />
           </div>
-          <div className="buttons-side flex flex-col gap-3">
-            {renderSidebarTab("Dashboard", <DashboardIcon/>, ()=>{})}
-            {renderSidebarTab("Tracking", <TrackIcon/>, ()=>{})}
-            {/* <Button
-              text={t("navbar-login-button")}
-              type="secondary"
-              onClick={() => navigate("/")}
-            /> */}
-            {/* <Button
-              text={t("navbar-sign-up-button")}
-              type="primary"
-              onClick={() => navigate("/")}
-            />
-            <Button
-              text={t("navbar-sign-up-button")}
-              type="primary"
-              onClick={() => navigate("/")}
-            /> */}
+          <div className="buttons-side flex flex-col gap-3 items-start">
+            {renderSidebarTab("Dashboard", <DashboardIcon />, () => setActiveTab("dashboard"))}
+            {renderSidebarTab("Tracking", <TrackIcon />, () => setActiveTab("tracking"))}
+            {renderSidebarTab("Messages", <ChatIcon />, () => setActiveTab("messages"))}
           </div>
         </div>
-        <div className="buttons-side flex flex-col gap-3">
-          <Button
-            text={t("navbar-login-button")}
-            type="secondary"
-            onClick={() => navigate("/")}
-          />
-          <Button
-            text={t("navbar-sign-up-button")}
-            type="primary"
-            onClick={() => navigate("/")}
-          />
+        <div className="buttons-side flex flex-col gap-3 items-start">
+          {renderSidebarTab("Settings", <SettingsIcon />, () => setActiveTab("settings"))}
+          {renderSidebarTab("Log out", <LogoutIcon />, () => {
+            handleLogout();
+            navigate("/");
+          })}
         </div>
       </nav>
     </>
