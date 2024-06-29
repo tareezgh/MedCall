@@ -13,12 +13,12 @@ export class UsersDal {
         role: user.role || "User",
         requests: user.requests || [],
       });
-  
+
       const savedUser = await newUser.save();
       return savedUser;
     } catch (err) {
       console.error(err);
-      throw err;  
+      throw err;
     }
   }
 
@@ -37,7 +37,7 @@ export class UsersDal {
     if (!userData) {
       throw new Error("User not found");
     }
-    return userData as User;
+    return userData;
   }
 
   public async checkUser(user: Partial<User>) {

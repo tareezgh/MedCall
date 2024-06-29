@@ -8,7 +8,7 @@ export interface User {
   email: string;
   password: string;
   role: string;
-  requests?: Array<any>;
+  requests: mongoose.Types.ObjectId[];
 }
 
 export interface LoginSuccessResult {

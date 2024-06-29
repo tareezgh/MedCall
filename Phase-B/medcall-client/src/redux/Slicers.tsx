@@ -8,6 +8,7 @@ export const userSlice = createSlice({
     role: "",
     firstName: "",
     lastName: "",
+    phoneNumber: "",
   },
   reducers: {
     setUser: (state, action) => {
@@ -16,6 +17,7 @@ export const userSlice = createSlice({
       state.role = action.payload.role;
       state.firstName = action.payload.firstName;
       state.lastName = action.payload.lastName;
+      state.phoneNumber = action.payload.phoneNumber;
     },
     resetUser: (state) => {
       state.id = "";
@@ -23,6 +25,7 @@ export const userSlice = createSlice({
       state.role = "";
       state.firstName = "";
       state.lastName = "";
+      state.phoneNumber = "";
     },
   },
 });

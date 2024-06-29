@@ -43,6 +43,7 @@ export class UsersService {
         role: userData.role,
         firstName: userData.firstName,
         lastName: userData.lastName,
+        phoneNumber: userData.phoneNumber,
       },
       JWT_SECRET,
       {

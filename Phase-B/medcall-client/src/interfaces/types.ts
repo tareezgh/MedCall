@@ -10,6 +10,13 @@ export interface User {
 
 export interface AmbulanceRequest {
   userId: string | null; // Allow null for anonymous users
+  location: {
+    address?: string;
+    lat: number;
+    long: number;
+  };
+  driverName?: string;
+  status?: string;
   callerName: string;
   phoneNumber: string;
   patientAge: number;
@@ -42,6 +49,7 @@ export interface DecodedToken {
   role: string;
   firstName: string;
   lastName: string;
+  phoneNumber: string;
   iat: number;
   exp: number;
 }

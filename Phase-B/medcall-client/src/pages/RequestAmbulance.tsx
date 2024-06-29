@@ -16,16 +16,19 @@ import {
   AmbulanceRequest,
   RequestAmbulanceFormData,
 } from "../interfaces/types";
+import { useSelector } from "react-redux";
+import { postNewRequest } from "../services/requestService";
 
 const RequestAmbulance = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const currentUser = useSelector((state: any) => state.currentUser);
 
   const [isOptionalSection, setIsOptionalSection] = useState<boolean>(false);
 
   const [formData, setFormData] = useState<RequestAmbulanceFormData>({
-    callerName: "",
-    phoneNumber: "",
+    callerName: currentUser.firstName || "",
+    phoneNumber: currentUser.phoneNumber || "",
     patientAge: "",
     optionalAllergies: "",
     optionalMedications: "",
@@ -71,9 +74,10 @@ const RequestAmbulance = () => {
     setIsOptionalSection(true);
   };
 
-  const handleRequestAmbulance = () => {
+  const handleRequestAmbulance = async () => {
     const newRequestData: AmbulanceRequest = {
-      userId: "",
+      userId: currentUser.id,
+      location: { lat: 30, long: 35 }, //TODO
       callerName: formData.callerName,
       phoneNumber: formData.phoneNumber,
       patientAge: parseInt(formData.patientAge),
@@ -87,7 +91,9 @@ const RequestAmbulance = () => {
       optionalActivities: formData.optionalActivities,
     };
     console.log("🚀 ~ newRequestData:", newRequestData);
-    navigate("/dashboard");
+
+    const status = await postNewRequest(newRequestData);
+    if (status) navigate("/dashboard");
   };
 
   const renderNecessaryInfo = () => {
@@ -241,7 +247,7 @@ const RequestAmbulance = () => {
               type="primary"
               onClick={
                 isOptionalSection
-                  ? handleRequestAmbulance
+                  ? async () => await handleRequestAmbulance()
                   : handleNecessaryInfoSubmit
               }
               customClassName={"font-semibold text-2xl"}

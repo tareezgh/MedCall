@@ -29,7 +29,7 @@ export function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/request-ambulance" element={<RequestAmbulance />} />
         </Routes>
-        <Footer />
+        {window.location.pathname !== "/dashboard" && <Footer />}
       </BrowserRouter>
     </>
   );

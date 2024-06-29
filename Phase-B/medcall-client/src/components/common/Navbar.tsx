@@ -12,8 +12,8 @@ const Navbar = () => {
   const location = useLocation();
   const { t } = useTranslation();
   const currentUser = useSelector((state: any) => state.currentUser);
-  console.log("🚀 ~ Navbar ~ currentUser:", currentUser)
   const [navbarWidth, setNavbarWidth] = useState("w-5/6 ml-[16.666667%]");
+  console.log("🚀 ~ Navbar ~ currentUser:", currentUser)
 
   useEffect(() => {
     if (location.pathname === "/dashboard") {
