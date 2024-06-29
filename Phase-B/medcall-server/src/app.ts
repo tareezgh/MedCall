@@ -1,12 +1,23 @@
-import express, { Request, Response } from "express";
+import express from "express";
+import routes from "./routes";
+import { connectDb } from "./db/index";
+import bodyParser from "body-parser";
+import cors from "cors";
+
+require("dotenv").config();
+const corsOptions = {
+  origin: process.env.FRONTEND_URL,
+  credentials: true, // This is important for setting the Access-Control-Allow-Credentials header
+};
 
 const app = express();
-const port = process.env.PORT || 3001;
+app.use(bodyParser.urlencoded());
+app.use(bodyParser.json());
+app.use(cors(corsOptions));
+app.use(routes);
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Hello, world!");
-});
+const PORT = process.env.PORT;
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+connectDb().then(async () => {
+  app.listen(PORT, () => console.log(`Listening on http://localhost:${PORT}`));
 });

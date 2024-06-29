@@ -1,12 +1,11 @@
-import logo from "../../assets/logo-img.webp";
-
 interface ButtonProps {
   text: string;
   type: "primary" | "secondary";
   onClick: () => void;
+  customClassName?: string;
 }
 
-const Button = ({ text, type, onClick }: ButtonProps) => {
+const Button = ({ text, type, onClick, customClassName }: ButtonProps) => {
   const buttonStyle = `${
     type == "primary"
       ? "bg-primary500 text-textColor hover:bg-primary600"
@@ -15,7 +14,7 @@ const Button = ({ text, type, onClick }: ButtonProps) => {
   return (
     <>
       <button
-        className={`${buttonStyle} flex items-center justify-center px-6 py-3 rounded-3xl`}
+        className={`${buttonStyle} ${customClassName} flex items-center justify-center px-6 py-3 rounded-3xl`}
         onClick={onClick}
       >
         {text}
