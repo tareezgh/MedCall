@@ -1,8 +1,7 @@
-import Button from "../Button";
-import logo from "../../assets/logo-img.webp";
 import { useNavigate } from "react-router";
-import { useTranslation } from "react-i18next";
-import { useState } from "preact/hooks";
+import logo from "../../assets/logo-img.webp";
+import { handleLogout } from "../../utils/authHandles";
+
 import {
   ChatIcon,
   DashboardIcon,
@@ -10,7 +9,6 @@ import {
   SettingsIcon,
   TrackIcon,
 } from "../icons";
-import { handleLogout } from "../../utils/authHandles";
 
 interface SidebarProps {
   role: string;
@@ -20,14 +18,8 @@ interface SidebarProps {
   customClassName?: string;
 }
 
-const Sidebar = ({
-  role,
-  activeTab,
-  setActiveTab,
-  customClassName,
-}: SidebarProps) => {
+const Sidebar = ({ activeTab, setActiveTab }: SidebarProps) => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
 
   const renderSidebarTab = (
     text: string,
@@ -59,13 +51,21 @@ const Sidebar = ({
             <img src={logo} alt={"MedCall Logo"} className="h-[2.5rem]" />
           </div>
           <div className="buttons-side flex flex-col gap-3 items-start">
-            {renderSidebarTab("Dashboard", <DashboardIcon />, () => setActiveTab("dashboard"))}
-            {renderSidebarTab("Tracking", <TrackIcon />, () => setActiveTab("tracking"))}
-            {renderSidebarTab("Messages", <ChatIcon />, () => setActiveTab("messages"))}
+            {renderSidebarTab("Dashboard", <DashboardIcon />, () =>
+              setActiveTab("dashboard")
+            )}
+            {renderSidebarTab("Tracking", <TrackIcon />, () =>
+              setActiveTab("tracking")
+            )}
+            {renderSidebarTab("Messages", <ChatIcon />, () =>
+              setActiveTab("messages")
+            )}
           </div>
         </div>
         <div className="buttons-side flex flex-col gap-3 items-start">
-          {renderSidebarTab("Settings", <SettingsIcon />, () => setActiveTab("settings"))}
+          {renderSidebarTab("Settings", <SettingsIcon />, () =>
+            setActiveTab("settings")
+          )}
           {renderSidebarTab("Log out", <LogoutIcon />, () => {
             handleLogout();
             navigate("/");
