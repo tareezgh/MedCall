@@ -55,6 +55,7 @@ jobs:
       # Deploy to Firebase Functions
       - name: Deploy to Firebase Functions
         env:
+          GOOGLE_APPLICATION_CREDENTIALS: $HOME/.firebase-credentials.json
           FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG }}
         run: firebase deploy --only functions
         working-directory: Phase-B/medcall-server/functions
