@@ -48,10 +48,8 @@ jobs:
       # Set up Firebase authentication
       - name: Authenticate to Firebase
         run: |
-          echo ${{ secrets.FIREBASE_SERVICE_ACCOUNT_MEDCALL_CLIENT }} > $HOME/.firebase-credentials.json
-          firebase auth:login --token ${{ secrets.GCLOUD_AUTH_TOKEN }}
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: $HOME/.firebase-credentials.json
+          echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT_MEDCALL_CLIENT }}" > $HOME/.firebase-credentials.json
+          export GOOGLE_APPLICATION_CREDENTIALS=$HOME/.firebase-credentials.json
 
       # Install dependencies for server functions
       - name: Install dependencies
