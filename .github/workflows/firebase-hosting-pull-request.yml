@@ -16,7 +16,7 @@ jobs:
 
       # Copy .env.production file to medcall-client
       - name: Copy .env.production to medcall-client
-        run: cp .env.production Phase-B/medcall-client/.env
+        run: cp Phase-B/medcall-client/.env.production Phase-B/medcall-client/.env
 
       # Build and deploy the client to the preview channel
       - run: npm ci && npm run build
@@ -30,7 +30,7 @@ jobs:
 
       # Copy .env.production file to medcall-server
       - name: Copy .env.production to medcall-server
-        run: cp .env.production Phase-B/medcall-server/functions/.env
+        run: cp Phase-B/medcall-server/.env.production Phase-B/medcall-server/functions/.env
 
       # Set up Node.js
       - name: Set up Node.js
