@@ -44,9 +44,16 @@ jobs:
       # Install Firebase Tools
       - name: Install Firebase Tools
         run: npm install -g firebase-tools
+        
+      # Debug: Output the service account key file
+      - name: Debug Service Account Key
+        run: cat $HOME/.firebase-credentials.json
 
       # Set up Firebase authentication
       - name: Authenticate to Firebase
+        env:
+          FIREBASE_SERVICE_ACCOUNT_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_MEDCALL_CLIENT }}
+     
         run: |
           echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT_MEDCALL_CLIENT }}" > $HOME/.firebase-credentials.json
           export GOOGLE_APPLICATION_CREDENTIALS=$HOME/.firebase-credentials.json
