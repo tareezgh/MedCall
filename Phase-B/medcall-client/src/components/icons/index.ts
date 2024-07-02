@@ -9,10 +9,12 @@ import LockIcon from "./LockIcon";
 import MailIcon from "./MailIcon";
 import NotificationIcon from "./NotificationIcon";
 import PhoneIcon from "./PhoneIcon";
+import PinIcon from "./PinIcon";
 import SettingsIcon from "./SettingsIcon";
 import TrackIcon from "./TrackIcon";
 import UserIcon from "./UserIcon";
 import LogoutIcon from "./LogoutIcon";
+import ZipIcon from "./ZipIcon";
 
 export {
   AddressIcon,
@@ -27,7 +29,9 @@ export {
   MailIcon,
   NotificationIcon,
   PhoneIcon,
+  PinIcon,
   SettingsIcon,
   TrackIcon,
   UserIcon,
+  ZipIcon,
 };
