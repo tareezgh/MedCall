@@ -37,6 +37,11 @@ export interface SignUpFormData {
   email: string;
   password: string;
   confirmPassword: string;
+  // only for driver fields
+  city: string;
+  address:string;
+  zipCode:string
+  driversLicense:string;  //TODO come back to this
 }
 
 export interface SignInFormData {
