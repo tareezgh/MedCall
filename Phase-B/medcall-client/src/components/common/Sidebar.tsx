@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import logo from "../../assets/logo-img.webp";
 import { handleLogout } from "../../utils/authHandles";
 
