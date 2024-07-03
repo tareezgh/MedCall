@@ -8,16 +8,73 @@ permissions:
   contents: read
   pull-requests: write
 jobs:
-  build_and_preview:
+  build_and_deploy_client:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: npm ci && npm run build
+
+      - name: Print Secrets (Debug)
+        run: |
+          echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+          echo "FIREBASE_SERVICE_ACCOUNT_MEDCALL_CLIENT=${{ secrets.FIREBASE_SERVICE_ACCOUNT_MEDCALL_CLIENT }}"
+          echo "FIREBASE_CONFIG=${{ secrets.FIREBASE_CONFIG }}"
+          echo "VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}"
+
+      - name: Ensure medcall-client Directory Exists
+        run: mkdir -p Phase-B/medcall-client
+
+      - name: Get .env.production file for medcall-client
+        env:
+          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
+        run: |
+          echo "VITE_API_BASE_URL=${VITE_API_BASE_URL}" > Phase-B/medcall-client/.env.production
+          echo "Created .env.production file with the following content:"
+          cat Phase-B/medcall-client/.env.production
+
+      - name: List medcall-client Directory Contents
+        run: ls -la Phase-B/medcall-client
+
+      # Build the client and print environment variables
+      - run: |
+          npm ci
+          npm run build
         working-directory: Phase-B/medcall-client
+
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_MEDCALL_CLIENT }}
           projectId: medcall-client
           entryPoint: Phase-B/medcall-client
+
+  build_and_deploy_server:
+    runs-on: ubuntu-latest
+    needs: build_and_deploy_client
+    steps:
+      - uses: actions/checkout@v3
+  
+      # Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      # Install dependencies for server functions
+      - name: Install dependencies
+        run: npm ci
+        working-directory: Phase-B/medcall-server/functions
+
+         # Install Firebase Tools
+      - name: Install Firebase Tools
+        run: npm install -g firebase-tools
+        
+      # Ensure firebase.json exists in the correct directory
+      - name: List medcall-server Directory Contents
+        run: ls -la Phase-B/medcall-server
+
+    # Deploy to Firebase Functions
+      - name: Deploy to Firebase Functions
+        run: firebase deploy --only functions --token ${{ secrets.FIREBASE_TOKEN }}
+        working-directory: Phase-B/medcall-server
+
