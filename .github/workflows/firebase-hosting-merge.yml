@@ -40,13 +40,11 @@ jobs:
           npm run build
         working-directory: Phase-B/medcall-client
 
-      - uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_MEDCALL_CLIENT }}
-          projectId: medcall-client
-          entryPoint: Phase-B/medcall-client
-          channelId: pr-${{ github.event.pull_request.number }}
+      - name: Deploy to Firebase Hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: firebase deploy --only hosting --project medcall-client --token $FIREBASE_TOKEN
+        working-directory: Phase-B/medcall-client
 
   build_and_deploy_server:
     runs-on: ubuntu-latest
