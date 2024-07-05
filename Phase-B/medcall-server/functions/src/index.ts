@@ -1,20 +1,3 @@
-/**
- * Import function triggers from their respective submodules:
- *
- * import {onCall} from "firebase-functions/v2/https";
- * import {onDocumentWritten} from "firebase-functions/v2/firestore";
- *
- * See a full list of supported triggers at https://firebase.google.com/docs/functions
- */
-
-// Start writing functions
-// https://firebase.google.com/docs/functions/typescript
-
-// export const helloWorld = onRequest((request, response) => {
-//   logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
-
 const functions = require("firebase-functions");
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -23,21 +6,33 @@ const dotenv = require('dotenv');
 import routes from "./routes";
 import { connectDb } from "./db/index";
 
-import { Request, Response } from "express";
-
-// require("dotenv").config();
+import { NextFunction, Request, Response } from "express";
 
 const env = functions.config().NODE_ENV || 'development';
 dotenv.config({ path: `.env.${env}` });
 const corsOptions = {
   origin: functions.config().frontend.url,
   credentials: true, // This is important for setting the Access-Control-Allow-Credentials header
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  allowedHeaders: 'Content-Type,Authorization',
+  preflightContinue: false,
+  optionsSuccessStatus: 204
 };
 
 const app = express();
 app.use(bodyParser.urlencoded());
 app.use(bodyParser.json());
 app.use(cors(corsOptions));
+
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.header('Access-Control-Allow-Origin', 'https://medcall-client.web.app');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+  next();
+});
+
+app.options('*', cors(corsOptions));
 app.use(routes);
 
 const PORT = process.env.PORT;
