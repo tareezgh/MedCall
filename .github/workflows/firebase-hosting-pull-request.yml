@@ -79,8 +79,9 @@ jobs:
           MONGODB_URL: ${{ secrets.MONGODB_URL }}
           JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
         run: |
-          echo "MONGODB_URL=${MONGODB_URL}" > Phase-B/medcall-server/.env.production
-          echo "JWT_SECRET_KEY=${JWT_SECRET_KEY}" >> Phase-B/medcall-server/.env.production
+          mkdir -p Phase-B/medcall-server/functions 
+          echo "MONGODB_URL=${MONGODB_URL}" > Phase-B/medcall-server/functions/.env.production
+          echo "JWT_SECRET_KEY=${JWT_SECRET_KEY}" >> Phase-B/medcall-server/functions/.env.production
           echo "Created .env.production file with the following content:"
           cat Phase-B/medcall-server/functions/.env.production
 
