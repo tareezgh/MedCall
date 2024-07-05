@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-const functions = require("firebase-functions");
 const bcrypt = require("bcrypt");
 import { UsersDal } from "../dal/users.dal";
 import {
@@ -18,7 +17,7 @@ export class UsersService {
   }
 
   public async login(user: Partial<User>): Promise<LoginResult> {
-    const JWT_SECRET = functions.config().jwt.secret_key;
+    const JWT_SECRET = process.env.JWT_SECRET_KEY;
     if (!JWT_SECRET) {
       throw new Error("JWT_SECRET is not defined in environment variables");
     }
