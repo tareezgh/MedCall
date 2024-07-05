@@ -11,7 +11,7 @@ import { NextFunction, Request, Response } from "express";
 const env = functions.config().NODE_ENV || 'development';
 dotenv.config({ path: `.env.${env}` });
 const corsOptions = {
-  origin: functions.config().frontend.url,
+  origin: "*",
   credentials: true, // This is important for setting the Access-Control-Allow-Credentials header
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   allowedHeaders: 'Content-Type,Authorization',
@@ -25,7 +25,7 @@ app.use(bodyParser.json());
 app.use(cors(corsOptions));
 
 app.use((req: Request, res: Response, next: NextFunction) => {
-  res.header('Access-Control-Allow-Origin', 'https://medcall-client.web.app');
+  res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Credentials', 'true');
   res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
   res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
