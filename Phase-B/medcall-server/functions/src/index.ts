@@ -11,9 +11,17 @@ import { Request, Response } from "express";
 dotenv.config({ path: `.env.production` });
 
 const app = express();
-app.use(bodyParser.urlencoded());
+
+const corsOptions = {
+  origin: 'https://medcall-client.web.app',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+  optionsSuccessStatus: 204
+};
+
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(cors({ origin: true }));
+app.use(cors(corsOptions));
 app.use(routes);
 
 const PORT = process.env.PORT;
