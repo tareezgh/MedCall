@@ -17,7 +17,6 @@ jobs:
         run: |
           echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
           echo "FIREBASE_SERVICE_ACCOUNT_MEDCALL_CLIENT=${{ secrets.FIREBASE_SERVICE_ACCOUNT_MEDCALL_CLIENT }}"
-          echo "FIREBASE_CONFIG=${{ secrets.FIREBASE_CONFIG }}"
           echo "VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}"
 
       - name: Ensure medcall-client Directory Exists
@@ -44,9 +43,9 @@ jobs:
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_MEDCALL_CLIENT }}
+          channelId: live
           projectId: medcall-client
           entryPoint: Phase-B/medcall-client
-          channelId: pr-${{ github.event.pull_request.number }}
 
   build_and_deploy_server:
     runs-on: ubuntu-latest
@@ -72,6 +71,18 @@ jobs:
       # Ensure firebase.json exists in the correct directory
       - name: List medcall-server Directory Contents
         run: ls -la Phase-B/medcall-server
+
+      # Create .env.production file for medcall-server
+      - name: Create .env.production file for medcall-server
+        env:
+          MONGODB_URL: ${{ secrets.MONGODB_URL }}
+          JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+        run: |
+          mkdir -p Phase-B/medcall-server/functions 
+          echo "MONGODB_URL=${MONGODB_URL}" > Phase-B/medcall-server/functions/.env.production
+          echo "JWT_SECRET_KEY=${JWT_SECRET_KEY}" >> Phase-B/medcall-server/functions/.env.production
+          echo "Created .env.production file with the following content:"
+          cat Phase-B/medcall-server/functions/.env.production
 
     # Deploy to Firebase Functions
       - name: Deploy to Firebase Functions

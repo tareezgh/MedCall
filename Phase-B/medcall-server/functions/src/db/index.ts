@@ -1,9 +1,8 @@
 import mongoose from "mongoose";
-const functions = require("firebase-functions");
 mongoose.set("strictQuery", true);
 
 const connectDb = async () => {
-  const mongoDbUrl = functions.config().mongodb.url;
+  const mongoDbUrl = process.env.MONGODB_URL;
   if (!mongoDbUrl) {
     throw new Error("MONGODB_URL is not defined in environment variables");
   }
