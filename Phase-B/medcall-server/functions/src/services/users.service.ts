@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-const functions = require("firebase-functions");
 const bcrypt = require("bcrypt");
 
 import mongoose from "mongoose";
