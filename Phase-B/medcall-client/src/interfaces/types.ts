@@ -5,6 +5,9 @@ export interface User {
   email: string;
   password: string;
   role: string;
+  city?: string;
+  address?: string;
+  zipCode?: string;
   requests?: Array<any>;
 }
 
@@ -37,11 +40,9 @@ export interface SignUpFormData {
   email: string;
   password: string;
   confirmPassword: string;
-  // only for driver fields
   city: string;
-  address:string;
-  zipCode:string
-  driversLicense:string;  //TODO come back to this
+  address: string;
+  zipCode: string;
 }
 
 export interface SignInFormData {

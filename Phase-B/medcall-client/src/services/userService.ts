@@ -12,6 +12,9 @@ export const registerUser = async (user: User) => {
     email: user.email,
     password: user.password,
     role: user.role || "User",
+    city: user.city,
+    address: user.address,
+    zipCode: user.zipCode,
   };
 
   const response = await axios.post(registerUrl, args);
@@ -21,6 +24,10 @@ export const registerUser = async (user: User) => {
       position: "bottom-center",
       hideProgressBar: true,
     });
+  } else {
+    const token = response.data.token;
+    setSessionStorageWithExpiry("token", token, 60);
+    return args;
   }
 };
 

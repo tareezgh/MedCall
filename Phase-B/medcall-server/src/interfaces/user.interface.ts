@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+import mongoose, { Document } from "mongoose";
 
-export interface User {
+export interface User extends Document {
   _id: mongoose.Types.ObjectId;
   firstName: string;
   lastName: string;
@@ -8,6 +8,9 @@ export interface User {
   email: string;
   password: string;
   role: string;
+  city?: string | null;
+  address?: string | null;
+  zipCode?: string | null;
   requests: mongoose.Types.ObjectId[];
 }
 

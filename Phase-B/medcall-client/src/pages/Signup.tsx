@@ -7,6 +7,8 @@ import GoogleButton from "../components/GoogleButton";
 import Input from "../components/Input";
 
 import { SignUpFormData } from "../interfaces/types";
+import Tab from "../components/Tab";
+import { handleSignUp, isTokenValid } from "../utils/authHandles";
 import {
   EyeIcon,
   EyeOffIcon,
@@ -14,12 +16,9 @@ import {
   MailIcon,
   PhoneIcon,
   UserIcon,
-  FileIcon,
   ZipIcon,
   PinIcon,
 } from "../components/icons";
-import Tab from "../components/Tab";
-import { handleSignUp } from "../utils/authHandles";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -41,8 +40,8 @@ const SignUp = () => {
     city: "",
     address: "",
     zipCode: "",
-    driversLicense: "", // TODO check this
   });
+
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
     useState(false);
@@ -64,18 +63,24 @@ const SignUp = () => {
     }
   };
 
-  const handleSignUpClick = async () => {
+  const handleContinueClick = async () => {
     switch (activeTab) {
       case "driver": {
         setSignUpDriverForm(true);
-        //TODO handle sign up driver
         break;
       }
       case "user": {
-        const status = await handleSignUp(formData, activeTab);
-        if (status) navigate("/dashboard");
+        await handleSignUpClick();
         break;
       }
+    }
+  };
+
+  const handleSignUpClick = async () => {
+    const status = await handleSignUp(formData, activeTab);
+    if (status) {
+      const data = isTokenValid();
+      if (data) navigate("/dashboard");
     }
   };
 
@@ -190,13 +195,6 @@ const SignUp = () => {
               onChange={handleChange("zipCode")}
               leftIcon={<ZipIcon />}
             />
-            <Input
-              type="text"
-              placeholder={t("attach-license")}
-              value={""} // TODO check the license content
-              onChange={handleChange("driversLicense")}
-              leftIcon={<FileIcon />}
-            />
           </div>
         </div>
       </>
@@ -222,7 +220,9 @@ const SignUp = () => {
               <Button
                 text={t("sign-up-form-button")}
                 type="primary"
-                onClick={handleSignUpClick}
+                onClick={
+                  signUpDriverFrom ? handleSignUpClick : handleContinueClick
+                }
                 customClassName={"font-bold text-xl"}
               />
             </div>
@@ -239,13 +239,15 @@ const SignUp = () => {
             </div>
           </div>
 
-          <div className={"flex flex-col gap-6 w-full"}>
-            <Divider />
-            <GoogleButton
-              text="Sign Up with Google"
-              onClick={handleGoogleSignUp}
-            />
-          </div>
+          {!signUpDriverFrom && (
+            <div className={"flex flex-col gap-6 w-full"}>
+              <Divider />
+              <GoogleButton
+                text="Sign Up with Google"
+                onClick={handleGoogleSignUp}
+              />
+            </div>
+          )}
         </div>
       </section>
     </>

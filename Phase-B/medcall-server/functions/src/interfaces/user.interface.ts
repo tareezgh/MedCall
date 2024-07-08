@@ -8,6 +8,9 @@ export interface User {
   email: string;
   password: string;
   role: string;
+  city?: string | null;
+  address?: string | null;
+  zipCode?: string | null;
   requests: mongoose.Types.ObjectId[];
 }
 

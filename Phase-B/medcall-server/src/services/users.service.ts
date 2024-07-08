@@ -1,11 +1,12 @@
 import jwt from "jsonwebtoken";
 import { UsersDal } from "../dal/users.dal";
+import mongoose from "mongoose";
+const bcrypt = require("bcrypt");
 import {
   LoginFailureResult,
   LoginSuccessResult,
   User,
 } from "../interfaces/user.interface";
-const bcrypt = require("bcrypt");
 
 type LoginResult = LoginSuccessResult | LoginFailureResult;
 
@@ -17,10 +18,6 @@ export class UsersService {
   }
 
   public async login(user: Partial<User>): Promise<LoginResult> {
-    const JWT_SECRET = process.env.JWT_SECRET_KEY;
-    if (!JWT_SECRET) {
-      throw new Error("JWT_SECRET is not defined in environment variables");
-    }
     const hashedPasswordFromDB = await this.usersDal.getUserPassword(user);
     if (!hashedPasswordFromDB)
       return { status: "failure", message: "User doesn't exist!!" };
@@ -35,21 +32,16 @@ export class UsersService {
     if (!userData) {
       return { status: "failure", message: "User data not found" };
     }
-    // Create a JWT token
-    const token = jwt.sign(
-      {
-        id: userData._id,
-        email: user.email,
-        role: userData.role,
-        firstName: userData.firstName,
-        lastName: userData.lastName,
-        phoneNumber: userData.phoneNumber,
-      },
-      JWT_SECRET,
-      {
-        expiresIn: "1h",
-      }
+
+    const token = this.generateToken(
+      userData._id,
+      userData.email,
+      userData.role,
+      userData.firstName,
+      userData.lastName,
+      userData.phoneNumber
     );
+
     return {
       status: "success",
       message: "User logged in",
@@ -63,15 +55,64 @@ export class UsersService {
     if (isUserExist)
       return { status: "failure", message: "Email already used!" };
 
-    bcrypt.hash(user.password, saltRounds, async (err: any, hash: any) => {
-      user["password"] = hash;
-      const respond = await this.usersDal.createUser(user);
-      return respond;
-    });
+    const hashedPassword = await bcrypt.hash(user.password, saltRounds);
+    user.password = hashedPassword;
+
+    const newUser = await this.usersDal.createUser(user);
+    if (!newUser) {
+      return { status: "failure", message: "User registration failed" };
+    }
+
+    const token = this.generateToken(
+      newUser._id,
+      user.email,
+      newUser.role,
+      newUser.firstName,
+      newUser.lastName,
+      newUser.phoneNumber
+    );
+
+    return {
+      status: "success",
+      message: "User registered",
+      token,
+    };
   }
 
   public async getUsers() {
     const res = await this.usersDal.findAll();
     return res;
+  }
+
+  private generateToken(
+    id: mongoose.Types.ObjectId,
+    email: string,
+    role: string,
+    firstName: string,
+    lastName: string,
+    phoneNumber: string
+  ) {
+    const JWT_SECRET = process.env.JWT_SECRET_KEY;
+    if (!JWT_SECRET) {
+      throw new Error("JWT_SECRET is not defined in environment variables");
+    }
+
+    // Create a JWT token
+    const token = jwt.sign(
+      {
+        id: id,
+        email: email,
+        role: role,
+        firstName: firstName,
+        lastName: lastName,
+        phoneNumber: phoneNumber,
+      },
+      JWT_SECRET,
+      {
+        expiresIn: "1h",
+      }
+    );
+
+    return token;
   }
 }
