@@ -101,11 +101,13 @@
   "optional-info-activities-placeholder": "Please specify any recent evets or activities that could be relevant to their condition",
   "back-button": "Back",
   "request-ambulance-button": "Request Ambulance",
-  "": "",
-  "": "",
-  "": "",
-  "": "",
-  "": "",
+
+  "one-last-step": "One Last Step",
+  "city": "City",
+  "address": "Address",
+  "zip-code": "Zip Code",
+  "attach-license": "Attach Driver License",
+  
   "": "",
   "": "",
   "": "",
