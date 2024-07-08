@@ -3,6 +3,7 @@ import {
   DecodedToken,
   SignInFormData,
   SignUpFormData,
+  User,
 } from "../interfaces/types";
 import { loginUser, registerUser } from "../services/userService";
 import { base64UrlDecode } from "./helpers";
@@ -41,7 +42,7 @@ export const handleSignUp = async (
     }
 
     // Create a new User object from formData
-    const newUser = {
+    const newUser: User = {
       firstName: formData.firstName,
       lastName: formData.lastName,
       phoneNumber: formData.phoneNumber,
@@ -50,6 +51,18 @@ export const handleSignUp = async (
       role: activeTab,
     };
 
+    if (activeTab === "driver") {
+      if (!formData.city || !formData.address || !formData.zipCode) {
+        toast.error("Please fill all the fields", {
+          position: "bottom-center",
+          hideProgressBar: true,
+        });
+        return;
+      }
+      newUser.city = formData.city;
+      newUser.address = formData.address;
+      newUser.zipCode = formData.zipCode;
+    }
     // Call registerUser function to send newUser to backend
     await registerUser(newUser);
 

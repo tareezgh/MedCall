@@ -8,6 +8,9 @@ const usersSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     role: { type: String, required: true },
+    city: { type: String, required: false },
+    address: { type: String, required: false },
+    zipCode: { type: String, required: false },
     requests: [{ type: mongoose.Schema.Types.ObjectId, ref: "Request" }],
   },
   { timestamps: true }

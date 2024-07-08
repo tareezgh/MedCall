@@ -12,6 +12,9 @@ export class UsersDal {
         password: user.password,
         role: user.role || "User",
         requests: user.requests || [],
+        city: user.city,
+        address: user.address,
+        zipCode: user.zipCode,
       });
 
       const savedUser = await newUser.save();
