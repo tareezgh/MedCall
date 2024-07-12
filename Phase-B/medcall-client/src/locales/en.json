@@ -108,6 +108,31 @@
   "zip-code": "Zip Code",
   "attach-license": "Attach Driver License",
   
+  "welcome":"Welcome",
+  "active-request": {
+    "title": "Active Request",
+    "subtitle": "The ambulance is on its way, you can track its route.",
+    "track-now-button": "Track Now"
+  },
+  "new-request": {
+    "title": "Request New Ambulance",
+    "subtitle": "Request new ambulance for your emergency and save a life",
+    "order-now-button": "Order Now"
+  },
+  "history": {
+    "title": "History"
+  },
+
+  "driver-new-requests-title": "New Request Near You",
+  "driver-emergency-details-title": "Emergency Details",
+  "driver-no-request-selected": "No request selected",
+  "driver-location": "Location",
+  "driver-emergency-type": "Emergency Type",
+  
+
+  "admin-map-title": "Map",
+  "admin-new-requests-title": "New Requests",
+  
   "": "",
   "": "",
   "": "",

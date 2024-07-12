@@ -19,6 +19,7 @@ export default {
         modalBackground: "#FAFAFC",
         backText: "#1D1C2B",
         dashboardBg: "#EFEFEF",
+        dashboardModal: "#F0F0F0",
       },
       
     },

@@ -57,6 +57,11 @@ body {
     @apply bg-secondary500;
   }
   
- 
+  .custom-green-button {
+    background-color: #00A040 !important;
+  }
+  .custom-green-button:hover {
+    background-color: rgb(3, 134, 77) !important;
+  }
 
 }

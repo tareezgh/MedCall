@@ -3,13 +3,13 @@ import ChatIcon from "./ChatIcon";
 import DashboardIcon from "./DashboardIcon";
 import EyeIcon from "./EyeIcon";
 import EyeOffIcon from "./EyeOffIcon";
-import FileIcon from "./FileIcon";
 import LocationIcon from "./LocationIcon";
 import LockIcon from "./LockIcon";
 import MailIcon from "./MailIcon";
 import NotificationIcon from "./NotificationIcon";
 import PhoneIcon from "./PhoneIcon";
 import PinIcon from "./PinIcon";
+import PlusIcon from "./PlusIcon";
 import SettingsIcon from "./SettingsIcon";
 import TrackIcon from "./TrackIcon";
 import UserIcon from "./UserIcon";
@@ -22,7 +22,6 @@ export {
   DashboardIcon,
   EyeIcon,
   EyeOffIcon,
-  FileIcon,
   LocationIcon,
   LockIcon,
   LogoutIcon,
@@ -30,6 +29,7 @@ export {
   NotificationIcon,
   PhoneIcon,
   PinIcon,
+  PlusIcon,
   SettingsIcon,
   TrackIcon,
   UserIcon,
