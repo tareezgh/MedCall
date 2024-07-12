@@ -1,19 +1,37 @@
 import { useSelector } from "react-redux";
 import Button from "../components/Button";
+import UserDashboardContent from "./UserDashboardContent";
+// import UserDashboardContent from "../components/UserDashboardContent";
+// import { useTranslation } from "react-i18next";
 // TODO: the plus icon for 'New Request'
 // import { PlusIcon } from "../components/icons";
 
 interface DashboardContentProps { }
+// const { t } = useTranslation();
 
 const DashboardContent = ({ }: DashboardContentProps) => {
   const currentUser = useSelector((state: any) => state.currentUser);
+
   const getWidths = () => {
     switch (currentUser.role) {
-      case "Admin":
+      case "admin":
         return { leftWidth: 30, rightWidth: 70 };
-      case "User":
+      case "user":
         return { leftWidth: 50, rightWidth: 50 };
-      case "Driver":
+      case "driver":
+        return { leftWidth: 70, rightWidth: 30 };
+      default:
+        return { leftWidth: 50, rightWidth: 50 };
+    }
+  };
+
+  const renderSomething = () => {
+    switch (currentUser.role) {
+      case "admin":
+        return { leftWidth: 30, rightWidth: 70 };
+      case "user":
+        return <UserDashboardContent/>
+      case "driver":
         return { leftWidth: 70, rightWidth: 30 };
       default:
         return { leftWidth: 50, rightWidth: 50 };
@@ -64,9 +82,9 @@ const DashboardContent = ({ }: DashboardContentProps) => {
             style={{ width: `${leftWidth}%`, background: "#f0f0f0" }}
           >
             {/* check condition here */}
-            {noActiveRequest()}
+            {renderSomething()}
 
-            <section className="py-4 flex justify-center items-center">
+            {/* <section className="py-4 flex justify-center items-center">
               <div className="flex py-8 justify-start text-center flex-col gap-8 bg-modalBackground rounded-2xl w-full h-fit min-h-[250px] shadow-xl">
                 <h2 className="text-3xl font-bold">Request New Ambulance</h2>
                 <div className="flex flex-col justify-center items-center gap-4">
@@ -79,21 +97,20 @@ const DashboardContent = ({ }: DashboardContentProps) => {
                   />
                 </div>
               </div>
-            </section>
+            </section> */}
 
           </div>
-          <div
+          {/* <div
             className="right-side"
             style={{ width: `${rightWidth}%` }}
           >
-            {/* Right Side Content */}
             <section className="flex justify-center items-center">
               <div className="flex py-8 justify-start text-start flex-col gap-8 bg-modalBackground rounded-2xl w-full h-fit min-h-[554px] shadow-xl">
                 <h2 className="text-3xl font-bold ml-[10px]">History</h2>
               </div>
             </section>
 
-          </div>
+          </div> */}
         </div>
       </div>
     </>
