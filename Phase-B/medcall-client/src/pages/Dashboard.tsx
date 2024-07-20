@@ -6,11 +6,12 @@ import DashboardContent from "../components/DashboardContent.tsx";
 import Tracking from "../components/Tracking.tsx";
 import Messages from "../components/Messages.tsx";
 import Profile from "../components/Profile.tsx";
+import { TabsTypes } from "../interfaces/types.ts";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const currentUser = useSelector((state: any) => state.currentUser);
-  const [activeTab, setActiveTab] = useState("dashboard");
+  const [activeTab, setActiveTab] = useState<TabsTypes>("dashboard");
 
   useEffect(() => {
     if (!currentUser) {
@@ -21,15 +22,21 @@ const Dashboard = () => {
   const renderContent = () => {
     switch (activeTab) {
       case "dashboard":
-        return <DashboardContent />;
+        return <DashboardContent setActiveTab={setActiveTab} />;
       case "tracking":
         return <Tracking />;
       case "messages":
         return <Messages />;
       case "profile":
         return <Profile />;
+      case "driverTracking":
+        return <Tracking />;
+      case "driverRequest":
+        return;
+      case "adminEdit":
+        return;
       default:
-        return <DashboardContent />;
+        return <DashboardContent setActiveTab={setActiveTab} />;
     }
   };
 

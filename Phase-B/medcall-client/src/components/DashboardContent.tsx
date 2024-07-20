@@ -3,10 +3,13 @@ import { useTranslation } from "react-i18next";
 import UserDashboardContent from "../containers/UserDashboardContent";
 import AdminDashboardContent from "../containers/AdminDashboardContent";
 import DriverDashboardContent from "../containers/DriverDashboardContent";
+import { TabsTypes } from "../interfaces/types";
 
-interface DashboardContentProps {}
+interface DashboardContentProps {
+  setActiveTab: (tab: TabsTypes) => void;
+}
 
-const DashboardContent = ({}: DashboardContentProps) => {
+const DashboardContent = ({ setActiveTab }: DashboardContentProps) => {
   const { t } = useTranslation();
   const currentUser = useSelector((state: any) => state.currentUser);
 
@@ -15,7 +18,7 @@ const DashboardContent = ({}: DashboardContentProps) => {
       case "admin":
         return <AdminDashboardContent />;
       case "user":
-        return <UserDashboardContent />;
+        return <UserDashboardContent setActiveTab={setActiveTab} />;
       case "driver":
         return <DriverDashboardContent />;
       default:

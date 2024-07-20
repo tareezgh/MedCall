@@ -68,3 +68,13 @@ export interface RequestAmbulanceFormData {
   optionalMedications: string;
   optionalActivities: string;
 }
+
+export type TabsTypes =
+  | "dashboard"
+  | "tracking"
+  | "messages"
+  | "profile"
+  | "driverTracking"
+  | "driverRequest"
+  | "adminEdit"
+  | "logout";

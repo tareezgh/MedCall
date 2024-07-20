@@ -4,8 +4,13 @@ import Button from "../components/Button";
 import HistoryItem from "../components/HistoryItem";
 import { PlusIcon } from "../components/icons";
 import { fetchActiveRequest } from "../services/requestService";
+import { TabsTypes } from "../interfaces/types";
 
-const UserDashboardContent = () => {
+interface UserDashboardContentProps {
+  setActiveTab: (tab: TabsTypes) => void;
+}
+
+const UserDashboardContent = ({ setActiveTab }: UserDashboardContentProps) => {
   const { t } = useTranslation();
   const [activeRequest, setActiveRequest] = useState<any>(null); //TODO need to change type when back is ready
   const [status, setStatus] = useState("starting"); // "starting", "active", "completed", "none"
@@ -55,7 +60,7 @@ const UserDashboardContent = () => {
           <Button
             text={t("active-request.track-now-button")}
             type="primary"
-            onClick={() => {}}
+            onClick={() => setActiveTab("tracking")}
             customClassName="text-2xl custom-green-button"
           />
         </div>
