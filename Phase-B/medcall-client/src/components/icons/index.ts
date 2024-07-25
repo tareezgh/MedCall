@@ -4,6 +4,7 @@ import DashboardIcon from "./DashboardIcon";
 import EditIcon from "./EditIcon";
 import EyeIcon from "./EyeIcon";
 import EyeOffIcon from "./EyeOffIcon";
+import GlobeIcon from "./GlobeIcon";
 import LocationIcon from "./LocationIcon";
 import LockIcon from "./LockIcon";
 import MailIcon from "./MailIcon";
@@ -25,6 +26,7 @@ export {
   EditIcon,
   EyeIcon,
   EyeOffIcon,
+  GlobeIcon,
   LocationIcon,
   LockIcon,
   LogoutIcon,

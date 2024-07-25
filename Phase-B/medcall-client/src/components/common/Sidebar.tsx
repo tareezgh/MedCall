@@ -45,7 +45,7 @@ const Sidebar = ({ role, activeTab, setActiveTab }: SidebarProps) => {
   };
   return (
     <>
-      <nav className="flex flex-col items-start justify-between h-screen fixed bg-white top-0 w-1/6 p-6 border-l custom-border shadow">
+      <nav className="flex flex-col items-start justify-between h-screen relative bg-white top-[-5rem] w-64 p-6 border-l custom-border shadow">
         <div className="flex flex-col gap-6 ">
           <div
             className="logo-side hover:cursor-pointer"

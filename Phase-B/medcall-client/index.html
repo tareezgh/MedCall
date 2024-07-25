@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -9,5 +9,16 @@
   <body>
     <div id="app"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      const selectedLanguage = localStorage.getItem("selectedLanguage") || "en";
+      // Set direction based on language
+      if (selectedLanguage === "ar" || selectedLanguage === "he") {
+        document.documentElement.setAttribute("dir", "rtl");
+        document.documentElement.setAttribute("lang", selectedLanguage);
+      } else {
+        document.documentElement.setAttribute("dir", "ltr");
+        document.documentElement.setAttribute("lang", "en");
+      }
+    </script>
   </body>
 </html>
