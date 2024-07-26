@@ -38,7 +38,9 @@ const Login = () => {
     }
   };
 
-  const handleForgetPassword = () => {};
+  const handleForgetPassword = () => {
+    navigate("/reset-password");
+  };
 
   const handleSignInClick = async () => {
     const success = await handleSignIn(formData);
