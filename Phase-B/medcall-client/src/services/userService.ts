@@ -15,6 +15,7 @@ export const registerUser = async (user: User) => {
     city: user.city,
     address: user.address,
     zipCode: user.zipCode,
+    isGoogleSignIn: user.isGoogleSignIn,
   };
 
   const response = await axios.post(registerUrl, args);
@@ -34,7 +35,8 @@ export const registerUser = async (user: User) => {
 export const loginUser = async (user: Partial<User>) => {
   const args = {
     email: user.email,
-    password: user.password,
+    password: user.password || "",
+    isGoogleSignIn: user.isGoogleSignIn,
   };
 
   const response = await axios.post(loginUrl, args, { withCredentials: true });
