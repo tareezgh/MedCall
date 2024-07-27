@@ -17,7 +17,7 @@ const Navbar = () => {
   const [selectedLanguage, setSelectedLanguage] = useState<string>(
     localStorage.getItem("selectedLanguage") || "en"
   );
-  console.log("🚀 ~ Navbar ~ currentUser:", currentUser);
+  // console.log("🚀 ~ Navbar ~ currentUser:", currentUser);
 
   useEffect(() => {
     if (location.pathname === "/dashboard") {
@@ -45,6 +45,26 @@ const Navbar = () => {
     }
   };
 
+  const renderLanguageIcon = () => {
+    return (
+      <div className="relative flex justify-center items-center content-center">
+        <GlobeIcon onClick={() => setShowLanguage(!showLanguage)} />
+
+        {showLanguage && (
+          <select
+            className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
+            value={selectedLanguage}
+            onChange={handleLanguageChange}
+          >
+            <option value="en">En</option>
+            <option value="ar">Ar</option>
+            <option value="he">He</option>
+          </select>
+        )}
+      </div>
+    );
+  };
+
   const renderRegularNavbar = () => {
     return (
       <nav className="flex flex-row items-center justify-between h-20 p-6 border-b custom-border shadow">
@@ -56,6 +76,7 @@ const Navbar = () => {
         </div>
 
         <div className="buttons-side flex flex-row gap-3">
+          {renderLanguageIcon()}
           <Button
             text={t("navbar-login-button")}
             type="secondary"
@@ -93,21 +114,7 @@ const Navbar = () => {
 
         <div className="buttons-side flex flex-row justify-center items-center gap-3">
           <NotificationIcon onClick={() => {}} />
-          <div className="relative flex justify-center items-center content-center">
-            <GlobeIcon onClick={() => setShowLanguage(!showLanguage)} />
-
-            {showLanguage && (
-              <select
-                className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
-                value={selectedLanguage}
-                onChange={handleLanguageChange}
-              >
-                <option value="en">En</option>
-                <option value="ar">Ar</option>
-                <option value="he">He</option>
-              </select>
-            )}
-          </div>
+          {renderLanguageIcon()}
         </div>
       </nav>
     );

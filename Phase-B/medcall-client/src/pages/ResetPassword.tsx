@@ -1,29 +1,29 @@
-import React, { ReactNode } from 'react';
 import { useState } from "preact/hooks";
+import { ReactNode } from "preact/compat";
 import { useTranslation } from "react-i18next";
-// import { useNavigate } from "react-router";
-import { ResetPasswordFormData } from "../interfaces/types";
+import { toast } from "react-toastify";
 import Button from "../components/Button";
 import Input from "../components/Input";
+import OTPInput from "../components/OTPInput";
+import { ResetPasswordFormData } from "../interfaces/types";
 import { MailIcon, EyeIcon, EyeOffIcon, LockIcon } from "../components/icons";
-import OTPInput from '../components/OTPInput';
 
 type ScreenContainerProps = {
   children: ReactNode;
 };
 
+type ScreenHeaderProps = {
+  title: string;
+  description: ReactNode | string;
+};
+
 const ScreenContainer = ({ children }: ScreenContainerProps) => (
-  <section className="flex justify-center items-center my-12 py-10">
+  <section className="flex justify-center items-center h-full my-12 py-10">
     <div className="flex flex-col justify-center items-center text-center gap-6 p-6 bg-modalBackground rounded-2xl min-w-fit min-h-fit shadow-xl">
       {children}
     </div>
   </section>
 );
-
-type ScreenHeaderProps = {
-  title: string;
-  description: string;
-};
 
 const ScreenHeader = ({ title, description }: ScreenHeaderProps) => (
   <div className="flex flex-col justify-center items-center gap-2">
@@ -33,41 +33,88 @@ const ScreenHeader = ({ title, description }: ScreenHeaderProps) => (
 );
 
 const ResetPassword = () => {
-  // const navigate = useNavigate();
   const { t } = useTranslation();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  //? is remeberMe necessary?
-  const [rememberMe, setRememberMe] = useState(false);
-
-  const [activeTab, setActiveTab] = useState("screen1");
-
+  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
+    useState(false);
+  const [activeTab, setActiveTab] = useState("main");
+  const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
   const [formData, setFormData] = useState<ResetPasswordFormData>({
     email: "",
     password: "",
-    resetPassword: "",
+    confirmPassword: "",
   });
 
-  const handleChange = (field: keyof ResetPasswordFormData) => (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [field]: (e.target as HTMLInputElement).value,
-    }));
-  };
+  const handleChange =
+    (field: keyof ResetPasswordFormData) =>
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setFormData((prevData) => ({
+        ...prevData,
+        [field]: (e.target as HTMLInputElement).value,
+      }));
+    };
 
-  const toggleFields = (field: "password" | "rememberMe") => () => {
+  const toggleVisibility = (field: "password" | "confirmPassword") => () => {
     if (field === "password") {
       setIsPasswordVisible((prev) => !prev);
     } else {
-      setRememberMe((prev) => !prev);
+      setIsConfirmPasswordVisible((prev) => !prev);
     }
   };
 
-  const renderScreen1 = () => {
+  const handleEmailSubmit = () => {
+    if (formData.email.trim() === "") {
+      toast.error(t("error-email-required"), {
+        position: "top-center",
+        hideProgressBar: true,
+      });
+
+      return;
+    }
+    setActiveTab("otp");
+  };
+
+  const handleOTPSubmit = () => {
+    const otpFieldsFilled = otp.every((value) => value.trim() !== "");
+    if (!otpFieldsFilled) {
+      toast.error(t("error-otp-required"), {
+        position: "top-center",
+        hideProgressBar: true,
+      });
+
+      return;
+    }
+    setActiveTab("reset");
+  };
+
+  const handleResetSubmit = () => {
+    if (
+      formData.password.trim() === "" ||
+      formData.confirmPassword.trim() === ""
+    ) {
+      toast.error(t("error-password-required"), {
+        position: "top-center",
+        hideProgressBar: true,
+      });
+
+      return;
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      toast.error(t("error-password-mismatch"), {
+        position: "top-center",
+        hideProgressBar: true,
+      });
+      return;
+    }
+  };
+
+  const renderMainScreen = () => {
     return (
       <ScreenContainer>
         <ScreenHeader
-          title={t("reset-pass")}
-          description={t("enter-email-reset")}
+          title={t("reset-pass-title")}
+          description={t("reset-pass-subtitle")}
         />
         <Input
           type="text"
@@ -75,116 +122,121 @@ const ResetPassword = () => {
           value={formData.email}
           onChange={handleChange("email")}
           leftIcon={<MailIcon />}
-          customClassName="min-w-[500px]"
         />
         <Button
-          text={t("submit-request-button")} //this says continue
+          text={t("reset-pass-button")}
           type="primary"
-          onClick={() => setActiveTab("screen2")}
-          customClassName="text-2xl custom-red-button w-1/2 mt-4 mb-4"
+          onClick={handleEmailSubmit}
+          customClassName="text-2xl"
         />
       </ScreenContainer>
     );
   };
 
-  const renderScreen2 = () => {
+  const renderOtpScreen = () => {
     return (
       <ScreenContainer>
         <ScreenHeader
-          title={t("otp-title")}
-          description={`${t("otp-sent1")} ${formData.email}. ${t("otp-sent2")}`}
+          title={t("reset-pass-otp-title")}
+          description={
+            <>
+              {t("reset-pass-otp-subtitle1")}{" "}
+              <span className="font-bold">{formData.email}</span>.{" "}
+              {t("reset-pass-otp-subtitle2")}
+            </>
+          }
         />
-        <OTPInput />
-        {/* use otp here */}
-        <Button
-          text={t("verify")}
-          type="primary"
-          onClick={() => setActiveTab("screen3")}
-          customClassName="text-2xl custom-red-button w-1/2"
-        />
-        <Button
-          text={t("back-button")}
-          type="secondary"
-          onClick={() => setActiveTab("screen1")}
-          customClassName="text-lg custom-red-button"
-        />
-        <div className="text-base">
-          <h2>
-            {t("no-code")}
-            <span
-              className="text-primary500 font-bold cursor-pointer"
-              onClick={() => { }}
-            >
-              {t("send-again")}
-            </span>
-          </h2>
+        <OTPInput otp={otp} setOtp={setOtp} />
+        <div className="flex flex-col gap-2">
+          <div className="flex flex-row gap-4">
+            <Button
+              text={t("back-button")}
+              type="secondary"
+              onClick={() => setActiveTab("main")}
+              customClassName="text-lg"
+            />
+            <Button
+              text={t("reset-pass-verify")}
+              type="primary"
+              onClick={handleOTPSubmit}
+              customClassName="text-2xl"
+            />
+          </div>
+          <div className="text-base">
+            <h2>
+              {t("reset-pass-no-code")}
+              <span
+                className="text-primary500 font-bold cursor-pointer"
+                onClick={() => {}}
+              >
+                {t("reset-pass-send-again")}
+              </span>
+            </h2>
+          </div>
         </div>
       </ScreenContainer>
-    )
-  }
+    );
+  };
 
-  const renderScreen3 = () => {
+  const renderResetScreen = () => {
     return (
       <ScreenContainer>
         <ScreenHeader
-          title={t("create-new-pass-title")}
-          description="Please choose a new password."
+          title={t("reset-pass-create-title")}
+          description={t("reset-pass-create-subtitle")}
         />
         <Input
-          placeholder="New Password"
+          placeholder={t("reset-pass-create-placeholder1")}
           type={isPasswordVisible ? "text" : "password"}
           value={formData.password}
           onChange={handleChange("password")}
           leftIcon={<LockIcon />}
           rightIcon={isPasswordVisible ? <EyeOffIcon /> : <EyeIcon />}
-          onRightIconClick={toggleFields("password")}
+          onRightIconClick={toggleVisibility("password")}
           customClassName="min-w-[500px]"
         />
         <Input
-          placeholder="Confirm New Password"
-          type={isPasswordVisible ? "text" : "password"}
-          value={formData.resetPassword}
-          onChange={handleChange("resetPassword")}
+          placeholder={t("reset-pass-create-placeholder2")}
+          type={isConfirmPasswordVisible ? "text" : "password"}
+          value={formData.confirmPassword}
+          onChange={handleChange("confirmPassword")}
           leftIcon={<LockIcon />}
-          rightIcon={isPasswordVisible ? <EyeOffIcon /> : <EyeIcon />}
-          onRightIconClick={toggleFields("password")}
+          rightIcon={isConfirmPasswordVisible ? <EyeOffIcon /> : <EyeIcon />}
+          onRightIconClick={toggleVisibility("confirmPassword")}
           customClassName="min-w-[500px]"
         />
-        <Button
-          text={t("create-pass-btn")}
-          type="primary"
-          onClick={() => alert("complete!")}
-          customClassName="text-2xl custom-red-button w-1/2 mt-4"
-        />
-        <Button
-          text={t("back-button")}
-          type="secondary"
-          onClick={() => setActiveTab("screen2")}
-          customClassName="text-lg custom-red-button"
-        />
+        <div className="flex flex-row gap-4 w-full justify-center">
+          <Button
+            text={t("back-button")}
+            type="secondary"
+            onClick={() => setActiveTab("otp")}
+            customClassName="text-lg "
+          />
+          <Button
+            text={t("reset-pass-create-btn")}
+            type="primary"
+            onClick={handleResetSubmit}
+            customClassName="text-2xl "
+          />
+        </div>
       </ScreenContainer>
     );
-  }
+  };
 
-  //! should i keep the 'back' buttons?
   const renderPages = () => {
     switch (activeTab) {
-      case "screen1":
-        return renderScreen1();
-      case "screen2":
-        return renderScreen2();
-      case "screen3":
-        return renderScreen3();
+      case "main":
+        return renderMainScreen();
+      case "otp":
+        return renderOtpScreen();
+      case "reset":
+        return renderResetScreen();
       default:
-        return renderScreen1();
+        return renderMainScreen();
     }
-  }
+  };
 
-  return (
-    <>
-      {renderPages()}
-    </>
-  );
+  return <>{renderPages()}</>;
 };
 
 export default ResetPassword;

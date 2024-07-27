@@ -129,5 +129,23 @@
   "driver-emergency-type": "סוג חירום",
 
   "admin-map-title": "מפה",
-  "admin-new-requests-title": "בקשות חדשות"
+  "admin-new-requests-title": "בקשות חדשות",
+  "reset-pass-title": "איפוס סיסמה",
+  "reset-pass-subtitle": "אנא הזן את האימייל שלך ונשלח קוד OTP לאיפוס הסיסמה שלך.",
+  "reset-pass-button": "המשך",
+  "reset-pass-otp-title": "אימות קוד OTP",
+  "reset-pass-otp-subtitle1": "שלחנו קוד OTP לאימייל שלך",
+  "reset-pass-otp-subtitle2": "הזן את קוד ה-OTP למטה כדי לאמת.",
+  "reset-pass-verify": "אמת",
+  "reset-pass-no-code": "לא קיבלת קוד?",
+  "reset-pass-send-again": "שלח שוב",
+  "reset-pass-create-title": "צור סיסמה חדשה",
+  "reset-pass-create-subtitle": "אנא בחר סיסמה חדשה.",
+  "reset-pass-create-placeholder1": "סיסמה חדשה",
+  "reset-pass-create-placeholder2": "אשר סיסמה חדשה",
+  "reset-pass-create-btn": "צור סיסמה",
+  "error-email-required": "אנא הזן את האימייל שלך!",
+  "error-otp-required": "קוד OTP נדרש!",
+  "error-password-required": "נדרש להזין סיסמה!",
+  "error-password-mismatch": "הסיסמאות אינן תואמות!"
 }

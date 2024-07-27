@@ -48,7 +48,7 @@ export interface SignUpFormData {
 export interface ResetPasswordFormData {
   email: string;
   password: string;
-  resetPassword: string,
+  confirmPassword: string,
 }
 
 export interface SignInFormData {
