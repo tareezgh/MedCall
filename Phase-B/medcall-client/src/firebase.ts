@@ -10,7 +10,7 @@ console.log("🚀 ~ firebaseConfig:", firebaseConfig)
 
 // Initialize Firebase Authentication and get a reference to the service
 const auth = getAuth(app);
-const analytics = getAnalytics(app);
 const googleProvider = new GoogleAuthProvider();
+getAnalytics(app);
 
 export { auth, googleProvider, signInWithPopup };

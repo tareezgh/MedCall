@@ -14,7 +14,8 @@ const UserDashboardContent = ({ setActiveTab }: UserDashboardContentProps) => {
   const { t } = useTranslation();
   const [activeRequest, setActiveRequest] = useState<any>(null); //TODO need to change type when back is ready
   const [status, setStatus] = useState("starting"); // "starting", "active", "completed", "none"
-
+  
+  console.log("🚀 ~ UserDashboardContent ~ activeRequest:", activeRequest)
   const historyMockData = [
     {
       date: "2024-07-01",

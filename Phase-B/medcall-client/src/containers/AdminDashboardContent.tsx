@@ -22,6 +22,7 @@ const AdminDashboardContent = () => {
       emergencyType: "Road Accident",
     },
   ];
+  console.log("🚀 ~ AdminDashboardContent ~ selectedRequest:", selectedRequest)
 
   const renderMap = () => {
     return (
