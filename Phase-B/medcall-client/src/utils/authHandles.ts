@@ -49,6 +49,7 @@ export const handleSignUp = async (
       email: formData.email,
       password: formData.password,
       role: activeTab,
+      isGoogleSignIn: false,
     };
 
     if (activeTab === "driver") {
@@ -94,6 +95,7 @@ export const handleSignIn = async (formData: SignInFormData) => {
     const user = {
       email: formData.email,
       password: formData.password,
+      isGoogleSignIn: false,
     };
 
     // Call loginUser function to send user to backend
@@ -139,7 +141,6 @@ export const decodeToken = (token: string): DecodedToken | null => {
 export const isTokenValid = () => {
   const token = getSessionStorageWithExpiry("token");
   if (token) {
-
     const userData = decodeToken(token);
     if (userData) {
       store.dispatch(setUser(userData));
