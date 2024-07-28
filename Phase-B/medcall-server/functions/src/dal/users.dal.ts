@@ -7,14 +7,15 @@ export class UsersDal {
       const newUser = new Users({
         firstName: user.firstName,
         lastName: user.lastName,
-        phoneNumber: user.phoneNumber,
+        phoneNumber: user.phoneNumber || "",
         email: user.email,
         password: user.password,
-        role: user.role || "User",
+        role: user.role || "user",
         requests: user.requests || [],
         city: user.city,
         address: user.address,
         zipCode: user.zipCode,
+        isGoogleSignIn: user.isGoogleSignIn,
       });
 
       const savedUser = await newUser.save();
@@ -33,16 +34,6 @@ export class UsersDal {
     return data?.password;
   }
 
-  public async getUserData(user: Partial<User>): Promise<User> {
-    const userData = await Users.findOne({
-      email: user.email,
-    });
-    if (!userData) {
-      throw new Error("User not found");
-    }
-    return userData;
-  }
-
   public async checkUser(user: Partial<User>) {
     const data = await Users.findOne({
       email: user.email,
@@ -59,5 +50,57 @@ export class UsersDal {
 
   public findAll(query: any = null) {
     return Users.find(query);
+  }
+
+  public async getUserByEmail(email: string) {
+    try {
+      return await Users.findOne({ email });
+    } catch (error) {
+      console.error("Error fetching user by email:", error);
+      throw error;
+    }
+  }
+
+  public async updateUserPassword(email: string, newPassword: string) {
+    try {
+      const result = await Users.updateOne(
+        { email },
+        { $set: { password: newPassword } }
+      );
+      return result.modifiedCount > 0;
+    } catch (error) {
+      console.error("Error updating password:", error);
+      throw error;
+    }
+  }
+
+  public async saveOtp(email: string, otp: string) {
+    try {
+      const user = await Users.findOne({ email });
+      if (user) {
+        user.otp = otp;
+        user.otpExpiry = new Date(Date.now() + 5 * 60 * 1000); // Set expiry for 5 minutes from now
+        await user.save();
+      }
+    } catch (error) {
+      console.error("Error saving OTP:", error);
+      throw error;
+    }
+  }
+
+  public async verifyOtp(email: string, otp: string) {
+    try {
+      const user = await Users.findOne({ email, otp });
+      if (user && user.otpExpiry && user.otpExpiry > new Date()) {
+        user.otp = null;
+        user.otpExpiry = null;
+        await user.save();
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error("Error verifying OTP:", error);
+      throw error;
+    }
   }
 }

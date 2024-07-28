@@ -38,7 +38,9 @@ const Login = () => {
     }
   };
 
-  const handleForgetPassword = () => {};
+  const handleForgetPassword = () => {
+    navigate("/reset-password");
+  };
 
   const handleSignInClick = async () => {
     const success = await handleSignIn(formData);
@@ -50,8 +52,6 @@ const Login = () => {
       }
     }
   };
-
-  const handleGoogleSignIn = () => {};
 
   return (
     <>
@@ -121,10 +121,7 @@ const Login = () => {
           </div>
           <div className={"flex flex-col gap-6 w-full"}>
             <Divider />
-            <GoogleButton
-              text="Sign in with Google"
-              onClick={handleGoogleSignIn}
-            />
+            <GoogleButton text="Sign in with Google" type="signIn"/>
           </div>
         </div>
       </section>

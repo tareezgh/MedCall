@@ -45,7 +45,6 @@
   "sign-up-nav-to-text": "Sign In",
   "new-request-title": "Necessary Information",
   "new-request-subtitle": "Please provide the following information to request emergency medical assistance",
-  
   "caller-contact-info-title": "Caller's Contact Information:",
   "name-placeholder": "Name",
   "phone-placeholder": "Phone Number",
@@ -57,7 +56,6 @@
   "bleeding-title": "Bleeding (Select one):",
   "pain-level-title": "Pain Level (Select one):",
   "submit-request-button": "Continue",
-  
   "emergency-type-accident": "Accident",
   "emergency-type-injury": "Injury",
   "emergency-type-fire": "Fire",
@@ -70,27 +68,21 @@
   "emergency-type-seizure": "Seizure",
   "emergency-type-overdose_poisoning": "Overdose or Poisoning",
   "emergency-type-other": "Other",
-
   "consciousness-conscious": "Conscious",
   "consciousness-unconscious": "Unconscious",
   "consciousness-unsure": "Unsure",
-
   "breathing-status-breathing_normally": "Breathing Normally",
   "breathing-status-difficulty_breathing": "Difficulty Breathing",
   "breathing-status-not_breathing": "Not Breathing",
   "breathing-status-unsure": "Unsure",
-
   "bleeding-not_bleeding": "Not Bleeding",
   "bleeding-minor_bleeding": "Minor Bleeding",
   "bleeding-severe_bleeding": "Severe Bleeding",
   "bleeding-unsure": "Unsure",
-
   "pain-level-mild": "Mild",
   "pain-level-moderate": "Moderate",
   "pain-level-severe": "Severe",
   "pain-level-unsure": "Unsure",
-  
-
   "optional-info-title": "Optional Information",
   "optional-info-subtitle": "Please provide the following information if you know the patient to assists medical emergency.",
   "optional-info-allergies": "Allergies or Medical Conditions:",
@@ -101,13 +93,61 @@
   "optional-info-activities-placeholder": "Please specify any recent evets or activities that could be relevant to their condition",
   "back-button": "Back",
   "request-ambulance-button": "Request Ambulance",
-
   "one-last-step": "One Last Step",
   "city": "City",
   "address": "Address",
   "zip-code": "Zip Code",
   "attach-license": "Attach Driver License",
-  
+  "welcome": "Welcome",
+  "active-request": {
+    "title": "Active Request",
+    "subtitle": "The ambulance is on its way, you can track its route.",
+    "track-now-button": "Track Now"
+  },
+  "new-request": {
+    "title": "Request New Ambulance",
+    "subtitle": "Request new ambulance for your emergency and save a life",
+    "order-now-button": "Order Now"
+  },
+  "history": {
+    "title": "History"
+  },
+  "driver-new-requests-title": "New Request Near You",
+  "driver-emergency-details-title": "Emergency Details",
+  "driver-no-request-selected": "No request selected",
+  "driver-location": "Location",
+  "driver-emergency-type": "Emergency Type",
+  "admin-map-title": "Map",
+  "admin-new-requests-title": "New Requests",
+  "reset-pass-title": "Reset Your Password",
+  "reset-pass-subtitle": "Please enter your email and we will send an OTP code to reset your password.",
+  "reset-pass-button": "Continue",
+  "reset-pass-otp-title": "OTP code verification",
+  "reset-pass-otp-subtitle1": "We sent an OTP code to your email",
+  "reset-pass-otp-subtitle2": "Enter the OTP code below to verify.",
+  "reset-pass-verify": "Verify",
+  "reset-pass-no-code": " Didn't receive code? ",
+  "reset-pass-send-again": "Send again",
+  "reset-pass-create-title": "Create New Password",
+  "reset-pass-create-subtitle": "Please choose a new password.",
+  "reset-pass-create-placeholder1": "New Password",
+  "reset-pass-create-placeholder2": "Confirm New Password",
+  "reset-pass-create-btn": "Create Password",
+  "error-email-required": "Please enter your email address.",
+  "error-otp-required": "Please enter the OTP code sent to your email.",
+  "error-otp-invalid": "The OTP code you entered is invalid. Please try again.",
+  "error-verifying-otp": "There was an error verifying the OTP code. Please try again.",
+  "error-password-required": "Password is required. Please enter a password.",
+  "error-password-mismatch": "The passwords do not match. Please re-enter your passwords.",
+  "password-reset-success": "Your password has been successfully reset. You can now log in with your new password.",
+  "error-resetting-password": "There was an error resetting your password. Please try again later.",
+
+  "": "",
+  "": "",
+  "": "",
+  "": "",
+  "": "",
+  "": "",
   "": "",
   "": "",
   "": "",

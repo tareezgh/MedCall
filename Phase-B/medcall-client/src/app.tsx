@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import SignUp from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
 import RequestAmbulance from "./pages/RequestAmbulance";
+import ResetPassword from "./pages/ResetPassword";
 import "./app.css";
 
 export function App() {
@@ -28,6 +29,7 @@ export function App() {
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/request-ambulance" element={<RequestAmbulance />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
         </Routes>
         {window.location.pathname !== "/dashboard" && <Footer />}
       </BrowserRouter>

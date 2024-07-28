@@ -84,7 +84,6 @@ const SignUp = () => {
     }
   };
 
-  const handleGoogleSignUp = () => {};
 
   const renderSignUp = () => {
     return (
@@ -242,10 +241,7 @@ const SignUp = () => {
           {!signUpDriverFrom && (
             <div className={"flex flex-col gap-6 w-full"}>
               <Divider />
-              <GoogleButton
-                text="Sign Up with Google"
-                onClick={handleGoogleSignUp}
-              />
+              <GoogleButton text="Sign Up with Google" type="signUp"/>
             </div>
           )}
         </div>

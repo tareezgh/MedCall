@@ -4,14 +4,17 @@ export interface User {
   _id: mongoose.Types.ObjectId;
   firstName: string;
   lastName: string;
-  phoneNumber: string;
+  phoneNumber?: string| null;
   email: string;
-  password: string;
+  password?: string| null;
   role: string;
   city?: string | null;
   address?: string | null;
   zipCode?: string | null;
   requests: mongoose.Types.ObjectId[];
+  isGoogleSignIn: boolean;
+  otp?: string;
+  otpExpiry?: Date;
 }
 
 export interface LoginSuccessResult {

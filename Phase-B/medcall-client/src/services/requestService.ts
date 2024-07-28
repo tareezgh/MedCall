@@ -38,3 +38,16 @@ export const postNewRequest = async (request: AmbulanceRequest) => {
   }
   return true;
 };
+
+
+export const fetchActiveRequest = async () => {
+  // Mock response for illustration purposes
+  return {
+    status: "active", // This can be "active", "completed", "none", etc.
+    request: {
+      date: "2024-07-01",
+      typeOfEmergency: "Cardiac Arrest",
+      location: "123 Main St",
+    },
+  };
+};

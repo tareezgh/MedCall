@@ -1,14 +1,15 @@
 export interface User {
   firstName: string;
   lastName: string;
-  phoneNumber: string;
+  phoneNumber?: string;
   email: string;
-  password: string;
+  password?: string;
   role: string;
   city?: string;
   address?: string;
   zipCode?: string;
   requests?: Array<any>;
+  isGoogleSignIn: boolean;
 }
 
 export interface AmbulanceRequest {
@@ -45,6 +46,12 @@ export interface SignUpFormData {
   zipCode: string;
 }
 
+export interface ResetPasswordFormData {
+  email: string;
+  password: string;
+  confirmPassword: string,
+}
+
 export interface SignInFormData {
   email: string;
   password: string;
@@ -68,3 +75,13 @@ export interface RequestAmbulanceFormData {
   optionalMedications: string;
   optionalActivities: string;
 }
+
+export type TabsTypes =
+  | "dashboard"
+  | "tracking"
+  | "messages"
+  | "profile"
+  | "driverTracking"
+  | "driverRequest"
+  | "adminEdit"
+  | "logout";

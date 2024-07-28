@@ -5,23 +5,65 @@ import { useSelector } from "react-redux";
 
 import Button from "../Button";
 import logo from "../../assets/logo-img.webp";
-import { NotificationIcon, UserIcon } from "../icons";
+import { GlobeIcon, NotificationIcon, UserIcon } from "../icons";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const currentUser = useSelector((state: any) => state.currentUser);
-  const [navbarWidth, setNavbarWidth] = useState("w-5/6 ml-[16.666667%]");
-  console.log("🚀 ~ Navbar ~ currentUser:", currentUser)
+  const [navbarMargin, setNavbarMargin] = useState("ml-64");
+  const [showLanguage, setShowLanguage] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState<string>(
+    localStorage.getItem("selectedLanguage") || "en"
+  );
+  // console.log("🚀 ~ Navbar ~ currentUser:", currentUser);
 
   useEffect(() => {
     if (location.pathname === "/dashboard") {
-      setNavbarWidth("w-5/6 ml-[16.666667%]");
+      setNavbarMargin(getMargin(selectedLanguage));
     } else {
-      setNavbarWidth("w-full");
+      setNavbarMargin("w-full");
     }
-  }, [location.pathname]);
+  }, [location.pathname, selectedLanguage]);
+
+  const getMargin = (language: string) => {
+    return language === "ar" || language === "he" ? "mr-64" : "ml-64";
+  };
+
+  const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newLanguage = (e.target as HTMLSelectElement).value;
+    setSelectedLanguage(newLanguage);
+    i18n.changeLanguage(newLanguage);
+    localStorage.setItem("selectedLanguage", newLanguage);
+    if (newLanguage === "ar" || newLanguage === "he") {
+      document.documentElement.setAttribute("dir", "rtl");
+      document.documentElement.setAttribute("lang", newLanguage);
+    } else {
+      document.documentElement.setAttribute("dir", "ltr");
+      document.documentElement.setAttribute("lang", "en");
+    }
+  };
+
+  const renderLanguageIcon = () => {
+    return (
+      <div className="relative flex justify-center items-center content-center">
+        <GlobeIcon onClick={() => setShowLanguage(!showLanguage)} />
+
+        {showLanguage && (
+          <select
+            className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
+            value={selectedLanguage}
+            onChange={handleLanguageChange}
+          >
+            <option value="en">En</option>
+            <option value="ar">Ar</option>
+            <option value="he">He</option>
+          </select>
+        )}
+      </div>
+    );
+  };
 
   const renderRegularNavbar = () => {
     return (
@@ -34,6 +76,7 @@ const Navbar = () => {
         </div>
 
         <div className="buttons-side flex flex-row gap-3">
+          {renderLanguageIcon()}
           <Button
             text={t("navbar-login-button")}
             type="secondary"
@@ -52,7 +95,7 @@ const Navbar = () => {
   const renderLoggedInNavbar = () => {
     return (
       <nav
-        className={`flex flex-row items-center justify-between  h-20  p-6 border-b custom-border shadow ${navbarWidth} `}
+        className={`flex flex-row items-center justify-between h-20  p-6 border-b custom-border shadow ${navbarMargin} `}
       >
         <div className="flex flex-row gap-4">
           <div
@@ -69,9 +112,9 @@ const Navbar = () => {
           </div>
         </div>
 
-        <div className="buttons-side flex flex-row gap-3">
+        <div className="buttons-side flex flex-row justify-center items-center gap-3">
           <NotificationIcon onClick={() => {}} />
-          {/* //TODO add language icon */}
+          {renderLanguageIcon()}
         </div>
       </nav>
     );

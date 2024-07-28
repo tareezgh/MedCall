@@ -1,8 +1,9 @@
 const apiUrl = import.meta.env.VITE_API_BASE_URL;
-console.log("🚀 ~ apiUrl:", apiUrl);
 
 export const loginUrl = `${apiUrl}/users/login`;
 export const registerUrl = `${apiUrl}/users/register`;
-
+export const requestOtpUrl = `${apiUrl}/users/request-otp`;
+export const verifyOtpUrl = `${apiUrl}/users/verify-otp`;
+export const resetPasswordUrl = `${apiUrl}/users/reset-password`;
 
 export const postRequestUrl = `${apiUrl}/request`;
