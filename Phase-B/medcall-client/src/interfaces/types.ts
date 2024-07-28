@@ -1,14 +1,15 @@
 export interface User {
   firstName: string;
   lastName: string;
-  phoneNumber: string;
+  phoneNumber?: string;
   email: string;
-  password: string;
+  password?: string;
   role: string;
   city?: string;
   address?: string;
   zipCode?: string;
   requests?: Array<any>;
+  isGoogleSignIn: boolean;
 }
 
 export interface AmbulanceRequest {

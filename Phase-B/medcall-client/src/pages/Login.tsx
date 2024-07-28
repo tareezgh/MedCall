@@ -53,8 +53,6 @@ const Login = () => {
     }
   };
 
-  const handleGoogleSignIn = () => {};
-
   return (
     <>
       <section className="h-screen flex justify-center items-center">
@@ -123,10 +121,7 @@ const Login = () => {
           </div>
           <div className={"flex flex-col gap-6 w-full"}>
             <Divider />
-            <GoogleButton
-              text="Sign in with Google"
-              onClick={handleGoogleSignIn}
-            />
+            <GoogleButton text="Sign in with Google" type="signIn"/>
           </div>
         </div>
       </section>

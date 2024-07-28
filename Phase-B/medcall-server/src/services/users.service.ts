@@ -18,16 +18,18 @@ export class UsersService {
     this.usersDal = usersDal;
   }
 
-  public async login(user: Partial<User>): Promise<LoginResult> {
-    const hashedPasswordFromDB = await this.usersDal.getUserPassword(user);
-    if (!hashedPasswordFromDB)
-      return { status: "failure", message: "User doesn't exist!!" };
-    const passwordMatch = await bcrypt.compare(
-      user.password,
-      hashedPasswordFromDB
-    );
-    if (!passwordMatch) {
-      return { status: "failure", message: "Incorrect email or password" };
+  public async login(user: Partial<User> ): Promise<LoginResult> {
+    if(!user.isGoogleSignIn){
+      const hashedPasswordFromDB = await this.usersDal.getUserPassword(user);
+      if (!hashedPasswordFromDB)
+        return { status: "failure", message: "User doesn't exist!!" };
+      const passwordMatch = await bcrypt.compare(
+        user.password,
+        hashedPasswordFromDB
+      );
+      if (!passwordMatch) {
+        return { status: "failure", message: "Incorrect email or password" };
+      }
     }
     const userData = await this.usersDal.getUserByEmail(user.email || "");
     if (!userData) {
@@ -56,8 +58,10 @@ export class UsersService {
     if (isUserExist)
       return { status: "failure", message: "Email already used!" };
 
-    const hashedPassword = await bcrypt.hash(user.password, saltRounds);
-    user.password = hashedPassword;
+    if (!user.isGoogleSignIn) {
+      const hashedPassword = await bcrypt.hash(user.password, saltRounds);
+      user.password = hashedPassword;
+    }
 
     const newUser = await this.usersDal.createUser(user);
     if (!newUser) {
@@ -148,7 +152,7 @@ export class UsersService {
     role: string,
     firstName: string,
     lastName: string,
-    phoneNumber: string
+    phoneNumber?: string | null
   ) {
     const JWT_SECRET = process.env.JWT_SECRET_KEY;
     if (!JWT_SECRET) {

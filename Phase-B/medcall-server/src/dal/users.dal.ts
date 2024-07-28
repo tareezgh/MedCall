@@ -7,7 +7,7 @@ export class UsersDal {
       const newUser = new Users({
         firstName: user.firstName,
         lastName: user.lastName,
-        phoneNumber: user.phoneNumber,
+        phoneNumber: user.phoneNumber || "",
         email: user.email,
         password: user.password,
         role: user.role || "user",
@@ -15,6 +15,7 @@ export class UsersDal {
         city: user.city,
         address: user.address,
         zipCode: user.zipCode,
+        isGoogleSignIn: user.isGoogleSignIn,
       });
 
       const savedUser = await newUser.save();
