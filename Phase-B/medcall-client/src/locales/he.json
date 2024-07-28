@@ -129,5 +129,29 @@
   "driver-emergency-type": "סוג חירום",
 
   "admin-map-title": "מפה",
-  "admin-new-requests-title": "בקשות חדשות"
+  "admin-new-requests-title": "בקשות חדשות",
+  "reset-pass-title": "איפוס סיסמה",
+  "reset-pass-subtitle": "אנא הזן את האימייל שלך ונשלח קוד OTP לאיפוס הסיסמה שלך.",
+  "reset-pass-button": "המשך",
+  "reset-pass-otp-title": "אימות קוד OTP",
+  "reset-pass-otp-subtitle1": "שלחנו קוד OTP לאימייל שלך",
+  "reset-pass-otp-subtitle2": "הזן את קוד ה-OTP למטה כדי לאמת.",
+  "reset-pass-verify": "אמת",
+  "reset-pass-no-code": "לא קיבלת קוד?",
+  "reset-pass-send-again": "שלח שוב",
+  "reset-pass-create-title": "צור סיסמה חדשה",
+  "reset-pass-create-subtitle": "אנא בחר סיסמה חדשה.",
+  "reset-pass-create-placeholder1": "סיסמה חדשה",
+  "reset-pass-create-placeholder2": "אשר סיסמה חדשה",
+  "reset-pass-create-btn": "צור סיסמה",
+  "error-email-required": "נא להזין את המייך שלך.",
+  "error-otp-required": "נא להזין את קוד ה-OTP שנשלח למייל שלך.",
+  "error-otp-invalid": "הקוד שהזנת לא תקין. אנא נסה שוב.",
+  "error-verifying-otp": "אירעה שגיאה במהלך אימות הקוד. אנא נסה שוב.",
+  "error-password-required": "יש להזין סיסמה. נא להכניס סיסמה.",
+  "error-password-mismatch": "הסיסמאות אינן תואמות. נא להזין את הסיסמאות מחדש.",
+  "password-reset-success": "הסיסמה שלך שוחזרה בהצלחה. תוכל כעת להתחבר עם הסיסמה החדשה.",
+  "error-resetting-password": "אירעה שגיאה במהלך שחזור הסיסמה. נא לנסות שוב מאוחר יותר.",
+
+  "": ""
 }

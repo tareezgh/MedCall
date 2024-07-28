@@ -46,6 +46,12 @@ export interface SignUpFormData {
   zipCode: string;
 }
 
+export interface ResetPasswordFormData {
+  email: string;
+  password: string;
+  confirmPassword: string,
+}
+
 export interface SignInFormData {
   email: string;
   password: string;

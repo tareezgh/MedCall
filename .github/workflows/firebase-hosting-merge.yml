@@ -91,10 +91,14 @@ jobs:
         env:
           MONGODB_URL: ${{ secrets.MONGODB_URL }}
           JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+          EMAIL: ${{ secrets.EMAIL }}
+          EMAIL_PASSWORD : ${{ secrets.JWT_EMAIL_PASSWORD }}
         run: |
           mkdir -p Phase-B/medcall-server/functions 
           echo "MONGODB_URL=${MONGODB_URL}" > Phase-B/medcall-server/functions/.env.production
           echo "JWT_SECRET_KEY=${JWT_SECRET_KEY}" >> Phase-B/medcall-server/functions/.env.production
+          echo "EMAIL=${EMAIL}" >> Phase-B/medcall-server/functions/.env.production
+          echo "EMAIL_PASSWORD=${EMAIL_PASSWORD}" >> Phase-B/medcall-server/functions/.env.production
           echo "Created .env.production file with the following content:"
           cat Phase-B/medcall-server/functions/.env.production
 

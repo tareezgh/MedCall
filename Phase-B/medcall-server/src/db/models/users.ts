@@ -13,6 +13,8 @@ const usersSchema = new mongoose.Schema(
     zipCode: { type: String, required: false },
     requests: [{ type: mongoose.Schema.Types.ObjectId, ref: "Request" }],
     isGoogleSignIn: { type: Boolean, required: true },
+    otp: { type: String, required: false },
+    otpExpiry: { type: Date, required: false },
   },
   { timestamps: true }
 );

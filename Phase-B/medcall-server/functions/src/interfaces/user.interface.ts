@@ -13,6 +13,8 @@ export interface User {
   zipCode?: string | null;
   requests: mongoose.Types.ObjectId[];
   isGoogleSignIn: boolean;
+  otp?: string;
+  otpExpiry?: Date;
 }
 
 export interface LoginSuccessResult {
