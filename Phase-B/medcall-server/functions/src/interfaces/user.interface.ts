@@ -12,6 +12,8 @@ export interface User {
   address?: string | null;
   zipCode?: string | null;
   requests: mongoose.Types.ObjectId[];
+  otp?: string;
+  otpExpiry?: Date;
 }
 
 export interface LoginSuccessResult {

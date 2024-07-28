@@ -144,8 +144,14 @@
   "reset-pass-create-placeholder1": "סיסמה חדשה",
   "reset-pass-create-placeholder2": "אשר סיסמה חדשה",
   "reset-pass-create-btn": "צור סיסמה",
-  "error-email-required": "אנא הזן את האימייל שלך!",
-  "error-otp-required": "קוד OTP נדרש!",
-  "error-password-required": "נדרש להזין סיסמה!",
-  "error-password-mismatch": "הסיסמאות אינן תואמות!"
+  "error-email-required": "נא להזין את המייך שלך.",
+  "error-otp-required": "נא להזין את קוד ה-OTP שנשלח למייל שלך.",
+  "error-otp-invalid": "הקוד שהזנת לא תקין. אנא נסה שוב.",
+  "error-verifying-otp": "אירעה שגיאה במהלך אימות הקוד. אנא נסה שוב.",
+  "error-password-required": "יש להזין סיסמה. נא להכניס סיסמה.",
+  "error-password-mismatch": "הסיסמאות אינן תואמות. נא להזין את הסיסמאות מחדש.",
+  "password-reset-success": "הסיסמה שלך שוחזרה בהצלחה. תוכל כעת להתחבר עם הסיסמה החדשה.",
+  "error-resetting-password": "אירעה שגיאה במהלך שחזור הסיסמה. נא לנסות שוב מאוחר יותר.",
+
+  "": ""
 }

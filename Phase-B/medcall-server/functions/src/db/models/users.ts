@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 
-
 const usersSchema = new mongoose.Schema(
   {
     firstName: { type: String, required: true },
@@ -13,6 +12,8 @@ const usersSchema = new mongoose.Schema(
     address: { type: String, required: false },
     zipCode: { type: String, required: false },
     requests: [{ type: mongoose.Schema.Types.ObjectId, ref: "Request" }],
+    otp: { type: String, required: false },
+    otpExpiry: { type: Date, required: false },
   },
   { timestamps: true }
 );

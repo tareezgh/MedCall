@@ -7,6 +7,8 @@ import Input from "../components/Input";
 import OTPInput from "../components/OTPInput";
 import { ResetPasswordFormData } from "../interfaces/types";
 import { MailIcon, EyeIcon, EyeOffIcon, LockIcon } from "../components/icons";
+import { resetPassword, sendOtp, verifyOtp } from "../services/userService";
+import { useNavigate } from "react-router";
 
 type ScreenContainerProps = {
   children: ReactNode;
@@ -33,6 +35,7 @@ const ScreenHeader = ({ title, description }: ScreenHeaderProps) => (
 );
 
 const ResetPassword = () => {
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
@@ -62,7 +65,7 @@ const ResetPassword = () => {
     }
   };
 
-  const handleEmailSubmit = () => {
+  const handleEmailSubmit = async () => {
     if (formData.email.trim() === "") {
       toast.error(t("error-email-required"), {
         position: "top-center",
@@ -71,10 +74,18 @@ const ResetPassword = () => {
 
       return;
     }
-    setActiveTab("otp");
+    try {
+      await sendOtp(formData.email);
+      setActiveTab("otp");
+    } catch (error) {
+      toast.error(t("error-sending-otp"), {
+        position: "top-center",
+        hideProgressBar: true,
+      });
+    }
   };
 
-  const handleOTPSubmit = () => {
+  const handleOTPSubmit = async () => {
     const otpFieldsFilled = otp.every((value) => value.trim() !== "");
     if (!otpFieldsFilled) {
       toast.error(t("error-otp-required"), {
@@ -84,10 +95,28 @@ const ResetPassword = () => {
 
       return;
     }
-    setActiveTab("reset");
+
+    try {
+      const otpCode = otp.join(""); 
+      const isOtpVerified = await verifyOtp(formData.email, otpCode);
+
+      if (isOtpVerified) {
+        setActiveTab("reset");
+      } else {
+        toast.error(t("error-otp-invalid"), {
+          position: "top-center",
+          hideProgressBar: true,
+        });
+      }
+    } catch (error) {
+      toast.error(t("error-verifying-otp"), {
+        position: "top-center",
+        hideProgressBar: true,
+      });
+    }
   };
 
-  const handleResetSubmit = () => {
+  const handleResetSubmit = async () => {
     if (
       formData.password.trim() === "" ||
       formData.confirmPassword.trim() === ""
@@ -106,6 +135,20 @@ const ResetPassword = () => {
         hideProgressBar: true,
       });
       return;
+    }
+
+    try {
+      await resetPassword(formData.email, formData.password);
+      toast.success(t("password-reset-success"), {
+        position: "top-center",
+        hideProgressBar: true,
+      });
+      navigate("/login");
+    } catch (error) {
+      toast.error(t("error-resetting-password"), {
+        position: "top-center",
+        hideProgressBar: true,
+      });
     }
   };
 

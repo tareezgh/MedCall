@@ -34,4 +34,52 @@ export class UsersController {
       return res.status(500).json({ error: "Internal server error" });
     }
   }
+
+  public static async requestOtp(req: Request, res: Response) {
+    try {
+      const { email } = req.body;
+      const service = new UsersService();
+      const result = await service.sendOtp(email);
+      if (result.status === "success") {
+        return res.status(200).json(result);
+      } else {
+        return res.status(400).json(result);
+      }
+    } catch (error) {
+      console.error("Error in requestOtp:", error);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  }
+
+  public static async verifyOtp(req: Request, res: Response) {
+    try {
+      const { email, otp } = req.body;
+      const service = new UsersService();
+      const result = await service.verifyOtp(email, otp);
+      if (result.status === "success") {
+        return res.status(200).json(result);
+      } else {
+        return res.status(400).json(result);
+      }
+    } catch (error) {
+      console.error("Error in verifyOtp:", error);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  }
+
+  public static async resetPassword(req: Request, res: Response) {
+    try {
+      const { email, newPassword } = req.body;
+      const service = new UsersService();
+      const result = await service.resetPassword(email, newPassword);
+      if (result.status === "success") {
+        return res.status(200).json(result);
+      } else {
+        return res.status(400).json(result);
+      }
+    } catch (error) {
+      console.error("Error in resetPassword:", error);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  }
 }
