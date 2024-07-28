@@ -92,7 +92,7 @@ jobs:
           MONGODB_URL: ${{ secrets.MONGODB_URL }}
           JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
           EMAIL: ${{ secrets.EMAIL }}
-          EMAIL_PASSWORD : ${{ secrets.JWT_EMAIL_PASSWORD }}
+          EMAIL_PASSWORD : ${{ secrets.EMAIL_PASSWORD }}
         run: |
           mkdir -p Phase-B/medcall-server/functions 
           echo "MONGODB_URL=${MONGODB_URL}" > Phase-B/medcall-server/functions/.env.production
