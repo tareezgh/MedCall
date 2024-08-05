@@ -7,6 +7,7 @@ import Tracking from "../components/Tracking.tsx";
 import Messages from "../components/Messages.tsx";
 import Profile from "../components/Profile.tsx";
 import { TabsTypes } from "../interfaces/types.ts";
+import UserMessages from "../components/UserMessages.tsx";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -25,7 +26,11 @@ const Dashboard = () => {
       case "tracking":
         return <Tracking />;
       case "messages":
-        return <Messages />;
+        if (currentUser.role == 'driver')
+          return <Messages />;
+        if (currentUser.role == 'user')
+          return <UserMessages />;
+        break;
       case "profile":
         return <Profile />;
       case "driverTracking":

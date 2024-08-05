@@ -1,6 +1,6 @@
 import Button from "./Button";
 import { PhoneIcon } from './icons';
-// messages section for the driver
+// messages section for the user
 const Messages = () => {
 
   const renderLeftSide = () => {
@@ -17,7 +17,7 @@ const Messages = () => {
               onClick={() => { }}
               className="flex flex-col items-center justify-center p-4 w-full bg-white rounded-lg shadow-md hover:bg-gray-200"
             >
-              <h1 className="text-lg font-bold">Avi Cohen</h1>
+              <h1 className="text-lg font-bold">Yosef Levy</h1>
             </button>
           </div>
         </div>
@@ -27,8 +27,8 @@ const Messages = () => {
 
   const renderChatMessage = (message: string, sender: string, time: string) => {
     return (
-      <div className={`flex ${sender === "Avi" ? "justify-end" : "justify-start"} mb-2`}>
-        <div className={`max-w-xs p-2 rounded-lg shadow-md ${sender === "Avi" ? "bg-blue-100" : "bg-gray-100"} flex flex-col`}>
+      <div className={`flex ${sender === "Avi" ? "justify-start" : "justify-end"} mb-2`}>
+        <div className={`max-w-xs p-2 rounded-lg shadow-md ${sender === "Avi" ? "bg-gray-100" : "bg-blue-100"} flex flex-col`}>
           <p className="text-sm text-left">{message}</p>
           <span className="text-xs text-gray-500 self-end">{time}</span>
         </div>
@@ -40,7 +40,7 @@ const Messages = () => {
     return (
       <div className="right-side w-[80%] flex flex-col">
         <Button
-          text="Confrim arrival"
+          text="Request New Ambulance"
           type="primary"
           onClick={() => { }}
           customClassName={"ml-auto p-4 rounded-2xl shadow-md text-xl"}
@@ -48,7 +48,7 @@ const Messages = () => {
         <div className="mt-4 bg-white rounded-lg shadow-md min-h-96 flex flex-col p-4">
           {/* Chat header */}
           <div className="flex items-center justify-between pb-2 border-b border-gray-300">
-            <h2 className="text-xl font-bold">Avi Cohen</h2>
+            <h2 className="text-xl font-bold">Yosef Levy</h2>
             <button className="p-2 bg-gray-200 rounded-full">
               <PhoneIcon />
             </button>
