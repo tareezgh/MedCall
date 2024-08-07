@@ -17,7 +17,7 @@ const Navbar = () => {
   const [selectedLanguage, setSelectedLanguage] = useState<string>(
     localStorage.getItem("selectedLanguage") || "en"
   );
-  // console.log("🚀 ~ Navbar ~ currentUser:", currentUser);
+  console.log("🚀 ~ Navbar ~ currentUser:", currentUser);
 
   useEffect(() => {
     if (location.pathname === "/dashboard") {

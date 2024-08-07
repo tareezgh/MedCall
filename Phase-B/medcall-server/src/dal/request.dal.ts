@@ -45,6 +45,44 @@ export class RequestDal {
     }
   }
 
+  public async getAllRequests() {
+    try {
+      const requests = await Request.find({ status: { $ne: "completed" } }).populate(
+        "userId",
+        "firstName lastName phoneNumber"
+      );
+      return requests;
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  }
+
+  public async getRequestsByUserId(userId: string) {
+    try {
+      const query = userId ? { userId } : {};
+      const requests = await Request.find(query).populate('userId', 'firstName lastName phoneNumber');
+      return requests;
+
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  }
+  public async updateRequest(requestId: string, updateData: Partial<IRequest>) {
+    try {
+      const updatedRequest = await Request.findByIdAndUpdate(
+        requestId,
+        { $set: updateData },
+        { new: true, runValidators: true } 
+      );
+      return updatedRequest;
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  }
+
   public findAll(query: any = null) {
     return Request.find(query);
   }

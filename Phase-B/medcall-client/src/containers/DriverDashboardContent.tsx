@@ -1,28 +1,29 @@
-import { useState } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 import { useTranslation } from "react-i18next";
 import NewRequestItem from "../components/NewRequestItem";
+import { getAllRequests } from "../services/requestService";
+import { capitalizeFirstLetter } from "../utils/helpers";
 
 const DriverDashboardContent = () => {
   const { t } = useTranslation();
   const [selectedRequest, setSelectedRequest] = useState<any>(null);
+  const [requests, setRequests] = useState<any[]>([]);
 
-  const mockRequests = [
-    {
-      id: 1,
-      location: "123 Main St",
-      emergencyType: "Cardiac Arrest",
-    },
-    {
-      id: 2,
-      location: "456 Elm St",
-      emergencyType: "Severe Bleeding",
-    },
-    {
-      id: 3,
-      location: "789 Pine St",
-      emergencyType: "Road Accident",
-    },
-  ];
+  useEffect(() => {
+    const fetchAllRequests = async () => {
+      try {
+        const requests = await getAllRequests();
+        console.log("🚀 ~ fetchAllRequests ~ requests:", requests);
+        if (requests) {
+          setRequests(requests);
+        }
+      } catch (error) {
+        console.error("Failed to fetch requests:", error);
+      }
+    };
+
+    fetchAllRequests();
+  }, []);
 
   const renderNewRequests = () => {
     return (
@@ -33,11 +34,11 @@ const DriverDashboardContent = () => {
           </h2>
 
           <div className="flex flex-col gap-4 w-full">
-            {mockRequests.map((request) => (
+            {requests.map((request) => (
               <NewRequestItem
                 key={request.id}
-                location={request.location}
-                typeOfEmergency={request.emergencyType}
+                location={request.location.address}
+                typeOfEmergency={capitalizeFirstLetter(request.emergencyType)}
                 onClick={() => setSelectedRequest(request)}
               />
             ))}
@@ -65,16 +66,20 @@ const DriverDashboardContent = () => {
           <h2 className="text-3xl font-bold">
             {t("driver-emergency-details-title")}
           </h2>
-          <div className="flex flex-col gap-4">
-            <p>
-              <strong>{t("driver-location")}:</strong>{" "}
-              {selectedRequest.location}
-            </p>
-            <p>
-              <strong>{t("driver-emergency-type")}:</strong>{" "}
-              {selectedRequest.emergencyType}
-            </p>
-          </div>
+          {selectedRequest ? (
+            <div className="flex flex-col gap-4">
+              <p>
+                <strong>{t("driver-location")}:</strong>{" "}
+                {selectedRequest.location.address}
+              </p>
+              <p>
+                <strong>{t("driver-emergency-type")}:</strong>{" "}
+                {capitalizeFirstLetter(selectedRequest.emergencyType)}
+              </p>
+            </div>
+          ) : (
+            <p>{t("driver-no-request-selected")}</p>
+          )}
         </div>
       </>
     );

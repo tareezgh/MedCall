@@ -3,8 +3,10 @@ import { useTranslation } from "react-i18next";
 import Button from "../components/Button";
 import HistoryItem from "../components/HistoryItem";
 import { PlusIcon } from "../components/icons";
-import { fetchActiveRequest } from "../services/requestService";
+import { fetchActiveRequest, getRequestById } from "../services/requestService";
 import { TabsTypes } from "../interfaces/types";
+import { useSelector } from "react-redux";
+import { capitalizeFirstLetter } from "../utils/helpers";
 
 interface UserDashboardContentProps {
   setActiveTab: (tab: TabsTypes) => void;
@@ -14,25 +16,11 @@ const UserDashboardContent = ({ setActiveTab }: UserDashboardContentProps) => {
   const { t } = useTranslation();
   const [activeRequest, setActiveRequest] = useState<any>(null); //TODO need to change type when back is ready
   const [status, setStatus] = useState("starting"); // "starting", "active", "completed", "none"
+  const [userRequests, setUserRequests] = useState<any[]>([]);
+
+  const currentUser = useSelector((state: any) => state.currentUser);
   
   console.log("🚀 ~ UserDashboardContent ~ activeRequest:", activeRequest)
-  const historyMockData = [
-    {
-      date: "2024-07-01",
-      typeOfEmergency: "Cardiac Arrest",
-      location: "123 Main St",
-    },
-    {
-      date: "2024-06-28",
-      typeOfEmergency: "Severe Bleeding",
-      location: "456 Elm St",
-    },
-    {
-      date: "2024-06-25",
-      typeOfEmergency: "Road Accident",
-      location: "789 Pine St",
-    },
-  ];
 
   useEffect(() => {
     const getActiveRequest = async () => {
@@ -47,7 +35,21 @@ const UserDashboardContent = ({ setActiveTab }: UserDashboardContentProps) => {
         setStatus("error");
       }
     };
+
+    const fetchUserRequests = async () => {
+      try {
+        const requests = await getRequestById(currentUser.id);
+        console.log("🚀 ~ fetchUserRequests ~ requests:", requests)
+        if (requests) {
+          setUserRequests(requests);
+        }
+      } catch (error) {
+        console.error("Failed to fetch user requests:", error);
+      }
+    };
+    
     getActiveRequest();
+    fetchUserRequests();
   }, []);
 
   const renderActiveRequest = () => {
@@ -97,12 +99,12 @@ const UserDashboardContent = ({ setActiveTab }: UserDashboardContentProps) => {
         <div className="flex flex-col justify-start text-start gap-8 p-6 bg-modalBackground rounded-2xl w-full h-fit shadow-xl">
           <h2 className="text-3xl font-bold">{t("history.title")}</h2>
           <div className="flex flex-col gap-4">
-            {historyMockData.map((item, index) => (
+            {userRequests.map((request, index) => (
               <HistoryItem
                 key={index}
-                date={item.date}
-                typeOfEmergency={item.typeOfEmergency}
-                location={item.location}
+                date={new Date(request.createdAt).toLocaleDateString()}
+                typeOfEmergency={capitalizeFirstLetter(request.emergencyType)}
+                location={request.location.address}
               />
             ))}
           </div>

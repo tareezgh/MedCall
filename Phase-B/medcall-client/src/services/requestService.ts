@@ -1,6 +1,6 @@
 import axios from "axios";
 import { toast } from "react-toastify";
-import { postRequestUrl } from "./constants";
+import { requestUrl } from "./constants";
 import { AmbulanceRequest } from "../interfaces/types";
 
 export const postNewRequest = async (request: AmbulanceRequest) => {
@@ -26,7 +26,7 @@ export const postNewRequest = async (request: AmbulanceRequest) => {
     optionalActivities: request.optionalActivities,
   };
 
-  const response = await axios.post(postRequestUrl, args);
+  const response = await axios.post(requestUrl, args);
   console.log("🚀 ~ postNewRequest ~ response:", response);
 
   if (response.data.status === "failure") {
@@ -39,6 +39,36 @@ export const postNewRequest = async (request: AmbulanceRequest) => {
   return true;
 };
 
+export const getAllRequests = async () => {
+  const response = await axios.get(requestUrl);
+  console.log("🚀 ~ getAllRequest ~ response:", response);
+
+  if (response.data.status === "failure") {
+    toast.error(response.data.message, {
+      position: "bottom-center",
+      hideProgressBar: true,
+    });
+    return null;
+  }
+
+  return response.data;
+};
+
+export const getRequestById = async (userId: string) => {
+  const response = await axios.get(`${requestUrl}/${userId}`);
+  console.log("🚀 ~ getRequestById ~ response:", response);
+
+  if (response.data.status === "failure") {
+    toast.error(response.data.message, {
+      position: "bottom-center",
+      hideProgressBar: true,
+    });
+    return null;
+  }
+
+  return response.data;
+
+};
 
 export const fetchActiveRequest = async () => {
   // Mock response for illustration purposes
