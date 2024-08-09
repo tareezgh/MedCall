@@ -66,20 +66,20 @@ const DriverDashboardContent = () => {
           <h2 className="text-3xl font-bold">
             {t("driver-emergency-details-title")}
           </h2>
-          {selectedRequest ? (
-            <div className="flex flex-col gap-4">
-              <p>
-                <strong>{t("driver-location")}:</strong>{" "}
-                {selectedRequest.location.address}
-              </p>
-              <p>
-                <strong>{t("driver-emergency-type")}:</strong>{" "}
-                {capitalizeFirstLetter(selectedRequest.emergencyType)}
-              </p>
-            </div>
-          ) : (
-            <p>{t("driver-no-request-selected")}</p>
-          )}
+          <div className="flex flex-col gap-4">
+            <p>
+              <strong>{t("driver-location")}:</strong>{" "}
+              {selectedRequest.location.address}
+            </p>
+            <p>
+              <strong>{t("driver-emergency-type")}:</strong>{" "}
+              {capitalizeFirstLetter(selectedRequest.emergencyType)}
+            </p>
+            <p>
+              <strong>{t("driver-emergency-type")}:</strong>{" "}
+              {capitalizeFirstLetter(selectedRequest.bleeding)}
+            </p>
+          </div>
         </div>
       </>
     );
