@@ -133,7 +133,7 @@ const RequestAmbulance = () => {
             />
           </div>
           <TabsSelection
-            title={t("emergency-type-title")}
+            title={t("emergency-type-title")+t("select-one")}
             tabs={emergencyTypeTabs}
             activeTab={tabsState.emergencyType}
             setActiveTab={(value) => handleTabChange("emergencyType", value)}
@@ -141,28 +141,28 @@ const RequestAmbulance = () => {
             customClassName="flex-wrap"
           />
           <TabsSelection
-            title={t("consciousness-title")}
+            title={t("consciousness-title")+t("select-one")}
             tabs={consciousnessTabs}
             activeTab={tabsState.consciousness}
             setActiveTab={(value) => handleTabChange("consciousness", value)}
             prefix="consciousness"
           />
           <TabsSelection
-            title={t("breathing-status-title")}
+            title={t("breathing-status-title")+t("select-one")}
             tabs={breathingStatusTabs}
             activeTab={tabsState.breathingStatus}
             setActiveTab={(value) => handleTabChange("breathingStatus", value)}
             prefix="breathing-status"
           />
           <TabsSelection
-            title={t("bleeding-title")}
+            title={t("bleeding-title")+t("select-one")}
             tabs={bleedingTabs}
             activeTab={tabsState.bleeding}
             setActiveTab={(value) => handleTabChange("bleeding", value)}
             prefix="bleeding"
           />
           <TabsSelection
-            title={t("pain-level-title")}
+            title={t("pain-level-title")+t("select-one")}
             tabs={painLevelTabs}
             activeTab={tabsState.painLevel}
             setActiveTab={(value) => handleTabChange("painLevel", value)}
