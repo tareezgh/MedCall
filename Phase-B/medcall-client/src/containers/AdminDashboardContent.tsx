@@ -35,14 +35,14 @@ const AdminDashboardContent = () => {
     longitude: request.location.long,
     popUp: capitalizeFirstLetter(request.emergencyType),
   }));
-  console.log("🚀 ~ markers ~ markers:", markers)
+  console.log("🚀 ~ markers ~ markers:", markers);
 
   const renderMap = () => {
     return (
       <>
         <div className="flex flex-col justify-start items-start text-start gap-6 p-6 bg-modalBackground rounded-2xl w-full h-screen shadow-xl">
           <h2 className="text-xl font-bold">{t("admin-map-title")}</h2>
-          <MapComponent markers={markers}/>
+          <MapComponent markers={markers} />
         </div>
       </>
     );

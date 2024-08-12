@@ -19,10 +19,10 @@ const NewRequestItem = ({ typeOfEmergency, location, onClick }: NewRequestItemPr
             width={20}
             height={20} />
         </div>
-        <h3 className="text-sm font-semibold text-blue-950">{location ? location : "temp_location"}</h3>
+        <h3 className="text-sm font-semibold text-secondary500">{location ? location : "temp_location"}</h3>
       </div>
       <div className="flex gap-2">
-        <span className="text-sm px-3 py-1 rounded-full bg-blue-950 text-white">
+        <span className="text-sm px-3 py-1 rounded-full bg-secondary500 text-white">
           {typeOfEmergency}
         </span>
         {/* Add condition for "Urgent" tag if necessary */}

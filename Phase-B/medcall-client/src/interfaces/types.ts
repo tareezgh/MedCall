@@ -13,6 +13,7 @@ export interface User {
 }
 
 export interface AmbulanceRequest {
+  requestId: string | null; // Allow null for anonymous users
   userId: string | null; // Allow null for anonymous users
   location: {
     address?: string;
