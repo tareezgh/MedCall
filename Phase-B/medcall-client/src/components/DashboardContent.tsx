@@ -4,6 +4,8 @@ import UserDashboardContent from "../containers/UserDashboardContent";
 import AdminDashboardContent from "../containers/AdminDashboardContent";
 import DriverDashboardContent from "../containers/DriverDashboardContent";
 import { TabsTypes } from "../interfaces/types";
+import { useEffect, useState } from "preact/hooks";
+import { handleGetLocation } from "../utils/geolocationUtils";
 
 interface DashboardContentProps {
   setActiveTab: (tab: TabsTypes) => void;
@@ -12,6 +14,17 @@ interface DashboardContentProps {
 const DashboardContent = ({ setActiveTab }: DashboardContentProps) => {
   const { t } = useTranslation();
   const currentUser = useSelector((state: any) => state.currentUser);
+  const [driverLocation, setDriverLocation] = useState("");
+  useEffect(() => {
+    const getDriverLocation = async () => {
+      const address = await handleGetLocation(true);
+      if (address) {
+        setDriverLocation(address);
+      }
+    };
+
+    getDriverLocation();
+  }, []);
 
   const renderContent = () => {
     switch (currentUser.role) {
@@ -29,9 +42,14 @@ const DashboardContent = ({ setActiveTab }: DashboardContentProps) => {
   return (
     <>
       <div className="flex flex-col items-start w-full gap-4">
-        <h1 className="text-4xl w-full text-start">
-          {t("welcome")} {`${currentUser.firstName}`}
-        </h1>
+        <div className="flex flex-row items-start justify-between text-center w-full ">
+          <h1 className="text-4xl w-full text-start">
+            {t("welcome")} {`${currentUser.firstName}`}
+          </h1>
+          {currentUser.role === "driver" && (
+            <div className={"w-fit whitespace-nowrap"}>{driverLocation}</div>
+          )}
+        </div>
         <div className="flex flex-row gap-4 w-full h-full">
           {renderContent()}
         </div>

@@ -1,7 +1,10 @@
-import { useEffect, useState } from "preact/hooks";
+import { useEffect, useMemo, useState } from "preact/hooks";
 import { useTranslation } from "react-i18next";
 import NewRequestItem from "../components/NewRequestItem";
-import { getAllRequests } from "../services/requestService";
+import {
+  getAllRequests,
+  updateRequestStatus,
+} from "../services/requestService";
 import { capitalizeFirstLetter, haversineDistance } from "../utils/helpers";
 import Button from "../components/Button";
 import MapComponent from "../components/Map";
@@ -12,9 +15,8 @@ const DriverDashboardContent = () => {
   const [selectedRequest, setSelectedRequest] =
     useState<AmbulanceRequest | null>(null);
   const [requests, setRequests] = useState<AmbulanceRequest[]>([]);
-  const [nearestRequests, setNearestRequests] = useState<AmbulanceRequest[]>(
-    []
-  );
+  const [driverLocation, setDriverLocation] =
+    useState<GeolocationCoordinates | null>(null);
 
   useEffect(() => {
     const fetchAllRequests = async () => {
@@ -31,109 +33,124 @@ const DriverDashboardContent = () => {
     };
 
     fetchAllRequests();
-  }, []); // Empty dependency array ensures this runs only once on mount
+  }, []);
 
   useEffect(() => {
-    const calculateNearestRequests = async () => {
-      if (requests.length === 0) return; // Ensure requests are available
+    const getDriverLocation = async () => {
+      const position = await new Promise<GeolocationCoordinates>(
+        (resolve, reject) => {
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+              (position) => resolve(position.coords),
+              (error) => reject(error)
+            );
+          } else {
+            reject(new Error("Geolocation not supported"));
+          }
+        }
+      );
 
-      try {
-        const driverCoords = await getDriverLocation();
-        const driverLat = driverCoords.latitude;
-        const driverLon = driverCoords.longitude;
-
-        const distances = requests.map((request) => {
-          const requestLat = request.location.lat;
-          const requestLon = request.location.long;
-          return {
-            ...request,
-            distance: haversineDistance(
-              driverLat,
-              driverLon,
-              requestLat,
-              requestLon
-            ),
-          };
-        });
-
-        distances.sort((a, b) => a.distance - b.distance);
-        console.log("🚀 ~ calculateNearestRequests ~ distances:", distances);
-
-        setNearestRequests(distances);
-      } catch (error) {
-        console.error("Failed to get driver location:", error);
-      }
+      setDriverLocation(position);
     };
 
-    calculateNearestRequests();
-  }, [requests]);
+    getDriverLocation();
+  }, []);
 
-  const getDriverLocation = async () => {
-    return new Promise<GeolocationCoordinates>((resolve, reject) => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => resolve(position.coords),
-          (error) => reject(error)
-        );
-      } else {
-        reject(new Error("Geolocation not supported"));
-      }
-    });
-  };
+  const nearestRequests = useMemo(() => {
+    if (!driverLocation || requests.length === 0) return [];
 
-  const details = [
-    {
-      label: t("driver-emergency-type"),
-      value: capitalizeFirstLetter(selectedRequest?.emergencyType || ""),
-      isBadge: true,
-    },
-    {
-      label: t("patient-age-title"),
-      value: selectedRequest?.patientAge ?? "-",
-    },
-    {
-      label: t("consciousness-title"),
-      value: capitalizeFirstLetter(selectedRequest?.consciousness || ""),
-    },
-    {
-      label: t("breathing-status-title"),
-      value: capitalizeFirstLetter(
-        selectedRequest?.breathingStatus.replace(/_/g, " ") || ""
-      ),
-    },
-    {
-      label: t("bleeding-title"),
-      value: capitalizeFirstLetter(
-        selectedRequest?.bleeding.replace(/_/g, " ") || ""
-      ),
-    },
-    {
-      label: t("pain-level-title"),
-      value: capitalizeFirstLetter(selectedRequest?.painLevel || ""),
-    },
-    {
-      label: t("optional-info-allergies"),
-      value: selectedRequest?.optionalAllergies || "-",
-    },
-    {
-      label: t("optional-info-medications"),
-      value: selectedRequest?.optionalMedications || "-",
-    },
-    {
-      label: t("optional-info-activities"),
-      value: selectedRequest?.optionalActivities || "-",
-    },
-  ];
+    const { latitude: driverLat, longitude: driverLon } = driverLocation;
 
-  const markers = selectedRequest
-    ? [
-        {
-          latitude: selectedRequest.location.lat,
-          longitude: selectedRequest.location.long,
-          popUp: capitalizeFirstLetter(selectedRequest.emergencyType),
-        },
-      ]
-    : [];
+    return requests
+      .map((request) => {
+        const requestLat = request.location.lat;
+        const requestLon = request.location.long;
+        return {
+          ...request,
+          distance: haversineDistance(
+            driverLat,
+            driverLon,
+            requestLat,
+            requestLon
+          ),
+        };
+      })
+      .sort((a, b) => a.distance - b.distance);
+  }, [driverLocation, requests]);
+
+  useEffect(() => {
+    if (nearestRequests.length > 0) {
+      setSelectedRequest(nearestRequests[0]);
+    }
+  }, [nearestRequests]);
+
+  const details = useMemo(
+    () => [
+      {
+        label: t("driver-emergency-type"),
+        value: capitalizeFirstLetter(selectedRequest?.emergencyType || ""),
+        isBadge: true,
+      },
+      {
+        label: t("patient-age-title"),
+        value: selectedRequest?.patientAge ?? "-",
+      },
+      {
+        label: t("consciousness-title"),
+        value: capitalizeFirstLetter(selectedRequest?.consciousness || ""),
+      },
+      {
+        label: t("breathing-status-title"),
+        value: capitalizeFirstLetter(
+          selectedRequest?.breathingStatus.replace(/_/g, " ") || ""
+        ),
+      },
+      {
+        label: t("bleeding-title"),
+        value: capitalizeFirstLetter(
+          selectedRequest?.bleeding.replace(/_/g, " ") || ""
+        ),
+      },
+      {
+        label: t("pain-level-title"),
+        value: capitalizeFirstLetter(selectedRequest?.painLevel || ""),
+      },
+      {
+        label: t("optional-info-allergies"),
+        value: selectedRequest?.optionalAllergies || "-",
+      },
+      {
+        label: t("optional-info-medications"),
+        value: selectedRequest?.optionalMedications || "-",
+      },
+      {
+        label: t("optional-info-activities"),
+        value: selectedRequest?.optionalActivities || "-",
+      },
+    ],
+    [selectedRequest, t]
+  );
+
+  const markers = useMemo(
+    () =>
+      selectedRequest
+        ? [
+            {
+              latitude: selectedRequest.location.lat,
+              longitude: selectedRequest.location.long,
+              popUp: capitalizeFirstLetter(selectedRequest.emergencyType),
+            },
+          ]
+        : [],
+    [selectedRequest]
+  );
+
+  useEffect(() => {
+    console.log(
+      "🚀 ~ DriverDashboardContent ~ selectedRequest:",
+      selectedRequest
+    );
+  }, [selectedRequest]);
 
   console.log("🚀 ~ markers ~ markers:", markers);
 
@@ -142,7 +159,11 @@ const DriverDashboardContent = () => {
       <>
         <div className="flex flex-col justify-start items-start text-start gap-6 p-6 bg-modalBackground rounded-2xl w-full min-h-80 shadow-2xl">
           <h2 className="text-xl font-bold">{t("admin-map-title")}</h2>
-          <MapComponent markers={markers} />
+          <MapComponent
+            markers={markers}
+            latitude={selectedRequest?.location.lat || 0}
+            longitude={selectedRequest?.location.long || 0}
+          />
         </div>
       </>
     );
@@ -157,7 +178,7 @@ const DriverDashboardContent = () => {
         <div className="flex flex-col gap-4 w-full">
           {nearestRequests.map((request) => (
             <NewRequestItem
-              key={request.requestId}
+              key={request._id}
               location={request.location.address!}
               typeOfEmergency={capitalizeFirstLetter(request.emergencyType)}
               onClick={() => {
@@ -217,7 +238,7 @@ const DriverDashboardContent = () => {
             <Button
               text={t("accept-request")}
               type="primary"
-              onClick={() => {}}
+              onClick={() => updateRequestStatus(selectedRequest._id)}
               customClassName="text-lg"
             />
           </div>

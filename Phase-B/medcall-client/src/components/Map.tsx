@@ -11,19 +11,30 @@ interface MarkerProps {
 
 interface MapComponentProps {
   markers: MarkerProps[];
+  latitude?: number;
+  longitude?: number;
 }
 
-const MapComponent = ({ markers }: MapComponentProps) => {
+const MapComponent = ({
+  markers,
+  latitude = 32.06823723362243,
+  longitude = 34.783579881141655,
+}: MapComponentProps) => {
   const customIcon = new Icon({
     iconUrl: logoIcon,
     iconSize: [45, 45], // size of the icon
   });
 
+  const validLatitude =
+    latitude >= -90 && latitude <= 90 ? latitude : 32.06823723362243;
+  const validLongitude =
+    longitude >= -180 && longitude <= 180 ? longitude : 34.783579881141655;
+
   return (
     <>
       <MapContainer
-        center={[32.06823723362243, 34.783579881141655]}
-        zoom={16}
+        center={[validLatitude, validLongitude]}
+        zoom={15}
         style={{ height: "100%", width: "100%" }}
         className="rounded-lg"
       >
@@ -34,7 +45,7 @@ const MapComponent = ({ markers }: MapComponentProps) => {
 
         <TileLayer
           attribution="Google Maps"
-          url="http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}" 
+          url="http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}"
           maxZoom={20}
           subdomains={["mt0", "mt1", "mt2", "mt3"]}
         />

@@ -7,4 +7,4 @@ export const verifyOtpUrl = `${apiUrl}/users/verify-otp`;
 export const resetPasswordUrl = `${apiUrl}/users/reset-password`;
 
 export const requestUrl = `${apiUrl}/request`;
-export const updateRequestUrl = `${apiUrl}/request`;
+export const updateRequestUrl = `${apiUrl}/request/update`;
