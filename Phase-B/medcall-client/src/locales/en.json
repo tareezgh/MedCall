@@ -145,12 +145,22 @@
 
   "accept-request": "Accept Request",
   "decline-request": "Decline",
+  "approve": "Approve",
   "edit-profile": "Edit Profile",
+  "drivers-requests-title": "Drivers Requests",
+  "edit-drivers-title": "Edit Drivers",
+  "save-button": "Save",
+  "full-name": "Full Name",
+  "phone": "Phone",
+  "driver-license": "Driver License",
+  "action": "Action",
   "": "",
   "": "",
   "": "",
   "": "",
   "": "",
   "": "",
+  "": "",
+
   "": ""
 }

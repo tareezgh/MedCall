@@ -7,6 +7,8 @@ import Tracking from "../components/Tracking.tsx";
 import Messages from "../components/Messages.tsx";
 import Profile from "../components/Profile.tsx";
 import { TabsTypes } from "../interfaces/types.ts";
+import AdminEdit from "../components/AdminEdit.tsx";
+import DriverRequest from "../components/DriverRequest.tsx";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -31,9 +33,9 @@ const Dashboard = () => {
       case "driverTracking":
         return <Tracking />;
       case "driverRequest":
-        return;
+        return <DriverRequest/>
       case "adminEdit":
-        return;
+        return <AdminEdit />;
       default:
         return <DashboardContent setActiveTab={setActiveTab} />;
     }
