@@ -4,22 +4,28 @@ interface NewRequestItemProps {
   typeOfEmergency: string;
   location: string;
   onClick: () => void;
+  distance?: string;
 }
 
-const NewRequestItem = ({ typeOfEmergency, location, onClick }: NewRequestItemProps) => {
+const NewRequestItem = ({
+  typeOfEmergency,
+  location,
+  distance,
+  onClick,
+}: NewRequestItemProps) => {
   return (
     <button
       onClick={onClick}
       className="flex items-center justify-between p-4 bg-white rounded-lg shadow-md hover:bg-gray-100 w-full"
-
     >
       <div className="flex items-center gap-2">
         <div className="bg-slate-300 py-1 px-1 rounded-2xl">
-          <AddressIcon
-            width={20}
-            height={20} />
+          <AddressIcon width={20} height={20} />
         </div>
-        <h3 className="text-sm font-semibold text-secondary500">{location ? location : "temp_location"}</h3>
+        <h3 className="text-sm font-semibold text-secondary500">
+          {location ? location : "temp_location"}
+        </h3>
+        <span className="text-sm font-bold text-secondary500">{distance}</span>
       </div>
       <div className="flex gap-2">
         <span className="text-sm px-3 py-1 rounded-full bg-secondary500 text-white">

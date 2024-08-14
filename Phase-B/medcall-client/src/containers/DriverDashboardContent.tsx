@@ -9,14 +9,17 @@ import { capitalizeFirstLetter, haversineDistance } from "../utils/helpers";
 import Button from "../components/Button";
 import MapComponent from "../components/Map";
 import { AmbulanceRequest } from "../interfaces/types";
+import { useSelector } from "react-redux";
 
 const DriverDashboardContent = () => {
   const { t } = useTranslation();
+  const currentUser = useSelector((state: any) => state.currentUser);
   const [selectedRequest, setSelectedRequest] =
     useState<AmbulanceRequest | null>(null);
   const [requests, setRequests] = useState<AmbulanceRequest[]>([]);
   const [driverLocation, setDriverLocation] =
     useState<GeolocationCoordinates | null>(null);
+  const [declinedRequests, setDeclinedRequests] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchAllRequests = async () => {
@@ -62,6 +65,7 @@ const DriverDashboardContent = () => {
     const { latitude: driverLat, longitude: driverLon } = driverLocation;
 
     return requests
+      .filter((request) => !declinedRequests.includes(request._id))
       .map((request) => {
         const requestLat = request.location.lat;
         const requestLon = request.location.long;
@@ -76,7 +80,15 @@ const DriverDashboardContent = () => {
         };
       })
       .sort((a, b) => a.distance - b.distance);
-  }, [driverLocation, requests]);
+  }, [driverLocation, requests, declinedRequests]);
+  console.log("🚀 ~ nearestRequests ~ nearestRequests:", nearestRequests);
+
+  const handleDeclineRequest = () => {
+    if (selectedRequest) {
+      setDeclinedRequests((prev) => [...prev, selectedRequest._id]); // Add the declined request's ID to the state
+      setSelectedRequest(null); // Optionally, clear the selected request
+    }
+  };
 
   useEffect(() => {
     if (nearestRequests.length > 0) {
@@ -181,6 +193,7 @@ const DriverDashboardContent = () => {
               key={request._id}
               location={request.location.address!}
               typeOfEmergency={capitalizeFirstLetter(request.emergencyType)}
+              distance={`${request.distance.toFixed(2)} km`}
               onClick={() => {
                 setSelectedRequest(request);
               }}
@@ -232,13 +245,19 @@ const DriverDashboardContent = () => {
             <Button
               text={t("decline-request")}
               type="secondary"
-              onClick={() => {}}
+              onClick={handleDeclineRequest}
               customClassName="text-lg hover:bg-slate-500"
             />
             <Button
               text={t("accept-request")}
               type="primary"
-              onClick={() => updateRequestStatus(selectedRequest._id)}
+              onClick={() =>
+                updateRequestStatus(
+                  selectedRequest._id,
+                  "active",
+                  `${currentUser.id}_${currentUser.firstName}`
+                )
+              }
               customClassName="text-lg"
             />
           </div>
@@ -250,11 +269,11 @@ const DriverDashboardContent = () => {
   return (
     <>
       {/* left side */}
-      <div className="left-side flex flex-col gap-4 w-[30%]">
+      <div className="left-side flex flex-col gap-4 w-[40%]">
         {renderNewRequests()}
       </div>
       {/* right side */}
-      <div className="right-side w-[70%]">{renderEmergencyDetails()}</div>
+      <div className="right-side w-[60%]">{renderEmergencyDetails()}</div>
     </>
   );
 };

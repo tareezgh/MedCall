@@ -1,23 +1,25 @@
-import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import Button from "./Button";
-import {
-  getActiveRequest,
-  updateRequestStatus,
-} from "../services/requestService";
 import { useEffect, useMemo, useState } from "preact/hooks";
-import { AmbulanceRequest } from "../interfaces/types";
-import LocationItem from "./LocationItem";
-import { AddressIcon, ChatIcon } from "./icons";
-import MapComponent from "./Map";
+import { useTranslation } from "react-i18next";
+
+import { getActiveRequest, getAllRequests } from "../services/requestService";
 import { capitalizeFirstLetter } from "../utils/helpers";
 
-const Tracking = () => {
+import MapComponent from "../components/Map";
+import { AmbulanceRequest } from "../interfaces/types";
+import { useSelector } from "react-redux";
+import LocationItem from "../components/LocationItem";
+import { AddressIcon, ChatIcon } from "../components/icons";
+
+const DriverTrackContent = () => {
   const { t } = useTranslation();
   const currentUser = useSelector((state: any) => state.currentUser);
   const [activeRequest, setActiveRequest] = useState<AmbulanceRequest | null>(
     null
   );
+
+  const [driverLocation, setDriverLocation] =
+    useState<GeolocationCoordinates | null>(null);
+
   useEffect(() => {
     const fetchActiveRequest = async () => {
       try {
@@ -35,6 +37,27 @@ const Tracking = () => {
     fetchActiveRequest();
   }, []);
 
+  useEffect(() => {
+    const getDriverLocation = async () => {
+      const position = await new Promise<GeolocationCoordinates>(
+        (resolve, reject) => {
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+              (position) => resolve(position.coords),
+              (error) => reject(error)
+            );
+          } else {
+            reject(new Error("Geolocation not supported"));
+          }
+        }
+      );
+
+      setDriverLocation(position);
+    };
+
+    getDriverLocation();
+  }, []);
+
   const markers = useMemo(
     () =>
       activeRequest
@@ -48,6 +71,12 @@ const Tracking = () => {
         : [],
     [activeRequest]
   );
+
+  useEffect(() => {
+    console.log("🚀 ~ DriveTrackContent ~ activeRequest:", activeRequest);
+  }, [activeRequest]);
+
+  console.log("🚀 ~ markers ~ markers:", markers);
 
   const renderMap = () => {
     return (
@@ -72,8 +101,8 @@ const Tracking = () => {
         </h2>
 
         <div className="flex flex-col gap-4 w-full">
-          <LocationItem type="driverLocation" location="" />
-          <LocationItem type="userLocation" location="" />
+          <LocationItem type="driverLocation" location=""/>
+          <LocationItem type="userLocation" location=""/>
         </div>
       </div>
     );
@@ -87,43 +116,24 @@ const Tracking = () => {
         </h2>
 
         <div className="flex flex-row gap-2">
-          <AddressIcon width={20} height={20} />
-          <ChatIcon width={20} height={20} />
+        <AddressIcon width={20} height={20} />
+        <ChatIcon width={20} height={20} />
         </div>
       </div>
     );
   };
 
   return (
-    <div className="flex flex-col items-start w-full gap-4">
-      <div className="flex flex-row items-start justify-between text-center w-full ">
-        <h1 className="text-4xl w-full text-start">{t("track")}</h1>
-        {currentUser.role === "driver" && (
-          <Button
-            text={t("accept-request")}
-            type="primary"
-            onClick={() =>
-              updateRequestStatus(
-                "",
-                "active",
-                `${currentUser.id}_${currentUser.firstName}`
-              )
-            }
-            customClassName="text-lg whitespace-nowrap "
-          />
-        )}
+    <>
+      {/* left side */}
+      <div className="left-side flex flex-col gap-4 w-[30%]">
+        {renderRouteDetails()}
+        {renderDriverDetails()}
       </div>
-      <div className="flex flex-row gap-4 w-full h-full">
-        {/* left side */}
-        <div className="left-side flex flex-col gap-4 w-[30%]">
-          {renderRouteDetails()}
-          {renderDriverDetails()}
-        </div>
-        {/* right side */}
-        <div className="right-side w-[70%]">{renderMap()}</div>
-      </div>
-    </div>
+      {/* right side */}
+      <div className="right-side w-[70%]">{renderMap()}</div>
+    </>
   );
 };
 
-export default Tracking;
+export default DriverTrackContent;

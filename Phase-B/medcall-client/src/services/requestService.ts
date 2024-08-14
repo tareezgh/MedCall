@@ -1,7 +1,7 @@
 import axios from "axios";
 import { toast } from "react-toastify";
-import { requestUrl, updateRequestUrl } from "./constants";
-import { AmbulanceRequest } from "../interfaces/types";
+import { activeRequestUrl, requestUrl, updateRequestUrl } from "./constants";
+import { AmbulanceRequest, StatusType } from "../interfaces/types";
 
 export const postNewRequest = async (request: AmbulanceRequest) => {
   const args = {
@@ -69,11 +69,33 @@ export const getRequestById = async (userId: string) => {
   return response.data;
 };
 
-export const updateRequestStatus = async (requestId: string) => {
-  //TODO
+export const getActiveRequest = async (currentUserID: string) => {
   const args = {
-    driverName: "aaaaaa",
-    status: "in progress",
+    status: "active",
+    id: currentUserID,
+  };
+  const response = await axios.post(`${activeRequestUrl}`, args);
+  console.log("🚀 ~ getActiveRequest ~ response:", response);
+
+  if (response.data.status === "failure") {
+    toast.error(response.data.message, {
+      position: "bottom-center",
+      hideProgressBar: true,
+    });
+    return null;
+  }
+
+  return response.data;
+};
+
+export const updateRequestStatus = async (
+  requestId: string,
+  newStatus: StatusType,
+  currentDriverName: string
+) => {
+  const args = {
+    driverName: currentDriverName,
+    status: newStatus,
   };
   const response = await axios.patch(`${updateRequestUrl}/${requestId}`, args);
   console.log("🚀 ~ updateRequestStatus ~ response:", response);

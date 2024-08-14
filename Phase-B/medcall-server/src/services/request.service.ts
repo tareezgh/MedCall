@@ -23,6 +23,11 @@ export class RequestService {
     return res;
   }
 
+  public async getActiveRequest(data: { status: string; id: string }) {
+    const res = await this.requestDal.getActiveRequest(data);
+    return res;
+  }
+
   public async updateRequest(requestId: string, updateData: Partial<IRequest>) {
     const res = await this.requestDal.updateRequest(requestId, updateData);
     return res;
