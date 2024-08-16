@@ -30,5 +30,22 @@ export const userSlice = createSlice({
   },
 });
 
+export const locationSlice = createSlice({
+  name: "location",
+  initialState: {
+    latitude: 0,
+    longitude: 0,
+    address: "",
+  },
+  reducers: {
+    setLocationCoords: (state, action) => {
+      state.latitude = action.payload.latitude;
+      state.longitude = action.payload.longitude;
+      state.address = action.payload.address;
+    },
+  },
+});
+
 // Action creators are generated for each case reducer function
 export const { setUser, resetUser } = userSlice.actions;
+export const { setLocationCoords } = locationSlice.actions;
