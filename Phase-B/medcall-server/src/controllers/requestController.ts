@@ -49,11 +49,12 @@ export class RequestController {
   public static async updateRequest(req: Request, res: Response) {
     try {
       const requestId = req.params.id;
-      const { status, driverName } = req.body;
+      const { status, driverName, driverLocation } = req.body;
       const service = new RequestService();
       const request = await service.updateRequest(requestId, {
         status,
         driverName,
+        driverLocation,
       });
       return res.status(200).send(request);
     } catch (error) {

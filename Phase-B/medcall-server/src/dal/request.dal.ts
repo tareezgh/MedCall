@@ -13,6 +13,13 @@ export class RequestDal {
           long: request.location.long,
         },
         driverName: request.driverName,
+        driverLocation: request.driverLocation
+          ? {
+              address: request.driverLocation.address || "",
+              lat: request.driverLocation.lat || 0,
+              long: request.driverLocation.long || 0,
+            }
+          : undefined,
         status: request.status || "starting",
         callerName: request.callerName,
         phoneNumber: request.phoneNumber,

@@ -2,21 +2,34 @@ import { useEffect, useMemo, useState } from "preact/hooks";
 import { useTranslation } from "react-i18next";
 import NewRequestItem from "../components/NewRequestItem";
 import {
+  getActiveRequest,
   getAllRequests,
   updateRequestStatus,
 } from "../services/requestService";
 import { capitalizeFirstLetter, haversineDistance } from "../utils/helpers";
 import Button from "../components/Button";
 import MapComponent from "../components/Map";
-import { AmbulanceRequest } from "../interfaces/types";
+import { AmbulanceRequest, TabsTypes } from "../interfaces/types";
 import { useSelector } from "react-redux";
 
-const DriverDashboardContent = () => {
+interface DriverDashboardContentProps {
+  setActiveTab: (tab: TabsTypes) => void;
+  userAddress: string;
+}
+
+const DriverDashboardContent = ({
+  setActiveTab,
+  userAddress,
+}: DriverDashboardContentProps) => {
   const { t } = useTranslation();
   const currentUser = useSelector((state: any) => state.currentUser);
   const [selectedRequest, setSelectedRequest] =
     useState<AmbulanceRequest | null>(null);
   const [requests, setRequests] = useState<AmbulanceRequest[]>([]);
+  const [activeRequest, setActiveRequest] = useState<AmbulanceRequest | null>(
+    null
+  );
+
   const [driverLocation, setDriverLocation] =
     useState<GeolocationCoordinates | null>(null);
   const [declinedRequests, setDeclinedRequests] = useState<string[]>([]);
@@ -37,6 +50,23 @@ const DriverDashboardContent = () => {
 
     fetchAllRequests();
   }, []);
+
+  useEffect(() => {
+    const fetchActiveRequest = async () => {
+      try {
+        const fetchedRequest = await getActiveRequest(currentUser.id);
+        console.log("Fetched active request:", fetchedRequest);
+
+        if (fetchedRequest) {
+          setActiveRequest(fetchedRequest);
+        }
+      } catch (error) {
+        console.error("Failed to fetch active request:", error);
+      }
+    };
+
+    fetchActiveRequest();
+  }, [currentUser.id]);
 
   useEffect(() => {
     const getDriverLocation = async () => {
@@ -65,7 +95,11 @@ const DriverDashboardContent = () => {
     const { latitude: driverLat, longitude: driverLon } = driverLocation;
 
     return requests
-      .filter((request) => !declinedRequests.includes(request._id))
+      .filter(
+        (request) =>
+          !declinedRequests.includes(request._id) &&
+          request._id !== activeRequest?._id
+      )
       .map((request) => {
         const requestLat = request.location.lat;
         const requestLon = request.location.long;
@@ -80,13 +114,13 @@ const DriverDashboardContent = () => {
         };
       })
       .sort((a, b) => a.distance - b.distance);
-  }, [driverLocation, requests, declinedRequests]);
+  }, [driverLocation, requests, declinedRequests, activeRequest]);
   console.log("🚀 ~ nearestRequests ~ nearestRequests:", nearestRequests);
 
   const handleDeclineRequest = () => {
     if (selectedRequest) {
-      setDeclinedRequests((prev) => [...prev, selectedRequest._id]); // Add the declined request's ID to the state
-      setSelectedRequest(null); // Optionally, clear the selected request
+      setDeclinedRequests((prev) => [...prev, selectedRequest._id]);
+      setSelectedRequest(null);
     }
   };
 
@@ -151,20 +185,12 @@ const DriverDashboardContent = () => {
               latitude: selectedRequest.location.lat,
               longitude: selectedRequest.location.long,
               popUp: capitalizeFirstLetter(selectedRequest.emergencyType),
+              type: "user" as const,
             },
           ]
         : [],
     [selectedRequest]
   );
-
-  useEffect(() => {
-    console.log(
-      "🚀 ~ DriverDashboardContent ~ selectedRequest:",
-      selectedRequest
-    );
-  }, [selectedRequest]);
-
-  console.log("🚀 ~ markers ~ markers:", markers);
 
   const renderMap = () => {
     return (
@@ -172,6 +198,7 @@ const DriverDashboardContent = () => {
         <div className="flex flex-col justify-start items-start text-start gap-6 p-6 bg-modalBackground rounded-2xl w-full min-h-80 shadow-2xl">
           <h2 className="text-xl font-bold">{t("admin-map-title")}</h2>
           <MapComponent
+            key={selectedRequest?._id || "default"}
             markers={markers}
             latitude={selectedRequest?.location.lat || 0}
             longitude={selectedRequest?.location.long || 0}
@@ -202,6 +229,21 @@ const DriverDashboardContent = () => {
         </div>
       </div>
     );
+  };
+
+  const handleAcceptRequest = async () => {
+    if (!selectedRequest) return;
+    await updateRequestStatus(
+      selectedRequest._id,
+      "active",
+      `${currentUser.id}_${currentUser.firstName}`,
+      {
+        address: userAddress,
+        lat: driverLocation?.latitude || 0,
+        long: driverLocation?.longitude || 0,
+      }
+    );
+    setActiveTab("driverTracking");
   };
 
   const renderEmergencyDetails = () => {
@@ -247,18 +289,14 @@ const DriverDashboardContent = () => {
               type="secondary"
               onClick={handleDeclineRequest}
               customClassName="text-lg hover:bg-slate-500"
+              disabled={!!activeRequest}
             />
             <Button
               text={t("accept-request")}
               type="primary"
-              onClick={() =>
-                updateRequestStatus(
-                  selectedRequest._id,
-                  "active",
-                  `${currentUser.id}_${currentUser.firstName}`
-                )
-              }
+              onClick={handleAcceptRequest}
               customClassName="text-lg"
+              disabled={!!activeRequest}
             />
           </div>
         </div>

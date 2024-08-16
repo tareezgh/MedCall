@@ -4,11 +4,14 @@ import NewRequestItem from "../components/NewRequestItem";
 import { getAllRequests } from "../services/requestService";
 import { capitalizeFirstLetter } from "../utils/helpers";
 import MapComponent from "../components/Map";
+import { AmbulanceRequest } from "../interfaces/types";
 
 const AdminDashboardContent = () => {
   const { t } = useTranslation();
-  const [selectedRequest, setSelectedRequest] = useState<any>(null);
-  const [requests, setRequests] = useState<any[]>([]);
+  const [selectedRequest, setSelectedRequest] =
+    useState<AmbulanceRequest | null>(null);
+  const [hoveredRequestId, setHoveredRequestId] = useState<string | null>(null);
+  const [requests, setRequests] = useState<AmbulanceRequest[]>([]);
 
   useEffect(() => {
     const fetchAllRequests = async () => {
@@ -26,23 +29,45 @@ const AdminDashboardContent = () => {
     fetchAllRequests();
   }, []);
 
-  useEffect(() => {
-    console.log("🚀  ~ selectedRequest:", selectedRequest);
-  }, [selectedRequest]);
+  const hoveredRequest = requests.find(
+    (request) => request._id === hoveredRequestId
+  );
+  const centerLatitude =
+    hoveredRequest?.location.lat ||
+    selectedRequest?.location.lat ||
+    32.06823723362243;
+  const centerLongitude =
+    hoveredRequest?.location.long ||
+    selectedRequest?.location.long ||
+    34.783579881141655;
 
   const markers = requests.map((request) => ({
+    id: request._id,
     latitude: request.location.lat,
     longitude: request.location.long,
     popUp: capitalizeFirstLetter(request.emergencyType),
+    type: "user" as const,
   }));
-  console.log("🚀 ~ markers ~ markers:", markers);
+
+  const handleMouseEnter = (id: string) => {
+    setHoveredRequestId(id);
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredRequestId(null);
+  };
 
   const renderMap = () => {
     return (
       <>
         <div className="flex flex-col justify-start items-start text-start gap-6 p-6 bg-modalBackground rounded-2xl w-full h-screen shadow-xl">
           <h2 className="text-xl font-bold">{t("admin-map-title")}</h2>
-          <MapComponent markers={markers} />
+          <MapComponent
+            key={hoveredRequest?._id || "default"}
+            markers={markers}
+            latitude={centerLatitude}
+            longitude={centerLongitude}
+          />
         </div>
       </>
     );
@@ -56,12 +81,19 @@ const AdminDashboardContent = () => {
 
           <div className="flex flex-col gap-4 w-full">
             {requests.map((request) => (
-              <NewRequestItem
-                key={request.id}
-                location={request.location.address}
-                typeOfEmergency={capitalizeFirstLetter(request.emergencyType)}
-                onClick={() => setSelectedRequest(request)}
-              />
+              <div
+                key={request._id}
+                onMouseEnter={() => handleMouseEnter(request._id)}
+                onMouseLeave={handleMouseLeave}
+              >
+                <NewRequestItem
+                  key={request._id}
+                  location={request.location.address || ""}
+                  typeOfEmergency={capitalizeFirstLetter(request.emergencyType)}
+                  onClick={() => setSelectedRequest(request)}
+                  status={request.status}
+                />
+              </div>
             ))}
           </div>
         </div>

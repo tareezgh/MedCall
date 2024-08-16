@@ -4,27 +4,19 @@ import UserDashboardContent from "../containers/UserDashboardContent";
 import AdminDashboardContent from "../containers/AdminDashboardContent";
 import DriverDashboardContent from "../containers/DriverDashboardContent";
 import { TabsTypes } from "../interfaces/types";
-import { useEffect, useState } from "preact/hooks";
-import { handleGetLocation } from "../utils/geolocationUtils";
 
 interface DashboardContentProps {
+  userAddress: string;
+  userPosition: GeolocationCoordinates | null;
   setActiveTab: (tab: TabsTypes) => void;
 }
 
-const DashboardContent = ({ setActiveTab }: DashboardContentProps) => {
+const DashboardContent = ({
+  userAddress,
+  setActiveTab,
+}: DashboardContentProps) => {
   const { t } = useTranslation();
   const currentUser = useSelector((state: any) => state.currentUser);
-  const [driverLocation, setDriverLocation] = useState("");
-  useEffect(() => {
-    const getDriverLocation = async () => {
-      const address = await handleGetLocation(true);
-      if (address) {
-        setDriverLocation(address);
-      }
-    };
-
-    getDriverLocation();
-  }, []);
 
   const renderContent = () => {
     switch (currentUser.role) {
@@ -33,7 +25,12 @@ const DashboardContent = ({ setActiveTab }: DashboardContentProps) => {
       case "user":
         return <UserDashboardContent setActiveTab={setActiveTab} />;
       case "driver":
-        return <DriverDashboardContent />;
+        return (
+          <DriverDashboardContent
+            setActiveTab={setActiveTab}
+            userAddress={userAddress}
+          />
+        );
       default:
         break;
     }
@@ -47,7 +44,7 @@ const DashboardContent = ({ setActiveTab }: DashboardContentProps) => {
             {t("welcome")} {`${currentUser.firstName}`}
           </h1>
           {currentUser.role === "driver" && (
-            <div className={"w-fit whitespace-nowrap"}>{driverLocation}</div>
+            <div className={"w-fit whitespace-nowrap"}>{userAddress}</div>
           )}
         </div>
         <div className="flex flex-row gap-4 w-full h-full">

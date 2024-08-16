@@ -1,5 +1,5 @@
-import { AddressIcon } from "./icons";
-
+import pinDriver from "../assets/pinDriver.svg";
+import pinUser from "../assets/pinUser.svg";
 interface LocationItemProps {
   type: "userLocation" | "driverLocation";
   location: string;
@@ -7,10 +7,13 @@ interface LocationItemProps {
 
 const LocationItem = ({ type, location }: LocationItemProps) => {
   return (
-    <div className="flex items-center gap-2 justify-between p-4 bg-white rounded-lg shadow-md hover:bg-gray-100 w-full">
-      <div className="bg-slate-300 py-1 px-1 rounded-2xl">
-        <AddressIcon width={20} height={20} />
-      </div>
+    <div className="flex items-center gap-2 justify-between p-4 bg-white rounded-lg shadow-lg hover:bg-gray-100 w-full">
+      {type === "driverLocation" ? (
+        <img src={pinUser} alt="icon" />
+      ) : (
+        <img src={pinDriver} alt="icon" />
+      )}
+
       <h3 className="text-sm font-semibold text-secondary500">
         {location ? location : "temp_location"}
       </h3>

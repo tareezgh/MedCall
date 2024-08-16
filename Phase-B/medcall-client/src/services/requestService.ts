@@ -91,11 +91,13 @@ export const getActiveRequest = async (currentUserID: string) => {
 export const updateRequestStatus = async (
   requestId: string,
   newStatus: StatusType,
-  currentDriverName: string
+  currentDriverName: string,
+  currentDriverLocation?: { address?: string; lat: number; long: number }
 ) => {
   const args = {
     driverName: currentDriverName,
     status: newStatus,
+    driverLocation: currentDriverLocation,
   };
   const response = await axios.patch(`${updateRequestUrl}/${requestId}`, args);
   console.log("🚀 ~ updateRequestStatus ~ response:", response);
@@ -109,16 +111,4 @@ export const updateRequestStatus = async (
   }
 
   return response.data;
-};
-
-export const fetchActiveRequest = async () => {
-  // Mock response for illustration purposes
-  return {
-    status: "active", // This can be "active", "completed", "none", etc.
-    request: {
-      date: "2024-07-01",
-      typeOfEmergency: "Cardiac Arrest",
-      location: "123 Main St",
-    },
-  };
 };

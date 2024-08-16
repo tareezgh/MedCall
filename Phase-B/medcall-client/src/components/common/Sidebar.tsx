@@ -23,8 +23,12 @@ const Sidebar = ({ role, activeTab, setActiveTab }: SidebarProps) => {
     tab: TabsTypes,
     onClick?: () => void
   ) => {
+    const lowercasedFirstLetter = tab.charAt(0).toLowerCase();
+    const restOfText = tab.slice(1);
+    const formattedTab = lowercasedFirstLetter + restOfText;
+
     const buttonStyle = `${
-      activeTab == text.toLowerCase() ? "bg-lightBg" : "hover:opacity-70"
+      activeTab == formattedTab ? "bg-lightBg" : "hover:opacity-70"
     }`;
 
     return (

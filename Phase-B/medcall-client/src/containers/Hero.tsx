@@ -1,7 +1,6 @@
 import Button from "../components/Button";
 import Input from "../components/Input";
 import { LocationIcon } from "../components/icons";
-
 import heroImg from "../assets/hero-image.webp";
 import { useTranslation } from "react-i18next";
 import { useRef, useState } from "preact/hooks";
@@ -48,9 +47,7 @@ const Hero = () => {
 
         if (place.geometry && place.geometry.location) {
           const latitude = place.geometry.location.lat();
-          console.log("🚀 ~ handlePlaceChanged ~ latitude:", latitude);
           const longitude = place.geometry.location.lng();
-          console.log("🚀 ~ handlePlaceChanged ~ longitude:", longitude);
           dispatch(
             setLocationCoords({
               latitude,

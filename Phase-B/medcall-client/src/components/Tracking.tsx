@@ -6,18 +6,27 @@ import {
   updateRequestStatus,
 } from "../services/requestService";
 import { useEffect, useMemo, useState } from "preact/hooks";
-import { AmbulanceRequest } from "../interfaces/types";
+import { AmbulanceRequest, TabsTypes } from "../interfaces/types";
 import LocationItem from "./LocationItem";
 import { AddressIcon, ChatIcon } from "./icons";
 import MapComponent from "./Map";
 import { capitalizeFirstLetter } from "../utils/helpers";
 
-const Tracking = () => {
+interface TrackingProps {
+  setActiveTab: (tab: TabsTypes) => void;
+  userAddress: string;
+  userPosition: GeolocationCoordinates | null;
+}
+
+const Tracking = ({ setActiveTab }: TrackingProps) => {
   const { t } = useTranslation();
   const currentUser = useSelector((state: any) => state.currentUser);
   const [activeRequest, setActiveRequest] = useState<AmbulanceRequest | null>(
     null
   );
+
+  const currentRole = currentUser.role;
+
   useEffect(() => {
     const fetchActiveRequest = async () => {
       try {
@@ -35,6 +44,19 @@ const Tracking = () => {
     fetchActiveRequest();
   }, []);
 
+  const handleAcceptRequest = async () => {
+    await updateRequestStatus(
+      activeRequest?._id!,
+      "completed",
+      `${currentUser.id}_${currentUser.firstName}`
+    );
+    setActiveTab("dashboard");
+  };
+
+  const formatName = (name: string) => {
+    return name ? name.split("_")[1] : "";
+  };
+
   const markers = useMemo(
     () =>
       activeRequest
@@ -42,7 +64,16 @@ const Tracking = () => {
             {
               latitude: activeRequest.location.lat,
               longitude: activeRequest.location.long,
-              popUp: capitalizeFirstLetter(activeRequest.emergencyType),
+              popUp: capitalizeFirstLetter(activeRequest.callerName),
+              type: "user" as const,
+            },
+            {
+              latitude: activeRequest.driverLocation?.lat || 0,
+              longitude: activeRequest.driverLocation?.long || 0,
+              popUp: capitalizeFirstLetter(
+                formatName(activeRequest?.driverName!)
+              ),
+              type: "driver" as const,
             },
           ]
         : [],
@@ -51,16 +82,19 @@ const Tracking = () => {
 
   const renderMap = () => {
     return (
-      <>
-        <div className="flex flex-col justify-start items-start text-start gap-6 p-6 bg-modalBackground rounded-2xl w-full min-h-80 shadow-2xl">
-          <h2 className="text-xl font-bold">{t("admin-map-title")}</h2>
+      <div className="flex flex-col justify-start items-start text-start gap-6 p-6 bg-modalBackground rounded-2xl w-full h-screen shadow-2xl">
+        <h2 className="text-xl font-bold">{t("admin-map-title")}</h2>
+        {!activeRequest ? (
+          <div>Loading...</div>
+        ) : (
           <MapComponent
             markers={markers}
-            latitude={activeRequest?.location.lat || 0}
-            longitude={activeRequest?.location.long || 0}
+            latitude={activeRequest.location.lat}
+            longitude={activeRequest.location.long}
+            routes={true}
           />
-        </div>
-      </>
+        )}
+      </div>
     );
   };
 
@@ -71,24 +105,40 @@ const Tracking = () => {
           {t("driver-track-route-title")}
         </h2>
 
-        <div className="flex flex-col gap-4 w-full">
-          <LocationItem type="driverLocation" location="" />
-          <LocationItem type="userLocation" location="" />
+        <div
+          className={`flex gap-4 w-full ${
+            currentRole === "driver" ? "flex-col" : "flex-col-reverse"
+          }`}
+        >
+          <LocationItem
+            type="driverLocation"
+            location={activeRequest?.driverLocation?.address || ""}
+          />
+          <LocationItem
+            type="userLocation"
+            location={activeRequest?.location.address || ""}
+          />
         </div>
       </div>
     );
   };
 
-  const renderDriverDetails = () => {
+  const renderInfoDetails = () => {
     return (
       <div className="flex justify-between items-center text-center flex-row gap-6 p-6 bg-white rounded-2xl w-full h-fit shadow-xl">
         <h2 className="text-xl font-bold text-gray-800">
-          {currentUser.firstName + " " + currentUser.lastName}
+          {currentRole === "driver"
+            ? `Caller: ${activeRequest?.callerName}`
+            : `Driver: ${formatName(activeRequest?.driverName || "")}`}
         </h2>
 
-        <div className="flex flex-row gap-2">
+        <div className={`flex flex-row gap-2 `}>
           <AddressIcon width={20} height={20} />
-          <ChatIcon width={20} height={20} />
+          <ChatIcon
+            width={20}
+            height={20}
+            onClick={() => setActiveTab("messages")}
+          />
         </div>
       </div>
     );
@@ -100,15 +150,9 @@ const Tracking = () => {
         <h1 className="text-4xl w-full text-start">{t("track")}</h1>
         {currentUser.role === "driver" && (
           <Button
-            text={t("accept-request")}
+            text={t("confirm-arrival")}
             type="primary"
-            onClick={() =>
-              updateRequestStatus(
-                "",
-                "active",
-                `${currentUser.id}_${currentUser.firstName}`
-              )
-            }
+            onClick={handleAcceptRequest}
             customClassName="text-lg whitespace-nowrap "
           />
         )}
@@ -117,7 +161,7 @@ const Tracking = () => {
         {/* left side */}
         <div className="left-side flex flex-col gap-4 w-[30%]">
           {renderRouteDetails()}
-          {renderDriverDetails()}
+          {renderInfoDetails()}
         </div>
         {/* right side */}
         <div className="right-side w-[70%]">{renderMap()}</div>
