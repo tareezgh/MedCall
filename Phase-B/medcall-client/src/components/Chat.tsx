@@ -1,4 +1,4 @@
-import { useEffect, useState,useRef } from 'preact/hooks';
+import { useEffect, useState, useRef } from 'preact/hooks';
 import Peer, { DataConnection } from 'peerjs';
 import Message from './Messages';
 import { peerConfig } from '../utils/config';
@@ -14,9 +14,13 @@ export default function Chat() {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    const pr = new Peer(peerConfig);
-    setPeer(pr);
+    const pr = new Peer(peerConfig); // create a new 'peer' instance using PeerJS library.
+    // peerConfig (optional) is an object you pass to 'peer', can include host,port,path...
+    // pr - represents a peer in the network.
 
+    setPeer(pr);
+    // saves this peer instance in the component’s state,
+    //so it can be used later in your application to manage peer-to-peer connections.
     return () => {
       pr.destroy();
     };

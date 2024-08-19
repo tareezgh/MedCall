@@ -5,6 +5,7 @@ import Sidebar from "../components/common/Sidebar";
 import DashboardContent from "../components/DashboardContent.tsx";
 import Tracking from "../components/Tracking.tsx";
 import Messages from "../components/Messages.tsx";
+import Chat from "../components/Chat.tsx";
 import Profile from "../components/Profile.tsx";
 import { TabsTypes } from "../interfaces/types.ts";
 import UserMessages from "../components/UserMessages.tsx";
@@ -26,11 +27,7 @@ const Dashboard = () => {
       case "tracking":
         return <Tracking />;
       case "messages":
-        if (currentUser.role == 'driver')
-          return <Messages />;
-        if (currentUser.role == 'user')
-          return <UserMessages />;
-        break;
+        return <Chat />;
       case "profile":
         return <Profile />;
       case "driverTracking":
