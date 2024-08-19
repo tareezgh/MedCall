@@ -4,6 +4,7 @@ import Message from './Messages';
 import { peerConfig } from '../utils/config';
 import Button from './Button';
 import { PhoneIcon } from './icons';
+import { useSelector } from "react-redux";
 
 export default function Chat() {
   const [peer, setPeer] = useState<Peer | null>(null);
@@ -12,9 +13,12 @@ export default function Chat() {
   const [recipient, setRecipient] = useState('');
   const [messages, setMessages] = useState<{ me: boolean; text: string }[]>([]);
   const [message, setMessage] = useState('');
+  const currentUser = useSelector((state: any) => state.currentUser);
+
+  const userPhoneNumber = currentUser.phoneNumber;
 
   useEffect(() => {
-    const pr = new Peer(peerConfig); // create a new 'peer' instance using PeerJS library.
+    const pr = new Peer(userPhoneNumber,peerConfig); // create a new 'peer' instance using PeerJS library.
     // peerConfig (optional) is an object you pass to 'peer', can include host,port,path...
     // pr - represents a peer in the network.
 
@@ -125,7 +129,7 @@ export default function Chat() {
             <button
               onClick={() => { }}
               className="flex flex-col items-center justify-center p-4 w-full bg-white rounded-lg shadow-md hover:bg-gray-200"
-            >
+            >put contact history here
               <h1 className="text-lg font-bold">Yosef Levy</h1>
             </button>
           </div>
@@ -133,6 +137,7 @@ export default function Chat() {
       </>
     );
   };
+  // for automatic scroll down
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
