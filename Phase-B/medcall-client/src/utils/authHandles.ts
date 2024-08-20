@@ -64,6 +64,7 @@ export const handleSignUp = async (
       newUser.city = formData.city;
       newUser.address = formData.address;
       newUser.zipCode = formData.zipCode;
+      newUser.driverStatus = "pending";
     }
     // Call registerUser function to send newUser to backend
     await registerUser(newUser);

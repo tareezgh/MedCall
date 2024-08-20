@@ -9,5 +9,7 @@ router.patch("/edit/:id", UsersController.editProfile);
 router.post("/request-otp", UsersController.requestOtp);
 router.post("/verify-otp", UsersController.verifyOtp);
 router.post("/reset-password", UsersController.resetPassword);
+router.get("/get-drivers", UsersController.getDrivers);
+router.post("/get-drivers", UsersController.getPendingDrivers);
 
 export default router;

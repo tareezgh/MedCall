@@ -6,6 +6,7 @@ export const editProfileUrl = `${apiUrl}/users/edit`;
 export const requestOtpUrl = `${apiUrl}/users/request-otp`;
 export const verifyOtpUrl = `${apiUrl}/users/verify-otp`;
 export const resetPasswordUrl = `${apiUrl}/users/reset-password`;
+export const getDriversUrl = `${apiUrl}/users/get-drivers`;
 
 export const requestUrl = `${apiUrl}/request`;
 export const updateRequestUrl = `${apiUrl}/request`;

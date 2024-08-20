@@ -101,7 +101,7 @@ export class UsersService {
       updatedUser.isGoogleSignIn,
       updatedUser.phoneNumber
     );
-  
+
     return {
       status: "success",
       message: "Profile updated successfully",
@@ -169,6 +169,37 @@ export class UsersService {
   public async getUsers() {
     const res = await this.usersDal.findAll();
     return res;
+  }
+
+  public async getDrivers() {
+    try {
+      const drivers = await this.usersDal.findAll({ role: "driver" });
+      return {
+        status: "success",
+        message: "Drivers fetched successfully",
+        drivers,
+      };
+    } catch (error) {
+      console.error("Error fetching drivers:", error);
+      return { status: "failure", message: "Failed to fetch drivers" };
+    }
+  }
+
+  public async getPendingDrivers(status: string) {
+    try {
+      const drivers = await this.usersDal.findAll({
+        role: "driver",
+        driverStatus: status,
+      });
+      return {
+        status: "success",
+        message: "Pending drivers fetched successfully",
+        drivers,
+      };
+    } catch (error) {
+      console.error("Error fetching pending drivers:", error);
+      return { status: "failure", message: "Failed to fetch pending drivers" };
+    }
   }
 
   private generateToken(

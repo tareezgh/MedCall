@@ -15,6 +15,7 @@ export class UsersDal {
         city: user.city,
         address: user.address,
         zipCode: user.zipCode,
+        driverStatus: user.driverStatus,
         isGoogleSignIn: user.isGoogleSignIn,
       });
 

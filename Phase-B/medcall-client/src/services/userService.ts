@@ -2,6 +2,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import {
   editProfileUrl,
+  getDriversUrl,
   loginUrl,
   registerUrl,
   requestOtpUrl,
@@ -22,6 +23,7 @@ export const registerUser = async (user: User) => {
     city: user.city,
     address: user.address,
     zipCode: user.zipCode,
+    driverStatus: user.driverStatus,
     isGoogleSignIn: user.isGoogleSignIn,
   };
 
@@ -62,7 +64,7 @@ export const loginUser = async (user: Partial<User>) => {
   }
 };
 
-export const editProfile = async (userId:string, data: EditProfileData) => {
+export const editProfile = async (userId: string, data: EditProfileData) => {
   const args = {
     firstName: data.firstName,
     lastName: data.lastName,
@@ -154,3 +156,30 @@ export const resetPassword = async (email: string, newPassword: string) => {
     });
   }
 };
+
+export const getDrivers = async (status?: string) => {
+  try {
+    let response 
+    if(status){
+      response = await axios.post(getDriversUrl, { status });
+
+    }else{
+      response = await axios.get(getDriversUrl);
+    }
+
+    if (response.data.status === "failure") {
+      toast.error(response.data.message, {
+        position: "top-center",
+        hideProgressBar: true,
+      });
+    } else {
+      return response.data;
+    }
+  } catch (error) {
+    toast.error("Failed to get drivers request", {
+      position: "top-center",
+      hideProgressBar: true,
+    });
+  }
+};
+

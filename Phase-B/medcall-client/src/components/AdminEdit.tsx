@@ -1,20 +1,29 @@
-// import React from 'react';
 import DriversTable from "./DriversTable";
 import Button from "./Button";
 import { useTranslation } from "react-i18next";
+import { useEffect, useState } from "preact/hooks";
+import { User } from "../interfaces/types";
+import { getDrivers } from "../services/userService";
 
-const adminEdit = () => {
-  // mock data
-  const drivers = [
-    { fullName: 'Avraham Levy', phone: '052-123-4567', email: 'avraham.levy@gmail.com', city: 'Tel Aviv' },
-    { fullName: 'Yael Cohen', phone: '054-987-6543', email: 'yael.cohen@gmail.com', city: 'Jerusalem' },
-    { fullName: 'Ibrahim Almasri', phone: '054-333-9998', email: 'ibrahim.almasri@gmail.com', city: 'Nazareth' },
-    { fullName: 'Talia Cohen', phone: '055-444-8888', email: 'talia.cohen@gmail.com', city: 'Be\'er Sheva' },
-    { fullName: 'David Ben-David', phone: '052-777-3333', email: 'david.bendavid@gmail.com', city: 'Netanya' },
-    { fullName: 'Leila Halabi', phone: '054-222-3333', email: 'leila.halabi@gmail.com', city: 'Nazareth' },
-    { fullName: 'Ahmed Abed', phone: '054-333-9999', email: 'ahmed.abed@gmail.com', city: 'Nazareth' }
-  ];
+const AdminEdit = () => {
   const { t } = useTranslation();
+  const [drivers, setDrivers] = useState<User[]>([]);
+  useEffect(() => {
+    const fetchDrivers = async () => {
+      try {
+        const results = await getDrivers();
+        console.log("🚀 ~ getDrivers ~ results:", results);
+
+        if (results) {
+          setDrivers(results.drivers);
+        }
+      } catch (error) {
+        console.error("Failed to fetch requests:", error);
+      }
+    };
+
+    fetchDrivers();
+  }, []);
 
   return (
     <>
@@ -28,7 +37,7 @@ const adminEdit = () => {
             <Button
               text={t("save-button")}
               type="primary"
-              onClick={() => { }}
+              onClick={() => {}}
               customClassName={"text-base"}
             />
           </div>
@@ -38,4 +47,4 @@ const adminEdit = () => {
   );
 };
 
-export default adminEdit;
+export default AdminEdit;

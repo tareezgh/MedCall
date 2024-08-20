@@ -8,6 +8,7 @@ export interface User {
   city?: string;
   address?: string;
   zipCode?: string;
+  driverStatus?: string;
   requests?: Array<any>;
   isGoogleSignIn: boolean;
 }
