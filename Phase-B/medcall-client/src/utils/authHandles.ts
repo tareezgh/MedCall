@@ -1,17 +1,18 @@
 import { toast } from "react-toastify";
 import {
   DecodedToken,
+  EditProfileData,
   SignInFormData,
   SignUpFormData,
   User,
 } from "../interfaces/types";
-import { loginUser, registerUser } from "../services/userService";
+import { editProfile, loginUser, registerUser } from "../services/userService";
 import { base64UrlDecode } from "./helpers";
 import {
   getSessionStorageWithExpiry,
   removeSessionStorageItem,
 } from "./sessionStorageHandler";
-import { resetUser, setUser } from "../redux/Slicers";
+import { resetUser, setUpdatedUser, setUser } from "../redux/Slicers";
 import store from "../redux/store";
 
 export const handleSignUp = async (
@@ -148,4 +149,41 @@ export const isTokenValid = () => {
     }
   }
   return null;
+};
+
+export const handleEditProfile = async (
+  userId: string,
+  formData: EditProfileData
+) => {
+  try {
+    if (!userId) return;
+    const data = {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      phoneNumber: formData.phoneNumber,
+      email: formData.email,
+    };
+
+    store.dispatch(
+      setUpdatedUser({
+        firstName: data.firstName,
+        lastName: data.lastName,
+        phoneNumber: data.phoneNumber,
+        email: data.email,
+      })
+    );
+    await editProfile(userId, data);
+
+    toast.success("Saved successfully!", {
+      position: "bottom-center",
+      hideProgressBar: true,
+    });
+    return true;
+  } catch (error) {
+    toast.error("Failed to save data", {
+      position: "bottom-center",
+      hideProgressBar: true,
+    });
+  }
+  return false;
 };

@@ -35,6 +35,24 @@ export class UsersController {
     }
   }
 
+  public static async editProfile(req: Request, res: Response) {
+    try {
+      const userId = req.params.id;
+      const { firstName, lastName, phoneNumber, email } = req.body;
+      const service = new UsersService();
+      const user = await service.editProfile(userId,{
+        firstName,
+        lastName,
+        phoneNumber,
+        email,
+      });
+      return res.status(200).send(user);
+    } catch (error) {
+      console.error("Error in edit profile:", error);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  }
+
   public static async requestOtp(req: Request, res: Response) {
     try {
       const { email } = req.body;

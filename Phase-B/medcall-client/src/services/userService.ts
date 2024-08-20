@@ -1,13 +1,14 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 import {
+  editProfileUrl,
   loginUrl,
   registerUrl,
   requestOtpUrl,
   resetPasswordUrl,
   verifyOtpUrl,
 } from "./constants";
-import { User } from "../interfaces/types";
+import { EditProfileData, User } from "../interfaces/types";
 import { setSessionStorageWithExpiry } from "../utils/sessionStorageHandler";
 
 export const registerUser = async (user: User) => {
@@ -58,6 +59,29 @@ export const loginUser = async (user: Partial<User>) => {
     // Store the token in sessionStorage with an expiration time of 1 hour
     setSessionStorageWithExpiry("token", token, 60);
     return args;
+  }
+};
+
+export const editProfile = async (userId:string, data: EditProfileData) => {
+  const args = {
+    firstName: data.firstName,
+    lastName: data.lastName,
+    phoneNumber: data.phoneNumber,
+    email: data.email,
+  };
+
+  const response = await axios.patch(`${editProfileUrl}/${userId}`, args);
+
+  if (response.data.status === "failure") {
+    toast.error(response.data.message, {
+      position: "bottom-center",
+      hideProgressBar: true,
+    });
+  } else {
+    const token = response.data.token;
+    // Store the token in sessionStorage with an expiration time of 1 hour
+    setSessionStorageWithExpiry("token", token, 60);
+    return response.data;
   }
 };
 
@@ -121,7 +145,7 @@ export const resetPassword = async (email: string, newPassword: string) => {
         position: "top-center",
         hideProgressBar: true,
       });
-    } 
+    }
   } catch (error) {
     console.error("Error resetting password:", error);
     toast.error("Failed to reset password", {

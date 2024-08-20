@@ -9,12 +9,20 @@ export const userSlice = createSlice({
     firstName: "",
     lastName: "",
     phoneNumber: "",
+    isGoogleSignIn: false,
   },
   reducers: {
     setUser: (state, action) => {
       state.id = action.payload.id;
       state.email = action.payload.email;
       state.role = action.payload.role;
+      state.firstName = action.payload.firstName;
+      state.lastName = action.payload.lastName;
+      state.phoneNumber = action.payload.phoneNumber;
+      state.isGoogleSignIn = action.payload.isGoogleSignIn;
+    },
+    setUpdatedUser: (state, action) => {
+      state.email = action.payload.email;
       state.firstName = action.payload.firstName;
       state.lastName = action.payload.lastName;
       state.phoneNumber = action.payload.phoneNumber;
@@ -26,9 +34,10 @@ export const userSlice = createSlice({
       state.firstName = "";
       state.lastName = "";
       state.phoneNumber = "";
+      state.isGoogleSignIn = false;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setUser, resetUser } = userSlice.actions;
+export const { setUser, setUpdatedUser, resetUser } = userSlice.actions;

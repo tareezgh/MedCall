@@ -57,6 +57,13 @@ export interface SignInFormData {
   password: string;
 }
 
+export interface EditProfileData{
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  email: string;
+}
+
 export interface DecodedToken {
   email: string;
   role: string;

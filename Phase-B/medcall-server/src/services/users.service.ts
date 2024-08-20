@@ -18,8 +18,8 @@ export class UsersService {
     this.usersDal = usersDal;
   }
 
-  public async login(user: Partial<User> ): Promise<LoginResult> {
-    if(!user.isGoogleSignIn){
+  public async login(user: Partial<User>): Promise<LoginResult> {
+    if (!user.isGoogleSignIn) {
       const hashedPasswordFromDB = await this.usersDal.getUserPassword(user);
       if (!hashedPasswordFromDB)
         return { status: "failure", message: "User doesn't exist!!" };
@@ -42,6 +42,7 @@ export class UsersService {
       userData.role,
       userData.firstName,
       userData.lastName,
+      userData.isGoogleSignIn,
       userData.phoneNumber
     );
 
@@ -74,12 +75,36 @@ export class UsersService {
       newUser.role,
       newUser.firstName,
       newUser.lastName,
+      newUser.isGoogleSignIn,
       newUser.phoneNumber
     );
 
     return {
       status: "success",
       message: "User registered",
+      token,
+    };
+  }
+
+  public async editProfile(userId: string, updateData: Partial<User>) {
+    const updatedUser = await this.usersDal.editProfile(userId, updateData);
+    if (!updatedUser) {
+      return { status: "failure", message: "Profile update failed" };
+    }
+
+    const token = this.generateToken(
+      updatedUser._id,
+      updatedUser.email,
+      updatedUser.role,
+      updatedUser.firstName,
+      updatedUser.lastName,
+      updatedUser.isGoogleSignIn,
+      updatedUser.phoneNumber
+    );
+  
+    return {
+      status: "success",
+      message: "Profile updated successfully",
       token,
     };
   }
@@ -152,6 +177,7 @@ export class UsersService {
     role: string,
     firstName: string,
     lastName: string,
+    isGoogleSignIn: boolean,
     phoneNumber?: string | null
   ) {
     const JWT_SECRET = process.env.JWT_SECRET_KEY;
@@ -168,6 +194,7 @@ export class UsersService {
         firstName: firstName,
         lastName: lastName,
         phoneNumber: phoneNumber,
+        isGoogleSignIn: isGoogleSignIn,
       },
       JWT_SECRET,
       {

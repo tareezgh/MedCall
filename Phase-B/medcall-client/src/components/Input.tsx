@@ -8,6 +8,7 @@ interface InputProps {
   onLeftIconClick?: () => void;
   onRightIconClick?: () => void;
   customClassName?: string;
+  disabled?: boolean;
 }
 
 const Input = ({
@@ -19,7 +20,8 @@ const Input = ({
   rightIcon,
   onLeftIconClick,
   onRightIconClick,
-  customClassName
+  customClassName,
+  disabled
 }: InputProps) => {
   return (
     <>
@@ -40,6 +42,7 @@ const Input = ({
             paddingLeft: leftIcon ? "3.5rem" : "1rem",
             paddingRight: rightIcon ? "3.5rem" : "1rem",
           }}
+          disabled={disabled} 
         />
         {rightIcon && (
           <span className="absolute right-5 cursor-pointer" onClick={onRightIconClick}>

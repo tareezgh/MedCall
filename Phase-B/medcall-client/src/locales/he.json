@@ -153,5 +153,16 @@
   "password-reset-success": "הסיסמה שלך שוחזרה בהצלחה. תוכל כעת להתחבר עם הסיסמה החדשה.",
   "error-resetting-password": "אירעה שגיאה במהלך שחזור הסיסמה. נא לנסות שוב מאוחר יותר.",
 
+  "accept-request": "קבל בקשה",
+  "decline-request": "דחה",
+  "approve": "אשר",
+  "edit-profile": "ערוך פרופיל",
+  "drivers-requests-title": "בקשות נהגים",
+  "edit-drivers-title": "ערוך נהגים",
+  "save-button": "שמור",
+  "full-name": "שם מלא",
+  "phone": "טלפון",
+  "driver-license": "רישיון נהיגה",
+  "action": "פעולה",
   "": ""
 }
