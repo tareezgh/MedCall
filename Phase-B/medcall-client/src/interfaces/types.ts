@@ -1,4 +1,5 @@
 export interface User {
+  _id?: string;
   firstName: string;
   lastName: string;
   phoneNumber?: string;
@@ -50,7 +51,7 @@ export interface SignUpFormData {
 export interface ResetPasswordFormData {
   email: string;
   password: string;
-  confirmPassword: string,
+  confirmPassword: string;
 }
 
 export interface SignInFormData {
@@ -58,11 +59,22 @@ export interface SignInFormData {
   password: string;
 }
 
-export interface EditProfileData{
+export interface EditProfileData {
   firstName: string;
   lastName: string;
   phoneNumber: string;
   email: string;
+}
+
+export interface EditDriverData {
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  email: string;
+  city: string;
+  address: string;
+  zipCode: string;
+  driverStatus: string;
 }
 
 export interface DecodedToken {

@@ -109,6 +109,30 @@ export class UsersService {
     };
   }
 
+  public async editDriverData(userId: string, updateData: Partial<User>) {
+    const updatedUser = await this.usersDal.editDriverData(userId, updateData);
+    if (!updatedUser) {
+      return { status: "failure", message: "Profile update failed" };
+    }
+
+    return {
+      status: "success",
+      message: "Profile updated successfully",
+    };
+  }
+
+  public async deleteDriver(userId: string) {
+    const deletedUser = await this.usersDal.deleteDriver(userId);
+    if (!deletedUser) {
+      return { status: "failure", message: "Delete user failed" };
+    }
+
+    return {
+      status: "success",
+      message: "Deleted successfully",
+    };
+  }
+
   public async sendOtp(email: string) {
     const user = await this.usersDal.getUserByEmail(email);
     if (!user) {

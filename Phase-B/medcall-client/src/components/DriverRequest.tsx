@@ -32,7 +32,11 @@ const DriverRequest = () => {
           {t("drivers-requests-title")}
         </h1>
         <div className="flex justify-start items-center text-center flex-col gap-6 p-6 bg-white rounded-2xl w-full h-fit shadow-xl">
-          <DriversTable drivers={drivers} type={"request"} />
+          <DriversTable
+            drivers={drivers}
+            type={"request"}
+            setDrivers={setDrivers}
+          />
         </div>
       </div>
     </>

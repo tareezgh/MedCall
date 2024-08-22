@@ -83,7 +83,31 @@ export class UsersDal {
       );
       return updatedData;
     } catch (error) {
-      console.error("Error updating password:", error);
+      console.error("Error updating data:", error);
+      throw error;
+    }
+  }
+
+  public async editDriverData(userId: string, updateData: Partial<User>) {
+    try {
+      const updatedData = await Users.findByIdAndUpdate(
+        userId,
+        { $set: updateData },
+        { new: true, runValidators: true }
+      );
+      return updatedData;
+    } catch (error) {
+      console.error("Error updating driver data:", error);
+      throw error;
+    }
+  }
+
+  public async deleteDriver(userId: string) {
+    try {
+      const deletedUser = await Users.findByIdAndDelete(userId);
+      return deletedUser;
+    } catch (error) {
+      console.error("Error deleting driver:", error);
       throw error;
     }
   }

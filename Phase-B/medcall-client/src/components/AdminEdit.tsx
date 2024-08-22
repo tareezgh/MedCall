@@ -12,10 +12,14 @@ const AdminEdit = () => {
     const fetchDrivers = async () => {
       try {
         const results = await getDrivers();
-        console.log("🚀 ~ getDrivers ~ results:", results);
 
         if (results) {
-          setDrivers(results.drivers);
+          const filteredDrivers = results.drivers.filter(
+            (driver: User) =>
+              driver.driverStatus !== "pending" &&
+              driver.driverStatus !== "decline"
+          );
+          setDrivers(filteredDrivers);
         }
       } catch (error) {
         console.error("Failed to fetch requests:", error);
@@ -32,7 +36,11 @@ const AdminEdit = () => {
           {t("edit-drivers-title")}
         </h1>
         <div className="flex justify-start items-center text-center flex-col gap-6 p-6 bg-white rounded-2xl w-full h-fit shadow-xl">
-          <DriversTable drivers={drivers} type={"edit"} />
+          <DriversTable
+            drivers={drivers}
+            type={"edit"}
+            setDrivers={setDrivers}
+          />
           <div className="flex justify-end mt-4">
             <Button
               text={t("save-button")}

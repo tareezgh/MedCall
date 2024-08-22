@@ -1,15 +1,17 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 import {
-  editProfileUrl,
+  deleteUserUrl,
+  driverUpdateUrl,
   getDriversUrl,
   loginUrl,
   registerUrl,
   requestOtpUrl,
   resetPasswordUrl,
+  userUpdateUrl,
   verifyOtpUrl,
 } from "./constants";
-import { EditProfileData, User } from "../interfaces/types";
+import { EditDriverData, EditProfileData, User } from "../interfaces/types";
 import { setSessionStorageWithExpiry } from "../utils/sessionStorageHandler";
 
 export const registerUser = async (user: User) => {
@@ -72,7 +74,7 @@ export const editProfile = async (userId: string, data: EditProfileData) => {
     email: data.email,
   };
 
-  const response = await axios.patch(`${editProfileUrl}/${userId}`, args);
+  const response = await axios.patch(`${userUpdateUrl}/${userId}`, args);
 
   if (response.data.status === "failure") {
     toast.error(response.data.message, {
@@ -85,6 +87,55 @@ export const editProfile = async (userId: string, data: EditProfileData) => {
     setSessionStorageWithExpiry("token", token, 60);
     return response.data;
   }
+};
+
+export const changeDriverStatus = async (userId: string, status: string) => {
+  const args = {
+    driverStatus: status,
+  };
+
+  const response = await axios.patch(`${driverUpdateUrl}/${userId}`, args);
+
+  if (response.data.status === "failure") {
+    toast.error(response.data.message, {
+      position: "bottom-center",
+      hideProgressBar: true,
+    });
+  }
+};
+
+export const editDriver = async (userId: string, data: EditDriverData) => {
+  const args = {
+    firstName: data.firstName,
+    lastName: data.lastName,
+    phoneNumber: data.phoneNumber,
+    email: data.email,
+    city: data.city,
+    address: data.address,
+    zipCode: data.zipCode,
+    driverStatus: data.driverStatus,
+  };
+
+  const response = await axios.patch(`${driverUpdateUrl}/${userId}`, args);
+
+  if (response.data.status === "failure") {
+    toast.error(response.data.message, {
+      position: "bottom-center",
+      hideProgressBar: true,
+    });
+  }
+};
+
+export const deleteDriver = async (driverId: string) => {
+  const response = await axios.delete(`${deleteUserUrl}/${driverId}`);
+
+  if (response.data.status === "failure") {
+    toast.error(response.data.message, {
+      position: "bottom-center",
+      hideProgressBar: true,
+    });
+  }
+  return response;
 };
 
 export const sendOtp = async (email: string) => {
@@ -159,11 +210,10 @@ export const resetPassword = async (email: string, newPassword: string) => {
 
 export const getDrivers = async (status?: string) => {
   try {
-    let response 
-    if(status){
+    let response;
+    if (status) {
       response = await axios.post(getDriversUrl, { status });
-
-    }else{
+    } else {
       response = await axios.get(getDriversUrl);
     }
 
@@ -182,4 +232,3 @@ export const getDrivers = async (status?: string) => {
     });
   }
 };
-

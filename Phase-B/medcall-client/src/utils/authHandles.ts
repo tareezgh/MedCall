@@ -1,12 +1,18 @@
 import { toast } from "react-toastify";
 import {
   DecodedToken,
+  EditDriverData,
   EditProfileData,
   SignInFormData,
   SignUpFormData,
   User,
 } from "../interfaces/types";
-import { editProfile, loginUser, registerUser } from "../services/userService";
+import {
+  editDriver,
+  editProfile,
+  loginUser,
+  registerUser,
+} from "../services/userService";
 import { base64UrlDecode } from "./helpers";
 import {
   getSessionStorageWithExpiry,
@@ -174,6 +180,39 @@ export const handleEditProfile = async (
       })
     );
     await editProfile(userId, data);
+
+    toast.success("Saved successfully!", {
+      position: "bottom-center",
+      hideProgressBar: true,
+    });
+    return true;
+  } catch (error) {
+    toast.error("Failed to save data", {
+      position: "bottom-center",
+      hideProgressBar: true,
+    });
+  }
+  return false;
+};
+
+export const handleEditDriver = async (
+  driverId: string,
+  formData: EditDriverData
+) => {
+  try {
+    if (!driverId) return;
+    const data = {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      phoneNumber: formData.phoneNumber,
+      email: formData.email,
+      city: formData.city,
+      address: formData.address,
+      zipCode: formData.zipCode,
+      driverStatus: formData.driverStatus,
+    };
+
+    await editDriver(driverId, data);
 
     toast.success("Saved successfully!", {
       position: "bottom-center",

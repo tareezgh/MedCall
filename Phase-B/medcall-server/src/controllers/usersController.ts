@@ -53,6 +53,49 @@ export class UsersController {
     }
   }
 
+  public static async editDriverData(req: Request, res: Response) {
+    try {
+      const userId = req.params.id;
+      const {
+        firstName,
+        lastName,
+        phoneNumber,
+        email,
+        city,
+        address,
+        zipCode,
+        driverStatus,
+      } = req.body;
+      const service = new UsersService();
+      const user = await service.editDriverData(userId, {
+        firstName,
+        lastName,
+        phoneNumber,
+        email,
+        city,
+        address,
+        zipCode,
+        driverStatus,
+      });
+      return res.status(200).send(user);
+    } catch (error) {
+      console.error("Error in edit profile:", error);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  }
+
+  public static async deleteDriver(req: Request, res: Response) {
+    try {
+      const userId = req.params.id;
+      const service = new UsersService();
+      const user = await service.deleteDriver(userId);
+      return res.status(200).send(user);
+    } catch (error) {
+      console.error("Error in edit profile:", error);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  }
+
   public static async requestOtp(req: Request, res: Response) {
     try {
       const { email } = req.body;
