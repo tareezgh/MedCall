@@ -3,15 +3,22 @@ import { UsersController } from "../controllers/usersController";
 
 const router = Router();
 
+// Authentication and registration routes
 router.post("/login", UsersController.login);
 router.post("/register", UsersController.register);
-router.patch("/edit/:id", UsersController.editProfile);
-router.patch("/edit-driver/:id", UsersController.editDriverData);
-router.delete("/delete/:id", UsersController.deleteDriver);
-router.post("/request-otp", UsersController.requestOtp);
-router.post("/verify-otp", UsersController.verifyOtp);
-router.post("/reset-password", UsersController.resetPassword);
-router.get("/get-drivers", UsersController.getDrivers);
-router.post("/get-drivers", UsersController.getPendingDrivers);
+
+// User profile management routes
+router.patch("/:id", UsersController.editProfile);
+router.patch("/drivers/:id", UsersController.editDriverData);
+router.delete("/drivers/:id", UsersController.deleteDriver);
+
+// OTP and password management routes
+router.post("/otp/request", UsersController.requestOtp);
+router.post("/otp/verify", UsersController.verifyOtp);
+router.post("/password/reset", UsersController.resetPassword);
+
+// Driver management routes
+router.get("/drivers", UsersController.getDrivers);
+router.post("/drivers/pending", UsersController.getPendingDrivers);
 
 export default router;

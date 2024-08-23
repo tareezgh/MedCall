@@ -4,6 +4,7 @@ import {
   deleteUserUrl,
   driverUpdateUrl,
   getDriversUrl,
+  getPendingDriversUrl,
   loginUrl,
   registerUrl,
   requestOtpUrl,
@@ -212,7 +213,7 @@ export const getDrivers = async (status?: string) => {
   try {
     let response;
     if (status) {
-      response = await axios.post(getDriversUrl, { status });
+      response = await axios.post(getPendingDriversUrl, { status });
     } else {
       response = await axios.get(getDriversUrl);
     }
