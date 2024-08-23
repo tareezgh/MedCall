@@ -6,6 +6,8 @@ import DashboardContent from "../components/DashboardContent.tsx";
 import Tracking from "../components/Tracking.tsx";
 import Messages from "../components/Messages.tsx";
 import Profile from "../components/Profile.tsx";
+import AdminEdit from "../components/AdminEdit.tsx";
+import DriverRequest from "../components/DriverRequest.tsx";
 import { TabsTypes } from "../interfaces/types.ts";
 import { handleGetLocation } from "../utils/geolocationUtils.ts";
 
@@ -80,9 +82,9 @@ const Dashboard = () => {
           />
         );
       case "driverRequest":
-        return;
+        return <DriverRequest/>
       case "adminEdit":
-        return;
+        return <AdminEdit />;
       default:
         return (
           <DashboardContent

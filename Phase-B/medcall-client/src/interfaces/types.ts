@@ -1,4 +1,5 @@
 export interface User {
+  _id?: string;
   firstName: string;
   lastName: string;
   phoneNumber?: string;
@@ -8,6 +9,7 @@ export interface User {
   city?: string;
   address?: string;
   zipCode?: string;
+  driverStatus?: string;
   requests?: Array<any>;
   isGoogleSignIn: boolean;
 }
@@ -61,6 +63,24 @@ export interface ResetPasswordFormData {
 export interface SignInFormData {
   email: string;
   password: string;
+}
+
+export interface EditProfileData {
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  email: string;
+}
+
+export interface EditDriverData {
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  email: string;
+  city: string;
+  address: string;
+  zipCode: string;
+  driverStatus: string;
 }
 
 export interface DecodedToken {

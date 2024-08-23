@@ -15,6 +15,7 @@ export class UsersDal {
         city: user.city,
         address: user.address,
         zipCode: user.zipCode,
+        driverStatus: user.driverStatus,
         isGoogleSignIn: user.isGoogleSignIn,
       });
 
@@ -73,12 +74,49 @@ export class UsersDal {
       throw error;
     }
   }
+  public async editProfile(userId: string, updateData: Partial<User>) {
+    try {
+      const updatedData = await Users.findByIdAndUpdate(
+        userId,
+        { $set: updateData },
+        { new: true, runValidators: true }
+      );
+      return updatedData;
+    } catch (error) {
+      console.error("Error updating data:", error);
+      throw error;
+    }
+  }
+
+  public async editDriverData(userId: string, updateData: Partial<User>) {
+    try {
+      const updatedData = await Users.findByIdAndUpdate(
+        userId,
+        { $set: updateData },
+        { new: true, runValidators: true }
+      );
+      return updatedData;
+    } catch (error) {
+      console.error("Error updating driver data:", error);
+      throw error;
+    }
+  }
+
+  public async deleteDriver(userId: string) {
+    try {
+      const deletedUser = await Users.findByIdAndDelete(userId);
+      return deletedUser;
+    } catch (error) {
+      console.error("Error deleting driver:", error);
+      throw error;
+    }
+  }
 
   public async saveOtp(email: string, otp: string) {
     try {
       const user = await Users.findOne({ email });
       if (user) {
-        user.otp = otp; 
+        user.otp = otp;
         user.otpExpiry = new Date(Date.now() + 5 * 60 * 1000); // Set expiry for 5 minutes from now
         await user.save();
       }
@@ -92,7 +130,7 @@ export class UsersDal {
     try {
       const user = await Users.findOne({ email, otp });
       if (user && user.otpExpiry && user.otpExpiry > new Date()) {
-        user.otp = null; 
+        user.otp = null;
         user.otpExpiry = null;
         await user.save();
         return true;

@@ -1,13 +1,18 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 import {
+  deleteUserUrl,
+  driverUpdateUrl,
+  getDriversUrl,
+  getPendingDriversUrl,
   loginUrl,
   registerUrl,
   requestOtpUrl,
   resetPasswordUrl,
+  userUpdateUrl,
   verifyOtpUrl,
 } from "./constants";
-import { User } from "../interfaces/types";
+import { EditDriverData, EditProfileData, User } from "../interfaces/types";
 import { setSessionStorageWithExpiry } from "../utils/sessionStorageHandler";
 
 export const registerUser = async (user: User) => {
@@ -21,6 +26,7 @@ export const registerUser = async (user: User) => {
     city: user.city,
     address: user.address,
     zipCode: user.zipCode,
+    driverStatus: user.driverStatus,
     isGoogleSignIn: user.isGoogleSignIn,
   };
 
@@ -59,6 +65,78 @@ export const loginUser = async (user: Partial<User>) => {
     setSessionStorageWithExpiry("token", token, 60);
     return args;
   }
+};
+
+export const editProfile = async (userId: string, data: EditProfileData) => {
+  const args = {
+    firstName: data.firstName,
+    lastName: data.lastName,
+    phoneNumber: data.phoneNumber,
+    email: data.email,
+  };
+
+  const response = await axios.patch(`${userUpdateUrl}/${userId}`, args);
+
+  if (response.data.status === "failure") {
+    toast.error(response.data.message, {
+      position: "bottom-center",
+      hideProgressBar: true,
+    });
+  } else {
+    const token = response.data.token;
+    // Store the token in sessionStorage with an expiration time of 1 hour
+    setSessionStorageWithExpiry("token", token, 60);
+    return response.data;
+  }
+};
+
+export const changeDriverStatus = async (userId: string, status: string) => {
+  const args = {
+    driverStatus: status,
+  };
+
+  const response = await axios.patch(`${driverUpdateUrl}/${userId}`, args);
+
+  if (response.data.status === "failure") {
+    toast.error(response.data.message, {
+      position: "bottom-center",
+      hideProgressBar: true,
+    });
+  }
+};
+
+export const editDriver = async (userId: string, data: EditDriverData) => {
+  const args = {
+    firstName: data.firstName,
+    lastName: data.lastName,
+    phoneNumber: data.phoneNumber,
+    email: data.email,
+    city: data.city,
+    address: data.address,
+    zipCode: data.zipCode,
+    driverStatus: data.driverStatus,
+  };
+
+  const response = await axios.patch(`${driverUpdateUrl}/${userId}`, args);
+
+  if (response.data.status === "failure") {
+    toast.error(response.data.message, {
+      position: "bottom-center",
+      hideProgressBar: true,
+    });
+  }
+};
+
+export const deleteDriver = async (driverId: string) => {
+  const response = await axios.delete(`${deleteUserUrl}/${driverId}`);
+
+  if (response.data.status === "failure") {
+    toast.error(response.data.message, {
+      position: "bottom-center",
+      hideProgressBar: true,
+    });
+  }
+  return response;
 };
 
 export const sendOtp = async (email: string) => {
@@ -121,10 +199,35 @@ export const resetPassword = async (email: string, newPassword: string) => {
         position: "top-center",
         hideProgressBar: true,
       });
-    } 
+    }
   } catch (error) {
     console.error("Error resetting password:", error);
     toast.error("Failed to reset password", {
+      position: "top-center",
+      hideProgressBar: true,
+    });
+  }
+};
+
+export const getDrivers = async (status?: string) => {
+  try {
+    let response;
+    if (status) {
+      response = await axios.post(getPendingDriversUrl, { status });
+    } else {
+      response = await axios.get(getDriversUrl);
+    }
+
+    if (response.data.status === "failure") {
+      toast.error(response.data.message, {
+        position: "top-center",
+        hideProgressBar: true,
+      });
+    } else {
+      return response.data;
+    }
+  } catch (error) {
+    toast.error("Failed to get drivers request", {
       position: "top-center",
       hideProgressBar: true,
     });

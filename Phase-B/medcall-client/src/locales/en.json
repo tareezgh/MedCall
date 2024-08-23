@@ -39,6 +39,9 @@
   "sign-up-email-placeholder": "Email",
   "sign-up-password-placeholder": "Password",
   "sign-up-confirm-password-placeholder": "Confirm Password",
+  "sign-up-city-placeholder": "City",
+  "sign-up-address-placeholder": "Address",
+  "sign-up-zip-code-placeholder": "Zip Code",
   "sign-up-policy": "By continue you agree with Terms & Conditions and Privacy Policy",
   "sign-up-form-button": "Create Account",
   "sign-up-nav-to": "Already have an account? ",
@@ -145,12 +148,27 @@
 
   "accept-request": "Accept Request",
   "decline-request": "Decline",
+  "approve": "Approve",
+  "edit-profile": "Edit Profile",
+  "drivers-requests-title": "Drivers Requests",
+  "edit-drivers-title": "Edit Drivers",
+  "save-button": "Save",
+  "full-name": "Full Name",
+  "phone": "Phone",
+  "driver-license": "Driver License",
+  "action": "Action",
+  "driver-status-placeholder": "Driver Status",
+ 
+
   "track": "Track Emergency Details",
   "driver-track-route-title": "Route Details",
   "confirm-arrival": "Confirm Arrival",
+ "": "",
   "": "",
   "": "",
   "": "",
   "": "",
+  "": "",
+
   "": ""
 }
