@@ -13,4 +13,4 @@ export const getPendingDriversUrl = `${apiUrl}/users/drivers/pending`;
 
 export const requestUrl = `${apiUrl}/request`;
 export const activeRequestUrl = `${apiUrl}/request/active-request`;
-export const updateRequestUrl = `${apiUrl}/request/update`;
+export const updateRequestUrl = `${apiUrl}/request`;
