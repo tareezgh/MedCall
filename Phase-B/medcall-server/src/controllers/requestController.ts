@@ -35,14 +35,26 @@ export class RequestController {
     }
   }
 
+  public static async getActiveRequest(req: Request, res: Response) {
+    try {
+      const { status, id } = req.body;
+      const service = new RequestService();
+      const request = await service.getActiveRequest({ status, id });
+      return res.status(200).send(request);
+    } catch (error) {
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  }
+
   public static async updateRequest(req: Request, res: Response) {
     try {
       const requestId = req.params.id;
-      const { status, driverName } = req.body;
+      const { status, driverName, driverLocation } = req.body;
       const service = new RequestService();
       const request = await service.updateRequest(requestId, {
         status,
         driverName,
+        driverLocation,
       });
       return res.status(200).send(request);
     } catch (error) {

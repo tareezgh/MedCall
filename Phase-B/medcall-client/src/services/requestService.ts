@@ -1,7 +1,7 @@
 import axios from "axios";
 import { toast } from "react-toastify";
-import { requestUrl } from "./constants";
-import { AmbulanceRequest } from "../interfaces/types";
+import { activeRequestUrl, requestUrl, updateRequestUrl } from "./constants";
+import { AmbulanceRequest, StatusType } from "../interfaces/types";
 
 export const postNewRequest = async (request: AmbulanceRequest) => {
   const args = {
@@ -67,17 +67,48 @@ export const getRequestById = async (userId: string) => {
   }
 
   return response.data;
-
 };
 
-export const fetchActiveRequest = async () => {
-  // Mock response for illustration purposes
-  return {
-    status: "active", // This can be "active", "completed", "none", etc.
-    request: {
-      date: "2024-07-01",
-      typeOfEmergency: "Cardiac Arrest",
-      location: "123 Main St",
-    },
+export const getActiveRequest = async (currentUserID: string) => {
+  const args = {
+    status: "active",
+    id: currentUserID,
   };
+  const response = await axios.post(`${activeRequestUrl}`, args);
+  console.log("🚀 ~ getActiveRequest ~ response:", response);
+
+  if (response.data.status === "failure") {
+    toast.error(response.data.message, {
+      position: "bottom-center",
+      hideProgressBar: true,
+    });
+    return null;
+  }
+
+  return response.data;
+};
+
+export const updateRequestStatus = async (
+  requestId: string,
+  newStatus: StatusType,
+  currentDriverName: string,
+  currentDriverLocation?: { address?: string; lat: number; long: number }
+) => {
+  const args = {
+    driverName: currentDriverName,
+    status: newStatus,
+    driverLocation: currentDriverLocation,
+  };
+  const response = await axios.patch(`${updateRequestUrl}/${requestId}`, args);
+  console.log("🚀 ~ updateRequestStatus ~ response:", response);
+
+  if (response.data.status === "failure") {
+    toast.error(response.data.message, {
+      position: "bottom-center",
+      hideProgressBar: true,
+    });
+    return null;
+  }
+
+  return response.data;
 };

@@ -16,6 +16,14 @@ const requestSchema = new mongoose.Schema(
       required: true,
     },
     driverName: { type: String, required: false },
+    driverLocation: {
+      type: {
+        address: { type: String, required: false },
+        lat: { type: Number, required: true },
+        long: { type: Number, required: true },
+      },
+      required: false,
+    },
     status: { type: String, required: false },
     callerName: { type: String, required: true },
     phoneNumber: { type: String, required: true },

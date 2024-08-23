@@ -13,6 +13,13 @@ export class RequestDal {
           long: request.location.long,
         },
         driverName: request.driverName,
+        driverLocation: request.driverLocation
+          ? {
+              address: request.driverLocation.address || "",
+              lat: request.driverLocation.lat || 0,
+              long: request.driverLocation.long || 0,
+            }
+          : undefined,
         status: request.status || "starting",
         callerName: request.callerName,
         phoneNumber: request.phoneNumber,
@@ -47,7 +54,7 @@ export class RequestDal {
 
   public async getAllRequests() {
     try {
-      const requests = await Request.find({ status: { $ne: "completed" } }).populate(
+      const requests = await Request.find({ status: "starting" }).populate(
         "userId",
         "firstName lastName phoneNumber"
       );
@@ -58,12 +65,36 @@ export class RequestDal {
     }
   }
 
+  public async getActiveRequest(data: { status: string; id: string }) {
+    try {
+      const query: any = { status: data.status };
+
+      if (data.id) {
+        query.$or = [
+          { userId: data.id },
+          { driverName: new RegExp(`^${data.id}_`) },
+        ];
+      }
+
+      const activeRequest = await Request.findOne(query).populate(
+        "userId",
+        "firstName lastName phoneNumber"
+      );
+      return activeRequest;
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  }
+
   public async getRequestsByUserId(userId: string) {
     try {
       const query = userId ? { userId } : {};
-      const requests = await Request.find(query).populate('userId', 'firstName lastName phoneNumber');
+      const requests = await Request.find(query).populate(
+        "userId",
+        "firstName lastName phoneNumber"
+      );
       return requests;
-
     } catch (err) {
       console.error(err);
       throw err;
@@ -74,7 +105,7 @@ export class RequestDal {
       const updatedRequest = await Request.findByIdAndUpdate(
         requestId,
         { $set: updateData },
-        { new: true, runValidators: true } 
+        { new: true, runValidators: true }
       );
       return updatedRequest;
     } catch (err) {

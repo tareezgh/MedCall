@@ -15,6 +15,7 @@ export interface User {
 }
 
 export interface AmbulanceRequest {
+  _id: string;
   userId: string | null; // Allow null for anonymous users
   location: {
     address?: string;
@@ -22,6 +23,11 @@ export interface AmbulanceRequest {
     long: number;
   };
   driverName?: string;
+  driverLocation?: {
+    address?: string;
+    lat: number;
+    long: number;
+  };
   status?: string;
   callerName: string;
   phoneNumber: string;
@@ -105,3 +111,13 @@ export type TabsTypes =
   | "driverRequest"
   | "adminEdit"
   | "logout";
+
+export type StatusType = "starting" | "active" | "completed";
+
+
+export interface MarkerProps {
+  latitude: number;
+  longitude: number;
+  popUp: string;
+  type: "ambulance" | "user" | "driver";
+}
