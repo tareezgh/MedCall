@@ -10,6 +10,11 @@ export interface IRequest {
     long: number;
   };
   driverName: string;
+  driverLocation: {
+    address: string;
+    lat: number;
+    long: number;
+  };
   status: string;
   callerName: string;
   phoneNumber: string;

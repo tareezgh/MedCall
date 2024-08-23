@@ -18,6 +18,7 @@ import UserIcon from "./UserIcon";
 import UsersIcon from "./UsersIcon";
 import LogoutIcon from "./LogoutIcon";
 import ZipIcon from "./ZipIcon";
+import DeleteIcon from "./DeleteIcon";
 
 export {
   AddressIcon,
@@ -40,4 +41,5 @@ export {
   UserIcon,
   UsersIcon,
   ZipIcon,
+  DeleteIcon,
 };

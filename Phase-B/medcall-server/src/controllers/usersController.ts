@@ -35,6 +35,67 @@ export class UsersController {
     }
   }
 
+  public static async editProfile(req: Request, res: Response) {
+    try {
+      const userId = req.params.id;
+      const { firstName, lastName, phoneNumber, email } = req.body;
+      const service = new UsersService();
+      const user = await service.editProfile(userId, {
+        firstName,
+        lastName,
+        phoneNumber,
+        email,
+      });
+      return res.status(200).send(user);
+    } catch (error) {
+      console.error("Error in edit profile:", error);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  }
+
+  public static async editDriverData(req: Request, res: Response) {
+    try {
+      const userId = req.params.id;
+      const {
+        firstName,
+        lastName,
+        phoneNumber,
+        email,
+        city,
+        address,
+        zipCode,
+        driverStatus,
+      } = req.body;
+      const service = new UsersService();
+      const user = await service.editDriverData(userId, {
+        firstName,
+        lastName,
+        phoneNumber,
+        email,
+        city,
+        address,
+        zipCode,
+        driverStatus,
+      });
+      return res.status(200).send(user);
+    } catch (error) {
+      console.error("Error in edit profile:", error);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  }
+
+  public static async deleteDriver(req: Request, res: Response) {
+    try {
+      const userId = req.params.id;
+      const service = new UsersService();
+      const user = await service.deleteDriver(userId);
+      return res.status(200).send(user);
+    } catch (error) {
+      console.error("Error in edit profile:", error);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  }
+
   public static async requestOtp(req: Request, res: Response) {
     try {
       const { email } = req.body;
@@ -79,6 +140,36 @@ export class UsersController {
       }
     } catch (error) {
       console.error("Error in resetPassword:", error);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  }
+
+  public static async getPendingDrivers(req: Request, res: Response) {
+    try {
+      const { status } = req.body;
+      const service = new UsersService();
+      const result = await service.getPendingDrivers(status);
+      if (result.status === "success") {
+        return res.status(200).json(result);
+      } else {
+        return res.status(400).json(result);
+      }
+    } catch (error) {
+      console.error("Error in getPendingDrivers:", error);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  }
+  public static async getDrivers(req: Request, res: Response) {
+    try {
+      const service = new UsersService();
+      const result = await service.getDrivers();
+      if (result.status === "success") {
+        return res.status(200).json(result);
+      } else {
+        return res.status(400).json(result);
+      }
+    } catch (error) {
+      console.error("Error in getDrivers:", error);
       return res.status(500).json({ error: "Internal server error" });
     }
   }
