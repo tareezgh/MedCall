@@ -12,6 +12,7 @@ import NotificationIcon from "./NotificationIcon";
 import PhoneIcon from "./PhoneIcon";
 import PinIcon from "./PinIcon";
 import PlusIcon from "./PlusIcon";
+import SendIcon from "./SendIcon";
 import SettingsIcon from "./SettingsIcon";
 import TrackIcon from "./TrackIcon";
 import UserIcon from "./UserIcon";
@@ -36,6 +37,7 @@ export {
   PhoneIcon,
   PinIcon,
   PlusIcon,
+  SendIcon,
   SettingsIcon,
   TrackIcon,
   UserIcon,

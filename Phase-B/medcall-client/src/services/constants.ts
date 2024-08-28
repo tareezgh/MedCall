@@ -9,8 +9,12 @@ export const requestOtpUrl = `${apiUrl}/users/otp/request`;
 export const verifyOtpUrl = `${apiUrl}/users/otp/verify`;
 export const resetPasswordUrl = `${apiUrl}/users/password/reset`;
 export const getDriversUrl = `${apiUrl}/users/drivers`;
-export const getPendingDriversUrl = `${apiUrl}/users/drivers/pending`; 
+export const getPendingDriversUrl = `${apiUrl}/users/drivers/pending`;
 
 export const requestUrl = `${apiUrl}/request`;
 export const activeRequestUrl = `${apiUrl}/request/active-request`;
 export const updateRequestUrl = `${apiUrl}/request`;
+
+export const getConversationUrl = `${apiUrl}/conversation`;
+
+export const getMessagesUrl = `${apiUrl}/conversation/messages`;
