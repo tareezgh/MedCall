@@ -11,6 +11,7 @@ const usersSchema = new mongoose.Schema(
     city: { type: String, required: false },
     address: { type: String, required: false },
     zipCode: { type: String, required: false },
+    driverStatus: { type: String, required: false },
     requests: [{ type: mongoose.Schema.Types.ObjectId, ref: "Request" }],
     isGoogleSignIn: { type: Boolean, required: true },
     otp: { type: String, required: false },

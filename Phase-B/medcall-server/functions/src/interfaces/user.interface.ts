@@ -11,6 +11,7 @@ export interface User {
   city?: string | null;
   address?: string | null;
   zipCode?: string | null;
+  driverStatus?: string | null;
   requests: mongoose.Types.ObjectId[];
   isGoogleSignIn: boolean;
   otp?: string;

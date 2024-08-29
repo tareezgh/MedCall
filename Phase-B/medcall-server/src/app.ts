@@ -1,11 +1,9 @@
 import express from "express";
 import routes from "./routes";
 import http from "http";
-import WebSocket, { WebSocketServer } from "ws";
 import { connectDb } from "./db/index";
 import bodyParser from "body-parser";
 import cors from "cors";
-import Message from "./db/models/conversation";
 import setupWebSocket from "./websocketHandler";
 
 require("dotenv").config();

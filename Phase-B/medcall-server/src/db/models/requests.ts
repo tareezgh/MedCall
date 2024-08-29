@@ -15,6 +15,11 @@ const requestSchema = new mongoose.Schema(
       },
       required: true,
     },
+    driverId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Users",
+      required: false,
+    },
     driverName: { type: String, required: false },
     driverLocation: {
       type: {

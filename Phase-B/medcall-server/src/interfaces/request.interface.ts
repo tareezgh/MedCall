@@ -9,6 +9,7 @@ export interface IRequest {
     lat: number;
     long: number;
   };
+  driverId: mongoose.Schema.Types.ObjectId;
   driverName: string;
   driverLocation: {
     address: string;

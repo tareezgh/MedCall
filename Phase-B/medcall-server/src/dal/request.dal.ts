@@ -12,6 +12,7 @@ export class RequestDal {
           lat: request.location.lat,
           long: request.location.long,
         },
+        driverId: request.driverId,
         driverName: request.driverName,
         driverLocation: request.driverLocation
           ? {
@@ -100,6 +101,7 @@ export class RequestDal {
       throw err;
     }
   }
+  
   public async updateRequest(requestId: string, updateData: Partial<IRequest>) {
     try {
       const updatedRequest = await Request.findByIdAndUpdate(
