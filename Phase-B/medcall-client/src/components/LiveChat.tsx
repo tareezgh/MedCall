@@ -59,7 +59,7 @@ const LiveChat = () => {
     fetchConversations();
     // Create WebSocket connection
     const socket = new WebSocket(
-      `ws://${wsUrl}?userId=${encodeURIComponent(currentUser.id)}`
+      `${wsUrl}?userId=${encodeURIComponent(currentUser.id)}`
     );
 
     socket.onopen = () => {
