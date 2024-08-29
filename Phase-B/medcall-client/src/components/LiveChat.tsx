@@ -40,7 +40,7 @@ const LiveChat = () => {
   const [ws, setWs] = useState<WebSocket | null>(null);
   const currentUser = useSelector((state: any) => state.currentUser);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
-
+  const wsUrl = import.meta.env.VITE_WS_URL;
   useEffect(() => {
     const fetchConversations = async () => {
       try {
@@ -59,7 +59,7 @@ const LiveChat = () => {
     fetchConversations();
     // Create WebSocket connection
     const socket = new WebSocket(
-      `ws://localhost:3001?userId=${encodeURIComponent(currentUser.id)}`
+      `ws://${wsUrl}?userId=${encodeURIComponent(currentUser.id)}`
     );
 
     socket.onopen = () => {

@@ -34,6 +34,7 @@ jobs:
           VITE_FIREBASE_APP_ID: ${{ secrets.VITE_FIREBASE_APP_ID }}
           VITE_FIREBASE_MEASUREMENT_ID: ${{ secrets.VITE_FIREBASE_MEASUREMENT_ID }}
           VITE_API_KEY: ${{ secrets.VITE_API_KEY }}
+          VITE_WS_URL: ${{ secrets.VITE_WS_URL }}
         run: |
           echo "VITE_API_BASE_URL=${VITE_API_BASE_URL}" > Phase-B/medcall-client/.env.production
           echo "VITE_FIREBASE_API_KEY=${VITE_FIREBASE_API_KEY}" >> Phase-B/medcall-client/.env.production
@@ -44,6 +45,7 @@ jobs:
           echo "VITE_FIREBASE_APP_ID=${VITE_FIREBASE_APP_ID}" >> Phase-B/medcall-client/.env.production
           echo "VITE_FIREBASE_MEASUREMENT_ID=${VITE_FIREBASE_MEASUREMENT_ID}" >> Phase-B/medcall-client/.env.production
           echo "VITE_API_KEY=${VITE_API_KEY}" >> Phase-B/medcall-client/.env.production
+          echo "VITE_WS_URL=${VITE_WS_URL}" >> Phase-B/medcall-client/.env.production
           echo "Created .env.production file with the following content:"
           cat Phase-B/medcall-client/.env.production
 
