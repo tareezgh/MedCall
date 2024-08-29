@@ -43,6 +43,7 @@ export class UsersService {
       userData.role,
       userData.firstName,
       userData.lastName,
+      userData.isGoogleSignIn,
       userData.phoneNumber
     );
     return {
@@ -74,6 +75,7 @@ export class UsersService {
       newUser.role,
       newUser.firstName,
       newUser.lastName,
+      newUser.isGoogleSignIn,
       newUser.phoneNumber
     );
 
@@ -81,6 +83,53 @@ export class UsersService {
       status: "success",
       message: "User registered",
       token,
+    };
+  }
+
+  public async editProfile(userId: string, updateData: Partial<User>) {
+    const updatedUser = await this.usersDal.editProfile(userId, updateData);
+    if (!updatedUser) {
+      return { status: "failure", message: "Profile update failed" };
+    }
+
+    const token = this.generateToken(
+      updatedUser._id,
+      updatedUser.email,
+      updatedUser.role,
+      updatedUser.firstName,
+      updatedUser.lastName,
+      updatedUser.isGoogleSignIn,
+      updatedUser.phoneNumber
+    );
+
+    return {
+      status: "success",
+      message: "Profile updated successfully",
+      token,
+    };
+  }
+
+  public async editDriverData(userId: string, updateData: Partial<User>) {
+    const updatedUser = await this.usersDal.editDriverData(userId, updateData);
+    if (!updatedUser) {
+      return { status: "failure", message: "Profile update failed" };
+    }
+
+    return {
+      status: "success",
+      message: "Profile updated successfully",
+    };
+  }
+
+  public async deleteDriver(userId: string) {
+    const deletedUser = await this.usersDal.deleteDriver(userId);
+    if (!deletedUser) {
+      return { status: "failure", message: "Delete user failed" };
+    }
+
+    return {
+      status: "success",
+      message: "Deleted successfully",
     };
   }
 
@@ -146,12 +195,44 @@ export class UsersService {
     return res;
   }
 
+  public async getDrivers() {
+    try {
+      const drivers = await this.usersDal.findAll({ role: "driver" });
+      return {
+        status: "success",
+        message: "Drivers fetched successfully",
+        drivers,
+      };
+    } catch (error) {
+      console.error("Error fetching drivers:", error);
+      return { status: "failure", message: "Failed to fetch drivers" };
+    }
+  }
+
+  public async getPendingDrivers(status: string) {
+    try {
+      const drivers = await this.usersDal.findAll({
+        role: "driver",
+        driverStatus: status,
+      });
+      return {
+        status: "success",
+        message: "Pending drivers fetched successfully",
+        drivers,
+      };
+    } catch (error) {
+      console.error("Error fetching pending drivers:", error);
+      return { status: "failure", message: "Failed to fetch pending drivers" };
+    }
+  }
+
   private generateToken(
     id: mongoose.Types.ObjectId,
     email: string,
     role: string,
     firstName: string,
     lastName: string,
+    isGoogleSignIn: boolean,
     phoneNumber?: string | null
   ) {
     const JWT_SECRET = process.env.JWT_SECRET_KEY;
@@ -168,6 +249,7 @@ export class UsersService {
         firstName: firstName,
         lastName: lastName,
         phoneNumber: phoneNumber,
+        isGoogleSignIn: isGoogleSignIn,
       },
       JWT_SECRET,
       {

@@ -1,4 +1,5 @@
 export interface User {
+  _id?: string;
   firstName: string;
   lastName: string;
   phoneNumber?: string;
@@ -8,11 +9,13 @@ export interface User {
   city?: string;
   address?: string;
   zipCode?: string;
+  driverStatus?: string;
   requests?: Array<any>;
   isGoogleSignIn: boolean;
 }
 
 export interface AmbulanceRequest {
+  _id: string;
   userId: string | null; // Allow null for anonymous users
   location: {
     address?: string;
@@ -20,6 +23,11 @@ export interface AmbulanceRequest {
     long: number;
   };
   driverName?: string;
+  driverLocation?: {
+    address?: string;
+    lat: number;
+    long: number;
+  };
   status?: string;
   callerName: string;
   phoneNumber: string;
@@ -49,12 +57,30 @@ export interface SignUpFormData {
 export interface ResetPasswordFormData {
   email: string;
   password: string;
-  confirmPassword: string,
+  confirmPassword: string;
 }
 
 export interface SignInFormData {
   email: string;
   password: string;
+}
+
+export interface EditProfileData {
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  email: string;
+}
+
+export interface EditDriverData {
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  email: string;
+  city: string;
+  address: string;
+  zipCode: string;
+  driverStatus: string;
 }
 
 export interface DecodedToken {
@@ -85,3 +111,13 @@ export type TabsTypes =
   | "driverRequest"
   | "adminEdit"
   | "logout";
+
+export type StatusType = "starting" | "active" | "completed";
+
+
+export interface MarkerProps {
+  latitude: number;
+  longitude: number;
+  popUp: string;
+  type: "ambulance" | "user" | "driver";
+}

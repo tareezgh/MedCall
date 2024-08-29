@@ -1,8 +1,10 @@
 import express from "express";
 import routes from "./routes";
+import http from "http";
 import { connectDb } from "./db/index";
 import bodyParser from "body-parser";
 import cors from "cors";
+import setupWebSocket from "./websocketHandler";
 
 require("dotenv").config();
 const corsOptions = {
@@ -11,13 +13,23 @@ const corsOptions = {
 };
 
 const app = express();
+const server = http.createServer(app);
+setupWebSocket(server);
+
 app.use(bodyParser.urlencoded());
 app.use(bodyParser.json());
 app.use(cors(corsOptions));
 app.use(routes);
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3001;
+
+// Error handling for server
+server.on("error", (error) => {
+  console.error("Server error:", error);
+});
 
 connectDb().then(async () => {
-  app.listen(PORT, () => console.log(`Listening on http://localhost:${PORT}`));
+  server.listen(PORT, () =>
+    console.log(`Listening on http://localhost:${PORT}`)
+  );
 });

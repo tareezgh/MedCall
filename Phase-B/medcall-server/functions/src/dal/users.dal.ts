@@ -15,6 +15,7 @@ export class UsersDal {
         city: user.city,
         address: user.address,
         zipCode: user.zipCode,
+        driverStatus: user.driverStatus,
         isGoogleSignIn: user.isGoogleSignIn,
       });
 
@@ -70,6 +71,44 @@ export class UsersDal {
       return result.modifiedCount > 0;
     } catch (error) {
       console.error("Error updating password:", error);
+      throw error;
+    }
+  }
+
+  public async editProfile(userId: string, updateData: Partial<User>) {
+    try {
+      const updatedData = await Users.findByIdAndUpdate(
+        userId,
+        { $set: updateData },
+        { new: true, runValidators: true }
+      );
+      return updatedData;
+    } catch (error) {
+      console.error("Error updating data:", error);
+      throw error;
+    }
+  }
+
+  public async editDriverData(userId: string, updateData: Partial<User>) {
+    try {
+      const updatedData = await Users.findByIdAndUpdate(
+        userId,
+        { $set: updateData },
+        { new: true, runValidators: true }
+      );
+      return updatedData;
+    } catch (error) {
+      console.error("Error updating driver data:", error);
+      throw error;
+    }
+  }
+
+  public async deleteDriver(userId: string) {
+    try {
+      const deletedUser = await Users.findByIdAndDelete(userId);
+      return deletedUser;
+    } catch (error) {
+      console.error("Error deleting driver:", error);
       throw error;
     }
   }

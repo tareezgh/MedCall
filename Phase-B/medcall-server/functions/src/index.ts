@@ -1,15 +1,19 @@
 const functions = require("firebase-functions");
 const express = require("express");
 const dotenv = require("dotenv");
+const http = require("http");
 import routes from "./routes";
 import { connectDb } from "./db/index";
 import { Request, Response } from "express";
 import { applyMiddleware } from "./middleware/middleware";
+import setupWebSocket from "./websocketHandler";
 
 dotenv.config({ path: `.env.production` });
 
 const app = express();
 applyMiddleware(app);
+const server = http.createServer(app);
+setupWebSocket(server);
 app.use(routes);
 
 app.get("/some-data", (request: Request, response: Response) => {

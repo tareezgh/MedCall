@@ -1,53 +1,55 @@
 import { useEffect, useState } from "preact/hooks";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import HistoryItem from "../components/HistoryItem";
 import { PlusIcon } from "../components/icons";
-import { fetchActiveRequest } from "../services/requestService";
-import { TabsTypes } from "../interfaces/types";
+import { getActiveRequest, getRequestById } from "../services/requestService";
+import { AmbulanceRequest, TabsTypes } from "../interfaces/types";
+import { useSelector } from "react-redux";
+import { capitalizeFirstLetter } from "../utils/helpers";
 
 interface UserDashboardContentProps {
   setActiveTab: (tab: TabsTypes) => void;
 }
 
 const UserDashboardContent = ({ setActiveTab }: UserDashboardContentProps) => {
+  const navigate = useNavigate();
   const { t } = useTranslation();
-  const [activeRequest, setActiveRequest] = useState<any>(null); //TODO need to change type when back is ready
-  const [status, setStatus] = useState("starting"); // "starting", "active", "completed", "none"
-  
-  console.log("🚀 ~ UserDashboardContent ~ activeRequest:", activeRequest)
-  const historyMockData = [
-    {
-      date: "2024-07-01",
-      typeOfEmergency: "Cardiac Arrest",
-      location: "123 Main St",
-    },
-    {
-      date: "2024-06-28",
-      typeOfEmergency: "Severe Bleeding",
-      location: "456 Elm St",
-    },
-    {
-      date: "2024-06-25",
-      typeOfEmergency: "Road Accident",
-      location: "789 Pine St",
-    },
-  ];
+  const [activeRequest, setActiveRequest] = useState<AmbulanceRequest | null>(
+    null
+  );
+  const [userRequests, setUserRequests] = useState<any[]>([]);
+  const currentUser = useSelector((state: any) => state.currentUser);
 
   useEffect(() => {
-    const getActiveRequest = async () => {
+    const fetchActiveRequest = async () => {
       try {
-        const response = await fetchActiveRequest();
-        setStatus(response.status);
-        if (response.status === "active") {
-          setActiveRequest(response.request);
+        const fetchedRequest = await getActiveRequest(currentUser.id);
+        console.log("Fetched request:", fetchedRequest);
+
+        if (fetchedRequest) {
+          setActiveRequest(fetchedRequest);
         }
       } catch (error) {
         console.error("Failed to fetch active request:", error);
-        setStatus("error");
       }
     };
-    getActiveRequest();
+
+    const fetchUserRequests = async () => {
+      try {
+        const requests = await getRequestById(currentUser.id);
+        console.log("🚀 ~ fetchUserRequests ~ requests:", requests);
+        if (requests) {
+          setUserRequests(requests);
+        }
+      } catch (error) {
+        console.error("Failed to fetch user requests:", error);
+      }
+    };
+
+    fetchActiveRequest();
+    fetchUserRequests();
   }, []);
 
   const renderActiveRequest = () => {
@@ -83,7 +85,7 @@ const UserDashboardContent = ({ setActiveTab }: UserDashboardContentProps) => {
           <Button
             text={t("new-request.order-now-button")}
             type="primary"
-            onClick={() => {}}
+            onClick={() => navigate("/request-ambulance")}
             customClassName="text-2xl"
           />
         </div>
@@ -97,14 +99,16 @@ const UserDashboardContent = ({ setActiveTab }: UserDashboardContentProps) => {
         <div className="flex flex-col justify-start text-start gap-8 p-6 bg-modalBackground rounded-2xl w-full h-fit shadow-xl">
           <h2 className="text-3xl font-bold">{t("history.title")}</h2>
           <div className="flex flex-col gap-4">
-            {historyMockData.map((item, index) => (
-              <HistoryItem
-                key={index}
-                date={item.date}
-                typeOfEmergency={item.typeOfEmergency}
-                location={item.location}
-              />
-            ))}
+            {userRequests
+              .filter((request) => request.status === "completed")
+              .map((request, index) => (
+                <HistoryItem
+                  key={index}
+                  date={new Date(request.createdAt).toLocaleDateString()}
+                  typeOfEmergency={capitalizeFirstLetter(request.emergencyType)}
+                  location={request.location.address}
+                />
+              ))}
           </div>
         </div>
       </>
@@ -113,7 +117,7 @@ const UserDashboardContent = ({ setActiveTab }: UserDashboardContentProps) => {
   return (
     <>
       <div className="left-side flex flex-col gap-4 w-1/2">
-        {status !== "completed" && renderActiveRequest()}
+        {activeRequest && renderActiveRequest()}
         {renderNewRequest()}
       </div>
       <div className="right-side w-1/2">{renderHistory()}</div>

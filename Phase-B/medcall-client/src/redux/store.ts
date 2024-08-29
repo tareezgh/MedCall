@@ -1,9 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import { userSlice } from "./Slicers";
+import { locationSlice, userSlice } from "./Slicers";
 
 export default configureStore({
   reducer: {
     currentUser: userSlice.reducer,
+    location: locationSlice.reducer,
   },
 });

@@ -1,4 +1,4 @@
-import { useState } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 import Button from "../components/Button";
@@ -18,11 +18,13 @@ import {
 } from "../interfaces/types";
 import { useSelector } from "react-redux";
 import { postNewRequest } from "../services/requestService";
+import { handleGetLocation } from "../utils/geolocationUtils";
 
 const RequestAmbulance = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const currentUser = useSelector((state: any) => state.currentUser);
+  const currentLocation = useSelector((state: any) => state.location);
 
   const [isOptionalSection, setIsOptionalSection] = useState<boolean>(false);
 
@@ -42,6 +44,15 @@ const RequestAmbulance = () => {
     bleeding: "not_bleeding",
     painLevel: "mild",
   });
+
+  useEffect(() => {
+    console.log("🚀 ~ RequestAmbulance ~ currentLocation:", currentLocation);
+    if (currentLocation.address === "") {
+      handleGetLocation().catch((error) => {
+        console.error("Failed to get location:", error);
+      });
+    }
+  }, [currentLocation]);
 
   const handleChange =
     (field: keyof RequestAmbulanceFormData) =>
@@ -76,8 +87,13 @@ const RequestAmbulance = () => {
 
   const handleRequestAmbulance = async () => {
     const newRequestData: AmbulanceRequest = {
+      _id: `temp_${Date.now()}`,
       userId: currentUser.id,
-      location: { lat: 30, long: 35 }, //TODO
+      location: {
+        lat: currentLocation.latitude,
+        long: currentLocation.longitude,
+        address: currentLocation.address,
+      },
       callerName: formData.callerName,
       phoneNumber: formData.phoneNumber,
       patientAge: parseInt(formData.patientAge),
@@ -133,7 +149,7 @@ const RequestAmbulance = () => {
             />
           </div>
           <TabsSelection
-            title={t("emergency-type-title")}
+            title={t("emergency-type-title") + t("select-one")}
             tabs={emergencyTypeTabs}
             activeTab={tabsState.emergencyType}
             setActiveTab={(value) => handleTabChange("emergencyType", value)}
@@ -141,28 +157,28 @@ const RequestAmbulance = () => {
             customClassName="flex-wrap"
           />
           <TabsSelection
-            title={t("consciousness-title")}
+            title={t("consciousness-title") + t("select-one")}
             tabs={consciousnessTabs}
             activeTab={tabsState.consciousness}
             setActiveTab={(value) => handleTabChange("consciousness", value)}
             prefix="consciousness"
           />
           <TabsSelection
-            title={t("breathing-status-title")}
+            title={t("breathing-status-title") + t("select-one")}
             tabs={breathingStatusTabs}
             activeTab={tabsState.breathingStatus}
             setActiveTab={(value) => handleTabChange("breathingStatus", value)}
             prefix="breathing-status"
           />
           <TabsSelection
-            title={t("bleeding-title")}
+            title={t("bleeding-title") + t("select-one")}
             tabs={bleedingTabs}
             activeTab={tabsState.bleeding}
             setActiveTab={(value) => handleTabChange("bleeding", value)}
             prefix="bleeding"
           />
           <TabsSelection
-            title={t("pain-level-title")}
+            title={t("pain-level-title") + t("select-one")}
             tabs={painLevelTabs}
             activeTab={tabsState.painLevel}
             setActiveTab={(value) => handleTabChange("painLevel", value)}
