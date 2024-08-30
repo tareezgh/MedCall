@@ -19,6 +19,9 @@ const UserDashboardContent = ({ setActiveTab }: UserDashboardContentProps) => {
   const [activeRequest, setActiveRequest] = useState<AmbulanceRequest | null>(
     null
   );
+  const [startingRequest, setStartingRequest] = useState<AmbulanceRequest | null>(
+    null
+  );
   const [userRequests, setUserRequests] = useState<any[]>([]);
   const currentUser = useSelector((state: any) => state.currentUser);
 
@@ -29,7 +32,13 @@ const UserDashboardContent = ({ setActiveTab }: UserDashboardContentProps) => {
         console.log("Fetched request:", fetchedRequest);
 
         if (fetchedRequest) {
+          setStartingRequest(null)
           setActiveRequest(fetchedRequest);
+        }else{
+          const fetchedRequest = await getActiveRequest(currentUser.id,"starting");
+          console.log("🚀 ~ fetchActiveRequest ~ fetchedRequest:", fetchedRequest)
+          setActiveRequest(null);
+          setStartingRequest(fetchedRequest);
         }
       } catch (error) {
         console.error("Failed to fetch active request:", error);
@@ -66,6 +75,20 @@ const UserDashboardContent = ({ setActiveTab }: UserDashboardContentProps) => {
             onClick={() => setActiveTab("tracking")}
             customClassName="text-2xl custom-green-button"
           />
+        </div>
+      </>
+    );
+  };
+
+  const renderStartingRequest = () => {
+    return (
+      <>
+        <div className="flex flex-col justify-start items-center text-center gap-6 p-6 bg-modalBackground rounded-2xl w-full h-fit shadow-xl">
+          <div className="flex flex-col justify-center items-center gap-2">
+            <h2 className="text-3xl font-bold">{t("starting-request.title")}</h2>
+            <h5 className="text-xl">{t("starting-request.subtitle")}</h5>
+          </div>
+         
         </div>
       </>
     );
@@ -118,6 +141,7 @@ const UserDashboardContent = ({ setActiveTab }: UserDashboardContentProps) => {
     <>
       <div className="left-side flex flex-col gap-4 w-1/2">
         {activeRequest && renderActiveRequest()}
+        {startingRequest && renderStartingRequest()}
         {renderNewRequest()}
       </div>
       <div className="right-side w-1/2">{renderHistory()}</div>

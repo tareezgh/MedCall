@@ -11,6 +11,11 @@ import LocationItem from "./LocationItem";
 import { AddressIcon, ChatIcon } from "./icons";
 import MapComponent from "./Map";
 import { capitalizeFirstLetter } from "../utils/helpers";
+import { useNavigate } from "react-router-dom";
+import {
+  createConversation,
+  getConversation,
+} from "../services/conversationService";
 
 interface TrackingProps {
   setActiveTab: (tab: TabsTypes) => void;
@@ -19,6 +24,7 @@ interface TrackingProps {
 }
 
 const Tracking = ({ setActiveTab }: TrackingProps) => {
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const currentUser = useSelector((state: any) => state.currentUser);
   const [activeRequest, setActiveRequest] = useState<AmbulanceRequest | null>(
@@ -48,6 +54,7 @@ const Tracking = ({ setActiveTab }: TrackingProps) => {
     await updateRequestStatus(
       activeRequest?._id!,
       "completed",
+      currentUser.id,
       `${currentUser.id}_${currentUser.firstName}`
     );
     setActiveTab("dashboard");
@@ -133,11 +140,11 @@ const Tracking = ({ setActiveTab }: TrackingProps) => {
         </h2>
 
         <div className={`flex flex-row gap-2 `}>
-          <AddressIcon width={20} height={20} />
           <ChatIcon
             width={20}
             height={20}
             onClick={() => setActiveTab("messages")}
+            customClassName="cursor-pointer"
           />
         </div>
       </div>
@@ -157,15 +164,29 @@ const Tracking = ({ setActiveTab }: TrackingProps) => {
           />
         )}
       </div>
-      <div className="flex flex-row gap-4 w-full h-full">
-        {/* left side */}
-        <div className="left-side flex flex-col gap-4 w-[30%]">
-          {renderRouteDetails()}
-          {renderInfoDetails()}
+      {activeRequest ? (
+        <div className="flex flex-row gap-4 w-full h-full">
+          {/* left side */}
+          <div className="left-side flex flex-col gap-4 w-[30%]">
+            {renderRouteDetails()}
+            {renderInfoDetails()}
+          </div>
+          {/* right side */}
+          <div className="right-side w-[70%]">{renderMap()}</div>
         </div>
-        {/* right side */}
-        <div className="right-side w-[70%]">{renderMap()}</div>
-      </div>
+      ) : (
+        <div className="flex flex-col gap-8 items-center justify-center w-full h-screen bg-white rounded-2xl">
+          <p className="text-2xl text-secondary500">
+            {t("no-active-request-message")}
+          </p>
+          <Button
+            text={t("hero-button")}
+            type="primary"
+            onClick={() => navigate("/request-ambulance")}
+            customClassName={" text-xl"}
+          />
+        </div>
+      )}
     </div>
   );
 };

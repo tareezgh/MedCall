@@ -11,6 +11,7 @@ import Button from "../components/Button";
 import MapComponent from "../components/Map";
 import { AmbulanceRequest, TabsTypes } from "../interfaces/types";
 import { useSelector } from "react-redux";
+import { createConversation } from "../services/conversationService";
 
 interface DriverDashboardContentProps {
   setActiveTab: (tab: TabsTypes) => void;
@@ -124,6 +125,24 @@ const DriverDashboardContent = ({
     }
   };
 
+  const handleAcceptRequest = async () => {
+    if (!selectedRequest) return;
+    await updateRequestStatus(
+      selectedRequest._id,
+      "active",
+      currentUser.id,
+      `${currentUser.id}_${currentUser.firstName}`,
+      {
+        address: userAddress,
+        lat: driverLocation?.latitude || 0,
+        long: driverLocation?.longitude || 0,
+      }
+    );
+    let conversation = await createConversation(currentUser.id, selectedRequest.userId!);
+    console.log("🚀 ~ handleChatClick ~ conversation:", conversation);
+    setActiveTab("driverTracking");
+  };
+
   useEffect(() => {
     if (nearestRequests.length > 0) {
       setSelectedRequest(nearestRequests[0]);
@@ -231,20 +250,7 @@ const DriverDashboardContent = ({
     );
   };
 
-  const handleAcceptRequest = async () => {
-    if (!selectedRequest) return;
-    await updateRequestStatus(
-      selectedRequest._id,
-      "active",
-      `${currentUser.id}_${currentUser.firstName}`,
-      {
-        address: userAddress,
-        lat: driverLocation?.latitude || 0,
-        long: driverLocation?.longitude || 0,
-      }
-    );
-    setActiveTab("driverTracking");
-  };
+
 
   const renderEmergencyDetails = () => {
     if (!selectedRequest) {

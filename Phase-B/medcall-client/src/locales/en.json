@@ -108,6 +108,10 @@
     "subtitle": "The ambulance is on its way, you can track its route.",
     "track-now-button": "Track Now"
   },
+  "starting-request": {
+    "title": "Looking for a Driver...",
+    "subtitle": "Hang tight! We're finding the closest driver for you."
+  },
   "new-request": {
     "title": "Request New Ambulance",
     "subtitle": "Request new ambulance for your emergency and save a life",
@@ -164,9 +168,9 @@
   "driver-track-route-title": "Route Details",
   "confirm-arrival": "Confirm Arrival",
   "message-placeholder": "Write your message here...",
-  "": "",
-  "": "",
-  "": "",
+  "no-active-request-message": "No active requests at the moment. Please make a new request or check back later.",
+  "message-title": "Messages",
+  "message-history-title": "History",
   "": "",
   "": "",
 

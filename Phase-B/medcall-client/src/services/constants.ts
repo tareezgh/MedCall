@@ -15,6 +15,6 @@ export const requestUrl = `${apiUrl}/request`;
 export const activeRequestUrl = `${apiUrl}/request/active-request`;
 export const updateRequestUrl = `${apiUrl}/request`;
 
-export const getConversationUrl = `${apiUrl}/conversation`;
+export const conversationUrl = `${apiUrl}/conversation`;
 
 export const getMessagesUrl = `${apiUrl}/conversation/messages`;

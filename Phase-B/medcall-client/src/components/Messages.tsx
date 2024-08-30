@@ -6,7 +6,7 @@ interface MessageProps {
 export default function Message({ text, me }: MessageProps) {
   return (
     <div
-      className={`flex ${me ? "justify-end" : "justify-start"} max-h-screen`}
+      className={`flex ${me ? "justify-end" : "justify-start"} `}
     >
       <div class="py-2 px-1 border-slate-500 text-left">
         <div
