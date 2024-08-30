@@ -69,9 +69,9 @@ export const getRequestById = async (userId: string) => {
   return response.data;
 };
 
-export const getActiveRequest = async (currentUserID: string) => {
+export const getActiveRequest = async (currentUserID: string, status?: string) => {
   const args = {
-    status: "active",
+    status: status || "active",
     id: currentUserID,
   };
   const response = await axios.post(`${activeRequestUrl}`, args);
@@ -91,10 +91,12 @@ export const getActiveRequest = async (currentUserID: string) => {
 export const updateRequestStatus = async (
   requestId: string,
   newStatus: StatusType,
+  currentDriverId: string,
   currentDriverName: string,
   currentDriverLocation?: { address?: string; lat: number; long: number }
 ) => {
   const args = {
+    driverId: currentDriverId,
     driverName: currentDriverName,
     status: newStatus,
     driverLocation: currentDriverLocation,

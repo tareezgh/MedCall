@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from "preact/hooks";
 import Message from "./Messages";
 
-import Button from "./Button";
 import { PhoneIcon, SendIcon } from "./icons";
 import { useSelector } from "react-redux";
 import { getConversation, getMessages } from "../services/conversationService";
@@ -47,7 +46,7 @@ const LiveChat = () => {
         const data = await getConversation(currentUser.id);
         console.log("🚀 ~ fetchConversations ~ data:", data);
 
-        setConversations(data);
+        setConversations(data.reverse());
         if (data) {
           handleConversationSelect(data[0]);
         }
@@ -58,8 +57,15 @@ const LiveChat = () => {
 
     fetchConversations();
     // Create WebSocket connection
+    const wsProtocol = window.location.protocol === "https:" ? "wss:" : "ws:";
     const socket = new WebSocket(
-      `${wsUrl}?userId=${encodeURIComponent(currentUser.id)}`
+      `${wsProtocol}//${wsUrl}?userId=${encodeURIComponent(currentUser.id)}`
+    );
+    console.log(
+      "🚀 ~ useEffect ~ ${wsProtocol}//${wsUrl}:",
+      wsProtocol,
+      "//",
+      wsUrl
     );
 
     socket.onopen = () => {
@@ -108,11 +114,11 @@ const LiveChat = () => {
     }
   }, [selectedConversation]);
 
-  useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [messages]);
+  // useEffect(() => {
+  //   if (messagesEndRef.current) {
+  //     messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+  //   }
+  // }, [messages]);
 
   const handleSend = (e: Event) => {
     e.preventDefault();
@@ -126,7 +132,8 @@ const LiveChat = () => {
         console.log("🚀 ~ handleSend ~ targetId:", targetId);
         const newMessage = {
           text: chatMessage,
-          me: true,
+          me: false,
+          senderId: currentUser.id,
           targetId, // Ensure this is the correct target ID
         };
         console.log("🚀 ~ handleSend ~ newMessage:", newMessage);
@@ -151,17 +158,18 @@ const LiveChat = () => {
 
   const renderConversations = () => {
     return (
-      <div className="mt-4 left-side flex flex-col gap-4 w-[20%]">
-        <h1 className="text-4xl w-full text-start">Messages</h1>
+      <div className="left-side flex flex-col gap-4 w-[20%]">
+        <h1 className="text-2xl w-full text-start">
+          {" "}
+          {t("message-history-title")}
+        </h1>
         <div className="flex flex-col items-center justify-center gap-4 w-full text-center">
           {conversations.map((conversation) => {
             // Get the receiver's information
             const receiver = conversation.participants.find(
               (participant: any) => participant._id !== currentUser.id
             );
-
             const isSelected = selectedConversation?._id === conversation._id;
-
             return (
               <button
                 key={conversation._id}
@@ -172,7 +180,6 @@ const LiveChat = () => {
                     : "bg-white hover:bg-[#E4E4FD]"
                 }`}
               >
-                {/* Display the receiver's name */}
                 <h1 className="text-lg font-bold">
                   {receiver
                     ? `${receiver.firstName} ${receiver.lastName}`
@@ -187,29 +194,24 @@ const LiveChat = () => {
   };
 
   return (
-    <div className="flex gap-4">
-      {renderConversations()}
+    <div className="flex flex-col gap-8 p-6 bg-modalBackground rounded-2xl w-full h-screen shadow-xl">
+      <h2 className="text-3xl font-bold h-fit">{t("message-title")}</h2>
+      <div className="flex flex-row justify-between gap-8 ">
+        {/* Left Section */}
+        {renderConversations()}
 
-      <div className="right-side flex flex-col gap-4 w-[80%] ">
-        <Button
-          text="New Chat"
-          type="secondary"
-          onClick={() => {}}
-          customClassName={"ml-auto p-4 rounded-2xl shadow-md text-xl"}
-        />
-
-        <div className="flex flex-col bg-white rounded-lg shadow-md h-[90%] p-4">
-          <div className="flex items-center justify-between pb-2 border-b border-gray-300">
-            <h2 className="text-xl font-bold">
-              {selectedConversationUsername}
-            </h2>
-            <div className="p-2 bg-gray-200 rounded-full">
-              <PhoneIcon />
+        {/* Right Section */}
+        <div className="right-side flex flex-col gap-4 w-[80%] ">
+          <div className="flex flex-col bg-white rounded-lg shadow-xl  p-4">
+            <div className="flex items-center justify-between pb-2 border-b border-gray-300">
+              <h2 className="text-xl font-bold">
+                {selectedConversationUsername}
+              </h2>
+              <div className="p-2 bg-gray-200 rounded-full">
+                <PhoneIcon onClick={() => {}} />
+              </div>
             </div>
-          </div>
-
-          <div className="flex flex-col h-[90%]">
-            <div className="overflow-y-auto flex-grow">
+            <div className="flex flex-col overflow-y-auto max-h-fit">
               {messages.map((msg, index) => {
                 return (
                   <Message
@@ -222,24 +224,24 @@ const LiveChat = () => {
 
               <div ref={messagesEndRef} />
             </div>
-          </div>
-          {selectedConversation && (
-            <form onSubmit={handleSend} className="flex justify-start gap-2">
-              <Input
-                placeholder={t("message-placeholder")}
-                type={"text"}
-                value={chatMessage}
-                onChange={(e) =>
-                  setChatMessage((e.target as HTMLInputElement).value)
-                }
-                customClassName="min-w-[500px]"
-              />
+            {selectedConversation && (
+              <form onSubmit={handleSend} className="flex justify-start gap-2">
+                <Input
+                  placeholder={t("message-placeholder")}
+                  type={"text"}
+                  value={chatMessage}
+                  onChange={(e) =>
+                    setChatMessage((e.target as HTMLInputElement).value)
+                  }
+                  customClassName="min-w-[500px]"
+                />
 
-              <button type="submit">
-                <SendIcon />
-              </button>
-            </form>
-          )}
+                <button type="submit">
+                  <SendIcon />
+                </button>
+              </form>
+            )}
+          </div>
         </div>
       </div>
     </div>

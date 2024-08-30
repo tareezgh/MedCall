@@ -22,6 +22,7 @@ export interface AmbulanceRequest {
     lat: number;
     long: number;
   };
+  driverId?: string;
   driverName?: string;
   driverLocation?: {
     address?: string;
