@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from "preact/hooks";
 import Message from "./Messages";
 
-import Button from "./Button";
 import { PhoneIcon, SendIcon } from "./icons";
 import { useSelector } from "react-redux";
 import { getConversation, getMessages } from "../services/conversationService";

@@ -8,14 +8,11 @@ import {
 import { useEffect, useMemo, useState } from "preact/hooks";
 import { AmbulanceRequest, TabsTypes } from "../interfaces/types";
 import LocationItem from "./LocationItem";
-import { AddressIcon, ChatIcon } from "./icons";
+import { ChatIcon } from "./icons";
 import MapComponent from "./Map";
 import { capitalizeFirstLetter } from "../utils/helpers";
 import { useNavigate } from "react-router-dom";
-import {
-  createConversation,
-  getConversation,
-} from "../services/conversationService";
+
 
 interface TrackingProps {
   setActiveTab: (tab: TabsTypes) => void;
