@@ -1,6 +1,6 @@
 interface TabProps {
   title: string;
-  type:  "primary" | "secondary";
+  type: "primary" | "secondary";
   active: boolean;
   onClick: () => void;
   customClassName?: string;
@@ -23,9 +23,9 @@ const Tab = ({ title, type, active, onClick, customClassName }: TabProps) => {
   };
 
   return (
-    <div className="flex justify-center gap-4  ">
+    <div className="flex justify-center gap-4">
       <button
-        className={`${getTabStyle()} ${customClassName} text-lg font-semibold py-2 px-10 rounded-full`}
+        className={`${getTabStyle()} ${customClassName}  text-base md:text-lg font-semibold py-2 px-4 md:px-10 rounded-full whitespace-nowrap`}
         onClick={onClick}
       >
         {title}

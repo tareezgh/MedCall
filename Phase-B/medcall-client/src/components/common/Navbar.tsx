@@ -5,19 +5,34 @@ import { useSelector } from "react-redux";
 
 import Button from "../Button";
 import logo from "../../assets/logo-img.webp";
-import { GlobeIcon, NotificationIcon, UserIcon } from "../icons";
+import { GlobeIcon, XIcon, MenuIcon, UserIcon } from "../icons";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { t, i18n } = useTranslation();
   const currentUser = useSelector((state: any) => state.currentUser);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [navbarMargin, setNavbarMargin] = useState("ml-64");
   const [showLanguage, setShowLanguage] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState<string>(
     localStorage.getItem("selectedLanguage") || "en"
   );
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
   console.log("🚀 ~ Navbar ~ currentUser:", currentUser);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+      if (window.innerWidth >= 768) {
+        setIsMenuOpen(false); // Close the mobile menu when switching to desktop view
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     if (location.pathname === "/dashboard") {
@@ -65,29 +80,68 @@ const Navbar = () => {
     );
   };
 
+  const renderLogoSection = () => (
+    <div
+      className="logo-side hover:cursor-pointer"
+      onClick={() => navigate("/")}
+    >
+      <img src={logo} alt="MedCall Logo" className="h-[3rem] md:h-[3.5rem]" />
+    </div>
+  );
+
+  const renderMenuToggle = () => (
+    <div className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+      {isMenuOpen ? <XIcon /> : <MenuIcon />}
+    </div>
+  );
+
+  const renderDesktopNavItems = () => (
+    <div className="buttons-side flex flex-row gap-3 md:flex sm:hidden">
+      {renderLanguageIcon()}
+      <Button
+        text={t("navbar-login-button")}
+        type="secondary"
+        onClick={() => navigate("/login")}
+      />
+      <Button
+        text={t("navbar-sign-up-button")}
+        type="primary"
+        onClick={() => navigate("/sign-up")}
+      />
+    </div>
+  );
+
+  const renderMobileMenu = () =>
+    isMenuOpen && (
+      <div className="absolute top-[5rem] left-0 right-0 bg-white shadow-md flex flex-col gap-4 items-center p-8 z-[100] md:hidden">
+        <Button
+          text={t("navbar-login-button")}
+          type="secondary"
+          onClick={() => {
+            navigate("/login");
+            setIsMenuOpen(false);
+          }}
+          customClassName="w-full mb-2"
+        />
+        <Button
+          text={t("navbar-sign-up-button")}
+          type="primary"
+          onClick={() => {
+            navigate("/sign-up");
+            setIsMenuOpen(false);
+          }}
+          customClassName="w-full"
+        />
+        {renderLanguageIcon()}
+      </div>
+    );
+
   const renderRegularNavbar = () => {
     return (
       <nav className="flex flex-row items-center justify-between h-20 p-6 border-b custom-border shadow">
-        <div
-          className="logo-side hover:cursor-pointer"
-          onClick={() => navigate("/")}
-        >
-          <img src={logo} alt={"MedCall Logo"} className="h-[3.5rem]" />
-        </div>
-
-        <div className="buttons-side flex flex-row gap-3">
-          {renderLanguageIcon()}
-          <Button
-            text={t("navbar-login-button")}
-            type="secondary"
-            onClick={() => navigate("/login")}
-          />
-          <Button
-            text={t("navbar-sign-up-button")}
-            type="primary"
-            onClick={() => navigate("/sign-up")}
-          />
-        </div>
+        {renderLogoSection()}
+        {renderMenuToggle()}
+        {isMobile ? renderMobileMenu() : renderDesktopNavItems()}
       </nav>
     );
   };
@@ -113,7 +167,6 @@ const Navbar = () => {
         </div>
 
         <div className="buttons-side flex flex-row justify-center items-center gap-3">
-          <NotificationIcon onClick={() => {}} />
           {renderLanguageIcon()}
         </div>
       </nav>

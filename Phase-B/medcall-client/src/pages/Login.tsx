@@ -43,7 +43,7 @@ const Login = () => {
   };
 
   const handleSignInClick = async () => {
-    const success = await handleSignIn(formData);
+    const success = await handleSignIn(formData, rememberMe);
     if (success) {
       const data = isTokenValid();
       if (data) {
@@ -55,9 +55,9 @@ const Login = () => {
 
   return (
     <>
-      <section className="h-screen flex justify-center items-center">
-        <div className="box-modal shadow-2xl">
-          <h2 className="text-4xl font-Pippins font-semibold m-0">
+      <section className="flex justify-center items-center px-6 my-8">
+        <div className="box-modal shadow-2xl w-full md:w-2/5">
+          <h2 className="text-2xl md:text-4xl font-Pippins font-semibold m-0">
             {t("login-form-title")}
           </h2>
           <div className={"flex flex-col gap-4 w-full"}>
@@ -68,7 +68,7 @@ const Login = () => {
                 value={formData.email}
                 onChange={handleChange("email")}
                 leftIcon={<MailIcon />}
-                customClassName="min-w-[500px]"
+                customClassName="md:min-w-[500px]"
               />
               <Input
                 placeholder={t("login-password-placeholder")}
@@ -78,7 +78,7 @@ const Login = () => {
                 leftIcon={<LockIcon />}
                 rightIcon={isPasswordVisible ? <EyeOffIcon /> : <EyeIcon />}
                 onRightIconClick={toggleFields("password")}
-                customClassName="min-w-[500px]"
+                customClassName="md:min-w-[500px]"
               />
             </div>
             <div className={"flex flex-row justify-between w-full text-base"}>
@@ -121,7 +121,7 @@ const Login = () => {
           </div>
           <div className={"flex flex-col gap-6 w-full"}>
             <Divider />
-            <GoogleButton text="Sign in with Google" type="signIn"/>
+            <GoogleButton text="Sign in with Google" type="signIn" />
           </div>
         </div>
       </section>

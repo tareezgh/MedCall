@@ -25,8 +25,8 @@ const TabsSelection = ({
   }));
   return (
     <>
-      <h2 className="font-bold text-xl">{title}</h2>
-      <div className={`flex gap-3 py-2 ${customClassName}`}>
+      <h2 className="font-bold text-lg md:text-xl">{title}</h2>
+      <div className={`flex gap-2 md:gap-3 py-2 ${customClassName}`}>
         {translatedTabs.map((tab) => (
           <Tab
             key={tab.key}

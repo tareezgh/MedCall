@@ -35,7 +35,7 @@ const GoogleButton = ({ text, type }: GoogleButtonProps) => {
           isGoogleSignIn: true,
         };
 
-        const loggedInUser = await loginUser(userToLogin);
+        const loggedInUser = await loginUser(userToLogin, false);
         if (loggedInUser) checkDataAndNavigate();
       }
     } catch (error) {
