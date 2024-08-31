@@ -20,8 +20,8 @@ type ScreenHeaderProps = {
 };
 
 const ScreenContainer = ({ children }: ScreenContainerProps) => (
-  <section className="flex justify-center items-center h-full my-12 py-10">
-    <div className="flex flex-col justify-center items-center text-center gap-6 p-6 bg-modalBackground rounded-2xl min-w-fit min-h-fit shadow-xl">
+  <section className="flex justify-center items-center h-full my-12 py-10 px-6">
+    <div className="flex flex-col justify-center items-center text-center gap-6 p-4 md:p-6 bg-modalBackground rounded-2xl min-w-fit min-h-fit shadow-xl">
       {children}
     </div>
   </section>
@@ -97,7 +97,7 @@ const ResetPassword = () => {
     }
 
     try {
-      const otpCode = otp.join(""); 
+      const otpCode = otp.join("");
       const isOtpVerified = await verifyOtp(formData.email, otpCode);
 
       if (isOtpVerified) {
@@ -236,7 +236,7 @@ const ResetPassword = () => {
           leftIcon={<LockIcon />}
           rightIcon={isPasswordVisible ? <EyeOffIcon /> : <EyeIcon />}
           onRightIconClick={toggleVisibility("password")}
-          customClassName="min-w-[500px]"
+          customClassName="md:min-w-[500px]"
         />
         <Input
           placeholder={t("reset-pass-create-placeholder2")}
@@ -246,7 +246,7 @@ const ResetPassword = () => {
           leftIcon={<LockIcon />}
           rightIcon={isConfirmPasswordVisible ? <EyeOffIcon /> : <EyeIcon />}
           onRightIconClick={toggleVisibility("confirmPassword")}
-          customClassName="min-w-[500px]"
+          customClassName="md:min-w-[500px]"
         />
         <div className="flex flex-row gap-4 w-full justify-center">
           <Button

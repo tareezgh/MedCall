@@ -113,17 +113,23 @@ const Navbar = () => {
 
   const renderMobileMenu = () =>
     isMenuOpen && (
-      <div className="absolute top-[5rem] left-0 right-0 bg-white shadow-md flex flex-col gap-4 items-center p-4 md:hidden">
+      <div className="absolute top-[5rem] left-0 right-0 bg-white shadow-md flex flex-col gap-4 items-center p-8 z-[100] md:hidden">
         <Button
           text={t("navbar-login-button")}
           type="secondary"
-          onClick={() => navigate("/login")}
+          onClick={() => {
+            navigate("/login");
+            setIsMenuOpen(false);
+          }}
           customClassName="w-full mb-2"
         />
         <Button
           text={t("navbar-sign-up-button")}
           type="primary"
-          onClick={() => navigate("/sign-up")}
+          onClick={() => {
+            navigate("/sign-up");
+            setIsMenuOpen(false);
+          }}
           customClassName="w-full"
         />
         {renderLanguageIcon()}

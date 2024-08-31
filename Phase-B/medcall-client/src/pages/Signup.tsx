@@ -84,11 +84,10 @@ const SignUp = () => {
     }
   };
 
-
   const renderSignUp = () => {
     return (
       <>
-        <h2 className="text-4xl font-Pippins font-semibold m-0">
+        <h2 className="text-2xl md:text-4xl font-Pippins font-semibold m-0">
           {t("sign-up-form-title")}
         </h2>
         <div className="flex gap-4">
@@ -167,11 +166,11 @@ const SignUp = () => {
   const renderDriverSignUpForm = () => {
     return (
       <>
-        <h2 className="text-4xl font-Pippins font-semibold m-0">
+        <h2 className="text-2xl md:text-4xl font-Pippins font-semibold m-0">
           {t("one-last-step")}
         </h2>
 
-        <div className={"flex flex-col gap-4 w-full"}>
+        <div className={"flex flex-col gap-2 md:gap-4 w-full"}>
           <div className={"flex flex-col gap-4 w-full"}>
             <Input
               type="text"
@@ -202,8 +201,8 @@ const SignUp = () => {
 
   return (
     <>
-      <section className="flex justify-center items-center my-8">
-        <div className="box-modal shadow-2xl w-2/4">
+      <section className="flex justify-center items-center px-6 my-8">
+        <div className="box-modal shadow-2xl w-full md:w-2/4">
           {signUpDriverFrom ? renderDriverSignUpForm() : renderSignUp()}
 
           <div className={"flex flex-col gap-2 justify-center w-auto"}>
@@ -225,7 +224,7 @@ const SignUp = () => {
                 customClassName={"font-bold text-xl"}
               />
             </div>
-            <div className="text-base">
+            <div className="text-sm md:text-base">
               <h2>
                 {t("sign-up-nav-to")}
                 <span
@@ -241,7 +240,7 @@ const SignUp = () => {
           {!signUpDriverFrom && (
             <div className={"flex flex-col gap-6 w-full"}>
               <Divider />
-              <GoogleButton text="Sign Up with Google" type="signUp"/>
+              <GoogleButton text="Sign Up with Google" type="signUp" />
             </div>
           )}
         </div>

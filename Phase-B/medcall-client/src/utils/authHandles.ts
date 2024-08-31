@@ -90,7 +90,10 @@ export const handleSignUp = async (
   return false;
 };
 
-export const handleSignIn = async (formData: SignInFormData) => {
+export const handleSignIn = async (
+  formData: SignInFormData,
+  rememberMe: boolean
+) => {
   try {
     if (!formData.email || !formData.password) {
       toast.error("Please fill all the fields", {
@@ -107,7 +110,7 @@ export const handleSignIn = async (formData: SignInFormData) => {
     };
 
     // Call loginUser function to send user to backend
-    await loginUser(user);
+    await loginUser(user, rememberMe);
 
     toast.success("Sign in successfully!", {
       position: "bottom-center",

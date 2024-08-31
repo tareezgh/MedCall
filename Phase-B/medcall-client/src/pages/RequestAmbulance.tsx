@@ -73,8 +73,8 @@ const RequestAmbulance = () => {
     return (
       <>
         <div className="flex flex-col gap-3 mb-4">
-          <h2 className="text-4xl font-bold">{title}</h2>
-          <h4 className="text-xl">{subtitle}</h4>
+          <h2 className="text-2xl md:text-4xl font-bold">{title}</h2>
+          <h4 className="text-base md:text-xl">{subtitle}</h4>
         </div>
       </>
     );
@@ -117,9 +117,9 @@ const RequestAmbulance = () => {
       <>
         {renderTitles(t("new-request-title"), t("new-request-subtitle"))}
 
-        <div className="flex flex-col gap-4 justify-start items-start">
+        <div className="flex flex-col gap-4 justify-start items-start w-full">
           <div className="flex flex-col gap-4 justify-between items-start w-full">
-            <h2 className="font-bold text-xl">
+            <h2 className="font-bold text-lg md:text-xl">
               {t("caller-contact-info-title")}
             </h2>
             <div className="flex flex-row gap-4 justify-between w-full">
@@ -138,7 +138,7 @@ const RequestAmbulance = () => {
             </div>
           </div>
           <div className="flex flex-row justify-start items-center">
-            <h2 className="font-bold text-xl w-full text-start">
+            <h2 className="font-bold text-lg md:text-xl w-full text-start">
               {t("patient-age-title")}
             </h2>
             <Input
@@ -162,6 +162,7 @@ const RequestAmbulance = () => {
             activeTab={tabsState.consciousness}
             setActiveTab={(value) => handleTabChange("consciousness", value)}
             prefix="consciousness"
+            customClassName="flex-wrap"
           />
           <TabsSelection
             title={t("breathing-status-title") + t("select-one")}
@@ -169,6 +170,7 @@ const RequestAmbulance = () => {
             activeTab={tabsState.breathingStatus}
             setActiveTab={(value) => handleTabChange("breathingStatus", value)}
             prefix="breathing-status"
+            customClassName="flex-wrap"
           />
           <TabsSelection
             title={t("bleeding-title") + t("select-one")}
@@ -176,6 +178,7 @@ const RequestAmbulance = () => {
             activeTab={tabsState.bleeding}
             setActiveTab={(value) => handleTabChange("bleeding", value)}
             prefix="bleeding"
+            customClassName="flex-wrap"
           />
           <TabsSelection
             title={t("pain-level-title") + t("select-one")}
@@ -183,6 +186,7 @@ const RequestAmbulance = () => {
             activeTab={tabsState.painLevel}
             setActiveTab={(value) => handleTabChange("painLevel", value)}
             prefix="pain-level"
+            customClassName="flex-wrap"
           />
         </div>
       </>
@@ -196,7 +200,7 @@ const RequestAmbulance = () => {
 
         <div className="flex flex-col gap-4 justify-start items-start w-full">
           <div className="flex flex-col gap-4 justify-start items-start w-full">
-            <h2 className="font-bold text-xl">
+            <h2 className="font-bold text-lg md:text-xl">
               {t("optional-info-allergies")}
             </h2>
             <div className="flex flex-row gap-4 justify-start w-full">
@@ -209,7 +213,7 @@ const RequestAmbulance = () => {
             </div>
           </div>
           <div className="flex flex-col gap-4 justify-start items-start w-full">
-            <h2 className="font-bold text-xl">
+            <h2 className="font-bold text-lg md:text-xl">
               {t("optional-info-medications")}
             </h2>
             <div className="flex flex-row gap-4 justify-start w-full">
@@ -222,7 +226,7 @@ const RequestAmbulance = () => {
             </div>
           </div>
           <div className="flex flex-col gap-4 justify-start items-start w-full">
-            <h2 className="font-bold text-xl">
+            <h2 className="font-bold text-lg md:text-xl">
               {t("optional-info-activities")}
             </h2>
             <div className="flex flex-row gap-4 justify-start w-full">
@@ -241,17 +245,17 @@ const RequestAmbulance = () => {
 
   return (
     <>
-      <section className="py-10 flex justify-center items-center">
-        <div className="box-modal shadow-2x mx-[10%]">
+      <section className="py-10 flex justify-center items-center w-full px-6">
+        <div className="box-modal shadow-2x md:mx-[10%] p-4">
           {isOptionalSection ? renderOptionalInfo() : renderNecessaryInfo()}
 
-          <div className={"flex flex-row gap-2 justify-start w-auto"}>
+          <div className={"flex flex-row gap-2 justify-start md:w-auto"}>
             {isOptionalSection && (
               <Button
                 text={t("back-button")}
                 type="secondary"
                 onClick={() => setIsOptionalSection(false)}
-                customClassName={"text-xl"}
+                customClassName={"text-base md:text-xl"}
               />
             )}
             <Button
@@ -266,7 +270,7 @@ const RequestAmbulance = () => {
                   ? async () => await handleRequestAmbulance()
                   : handleNecessaryInfoSubmit
               }
-              customClassName={"font-semibold text-2xl"}
+              customClassName={"font-semibold text-lg md:text-2xl"}
             />
           </div>
         </div>

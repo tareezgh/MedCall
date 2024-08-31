@@ -6,7 +6,7 @@ const Divider = () => {
     <>
       <div className="flex items-center justify-center">
         <hr className="w-full border-t border-gray-300" />
-        <span className="mx-1 w-full opacity-80 text-base">
+        <span className="mx-1 w-full opacity-80 text-sm md:text-base">
           {t("form-divider")}
         </span>
         <hr className="w-full border-t border-gray-300" />

@@ -44,7 +44,7 @@ export const registerUser = async (user: User) => {
   }
 };
 
-export const loginUser = async (user: Partial<User>) => {
+export const loginUser = async (user: Partial<User>, rememberMe: boolean) => {
   const args = {
     email: user.email,
     password: user.password || "",
@@ -61,8 +61,13 @@ export const loginUser = async (user: Partial<User>) => {
     return;
   } else {
     const token = response.data.token;
-    // Store the token in sessionStorage with an expiration time of 1 hour
-    setSessionStorageWithExpiry("token", token, 60);
+
+    // Store the token in sessionStorage with an expiration time of 30 days or 1 hour
+    const expiryDuration = rememberMe
+      ? 30 * 24 * 60 * 60 * 1000
+      : 60 * 60 * 1000;
+    setSessionStorageWithExpiry("token", token, expiryDuration / (60 * 1000)); // Convert ms to minutes for session storage
+
     return args;
   }
 };
