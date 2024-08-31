@@ -8,6 +8,7 @@ import GlobeIcon from "./GlobeIcon";
 import LocationIcon from "./LocationIcon";
 import LockIcon from "./LockIcon";
 import MailIcon from "./MailIcon";
+import MenuIcon from "./MenuIcon";
 import NotificationIcon from "./NotificationIcon";
 import PhoneIcon from "./PhoneIcon";
 import PinIcon from "./PinIcon";
@@ -18,6 +19,7 @@ import TrackIcon from "./TrackIcon";
 import UserIcon from "./UserIcon";
 import UsersIcon from "./UsersIcon";
 import LogoutIcon from "./LogoutIcon";
+import XIcon from "./XIcon";
 import ZipIcon from "./ZipIcon";
 import DeleteIcon from "./DeleteIcon";
 
@@ -33,6 +35,7 @@ export {
   LockIcon,
   LogoutIcon,
   MailIcon,
+  MenuIcon,
   NotificationIcon,
   PhoneIcon,
   PinIcon,
@@ -42,6 +45,7 @@ export {
   TrackIcon,
   UserIcon,
   UsersIcon,
+  XIcon,
   ZipIcon,
   DeleteIcon,
 };

@@ -16,14 +16,14 @@ const Footer = () => {
         <div className="rounded-full bg-lightBg p-2">
           <img src={icon} alt="icon" className="h-6 w-6" />
         </div>
-        <span className="text-xl">{text}</span>
+        <span className="text-lg md:text-xl">{text}</span>
       </div>
     );
   };
   return (
     <>
-      <footer className="flex flex-row justify-between items-center text-start p-8 border-t custom-border shadow">
-        <div className="flex flex-col gap-4 w-1/2 items-start">
+      <footer className="flex flex-col md:flex-row justify-between gap-4 item-start md:items-center text-start p-8 border-t custom-border shadow">
+        <div className="flex flex-col gap-4 w-full md:w-1/2 items-start">
           <div>
             <div
               className="hover:cursor-pointer"
@@ -32,7 +32,7 @@ const Footer = () => {
                 window.scroll(0, 0);
               }}
             >
-              <img src={logo} alt={"MedCall Logo"} className="h-[3.5rem]" />
+              <img src={logo} alt={"MedCall Logo"} className="h-[3rem] md:h-[3.5rem]" />
             </div>
 
             <div className="text-xl">{`${t(
@@ -40,8 +40,8 @@ const Footer = () => {
             )}${currentYear}`}</div>
           </div>
           <div className="flex flex-col gap-2">
-            <h2 className="text-2xl font-bold italic">{t("footer-title")}</h2>
-            <p className="text-lg">{t("footer-paragraph")}</p>
+            <h2 className="text-xl md:text-2xl font-bold italic">{t("footer-title")}</h2>
+            <p className="text-base md:text-lg">{t("footer-paragraph")}</p>
           </div>
         </div>
         <div className="flex flex-col gap-4">

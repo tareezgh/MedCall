@@ -3,10 +3,10 @@ import HowItWork from "../containers/HowItWork";
 
 const Home = () => {
   return (
-    <>
+    <div className="container mx-auto px-4">
       <Hero />
-      <HowItWork/>
-    </>
+      <HowItWork />
+    </div>
   );
 };
 

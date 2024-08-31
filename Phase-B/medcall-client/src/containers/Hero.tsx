@@ -62,8 +62,8 @@ const Hero = () => {
 
   return (
     <LoadScript googleMapsApiKey={apiKey} libraries={["places"]}>
-      <section className="flex justify-center items-center gap-20 my-20">
-        <div className="flex justify-center text-start inset-0 flex-col gap-8 bg-modalBackground rounded-2xl w-fit h-fit min-h-[350px] p-12 shadow-xl">
+      <section className="flex flex-col md:flex-row justify-center items-center gap-10 md:gap-20 my-8 px-6 md:my-20">
+        <div className="flex flex-col justify-center text-start inset-0  gap-8 bg-modalBackground rounded-2xl w-full md:w-fit h-fit min-h-[350px] p-8 md:p-12 shadow-xl">
           <h2 className="text-3xl font-bold">{t("hero-title")}</h2>
           <div className="flex flex-col gap-4">
             <h5 className="text-xl">{t("hero-subtitle")}</h5>
@@ -72,7 +72,10 @@ const Hero = () => {
                 (autocompleteRef.current = autocomplete)
               }
               onPlaceChanged={handlePlaceChanged}
-              options={{ types: ["address"] }}
+              options={{
+                types: ["address"],
+                componentRestrictions: { country: "IL" },
+              }}
             >
               <Input
                 type="text"
