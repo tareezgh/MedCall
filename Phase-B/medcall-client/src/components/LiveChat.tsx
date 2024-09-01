@@ -201,8 +201,8 @@ const LiveChat = () => {
         {renderConversations()}
 
         {/* Right Section */}
-        <div className="right-side flex flex-col gap-4 w-[80%] ">
-          <div className="flex flex-col bg-white rounded-lg shadow-xl  p-4">
+        <div className="right-side flex flex-col gap-4 w-[80%]">
+          <div className="flex flex-col bg-white rounded-lg shadow-xl p-4 h-[50%]">
             <div className="flex items-center justify-between pb-2 border-b border-gray-300">
               <h2 className="text-xl font-bold">
                 {selectedConversationUsername}
