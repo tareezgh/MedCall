@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 import Message from "./Messages";
 
 import { PhoneIcon, SendIcon } from "./icons";
