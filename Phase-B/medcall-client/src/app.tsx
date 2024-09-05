@@ -1,17 +1,18 @@
 import { useEffect } from "preact/hooks";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Router, Route } from "preact-router";
+import { lazy, Suspense } from "preact/compat";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { isTokenValid } from "./utils/authHandles";
-import Navbar from "./components/common/Navbar";
-import Home from "./pages/Home";
 import Footer from "./components/common/Footer";
-import Login from "./pages/Login";
-import SignUp from "./pages/Signup";
-import Dashboard from "./pages/Dashboard";
-import RequestAmbulance from "./pages/RequestAmbulance";
-import ResetPassword from "./pages/ResetPassword";
 import "./app.css";
+
+const Home = lazy(() => import("./pages/Home"));
+const Login = lazy(() => import("./pages/Login"));
+const SignUp = lazy(() => import("./pages/Signup"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const RequestAmbulance = lazy(() => import("./pages/RequestAmbulance"));
+const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 
 export function App() {
   useEffect(() => {
@@ -21,18 +22,17 @@ export function App() {
   return (
     <>
       <ToastContainer />
-      <BrowserRouter>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/sign-up" element={<SignUp />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/request-ambulance" element={<RequestAmbulance />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-        </Routes>
-        {window.location.pathname !== "/dashboard" && <Footer />}
-      </BrowserRouter>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Router>
+          <Route path="/" component={Home} />
+          <Route path="/login" component={Login} />
+          <Route path="/sign-up" component={SignUp} />
+          <Route path="/dashboard" component={Dashboard} />
+          <Route path="/request-ambulance" component={RequestAmbulance} />
+          <Route path="/reset-password" component={ResetPassword} />
+        </Router>
+      </Suspense>
+      {window.location.pathname !== "/dashboard" && <Footer />}
     </>
   );
 }

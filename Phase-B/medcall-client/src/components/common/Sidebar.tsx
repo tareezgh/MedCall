@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { route } from "preact-router";
 import logo from "../../assets/logo-img.webp";
 import { handleLogout } from "../../utils/authHandles";
 import { TabsTypes } from "../../interfaces/types";
@@ -15,8 +15,6 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ role, activeTab, setActiveTab }: SidebarProps) => {
-  const navigate = useNavigate();
-
   const renderSidebarTab = (
     text: string,
     icon: React.ReactNode,
@@ -53,7 +51,7 @@ const Sidebar = ({ role, activeTab, setActiveTab }: SidebarProps) => {
         <div className="flex flex-col gap-6 ">
           <div
             className="logo-side hover:cursor-pointer"
-            onClick={() => navigate("/")}
+            onClick={() => route("/")}
           >
             <img src={logo} alt={"MedCall Logo"} className="h-[2.5rem]" />
           </div>
@@ -67,7 +65,7 @@ const Sidebar = ({ role, activeTab, setActiveTab }: SidebarProps) => {
           {renderSidebarTab("Settings", <SettingsIcon />, "profile")}
           {renderSidebarTab("Log out", <LogoutIcon />, "logout", () => {
             handleLogout();
-            navigate("/");
+            route("/");
           })}
         </div>
       </nav>

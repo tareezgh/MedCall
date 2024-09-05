@@ -8,7 +8,8 @@ import OTPInput from "../components/OTPInput";
 import { ResetPasswordFormData } from "../interfaces/types";
 import { MailIcon, EyeIcon, EyeOffIcon, LockIcon } from "../components/icons";
 import { resetPassword, sendOtp, verifyOtp } from "../services/userService";
-import { useNavigate } from "react-router";
+import { route } from "preact-router";
+import Navbar from "../components/common/Navbar";
 
 type ScreenContainerProps = {
   children: ReactNode;
@@ -35,7 +36,6 @@ const ScreenHeader = ({ title, description }: ScreenHeaderProps) => (
 );
 
 const ResetPassword = () => {
-  const navigate = useNavigate();
   const { t } = useTranslation();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
@@ -143,7 +143,7 @@ const ResetPassword = () => {
         position: "top-center",
         hideProgressBar: true,
       });
-      navigate("/login");
+      route("/login");
     } catch (error) {
       toast.error(t("error-resetting-password"), {
         position: "top-center",
@@ -279,7 +279,12 @@ const ResetPassword = () => {
     }
   };
 
-  return <>{renderPages()}</>;
+  return (
+    <div className="flex flex-col">
+      <Navbar />
+      {renderPages()}
+    </div>
+  );
 };
 
 export default ResetPassword;

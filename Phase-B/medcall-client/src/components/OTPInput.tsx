@@ -12,7 +12,7 @@ const OTPInput = ({ otp, setOtp }: OTPInputProps) => {
     (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
       const newOtp = [...otp];
       const { value } = event.target as HTMLInputElement;
-
+      
       const numericValue = value.replace(/\D/g, ""); // Remove non-digits
 
       newOtp[index] = numericValue;

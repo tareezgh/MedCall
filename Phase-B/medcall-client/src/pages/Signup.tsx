@@ -1,6 +1,6 @@
 import { useState } from "preact/hooks";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router";
+import { route } from "preact-router";
 import Button from "../components/Button";
 import Divider from "../components/Divider";
 import GoogleButton from "../components/GoogleButton";
@@ -19,9 +19,9 @@ import {
   ZipIcon,
   PinIcon,
 } from "../components/icons";
+import Navbar from "../components/common/Navbar";
 
 const SignUp = () => {
-  const navigate = useNavigate();
   const { t } = useTranslation();
   const [signUpDriverFrom, setSignUpDriverForm] = useState<boolean>(false);
 
@@ -80,7 +80,7 @@ const SignUp = () => {
     const status = await handleSignUp(formData, activeTab);
     if (status) {
       const data = isTokenValid();
-      if (data) navigate("/dashboard");
+      if (data) route("/dashboard");
     }
   };
 
@@ -200,7 +200,8 @@ const SignUp = () => {
   };
 
   return (
-    <>
+    <div className="flex flex-col">
+      <Navbar />
       <section className="flex justify-center items-center px-6 my-8">
         <div className="box-modal shadow-2xl w-full md:w-2/4">
           {signUpDriverFrom ? renderDriverSignUpForm() : renderSignUp()}
@@ -229,7 +230,7 @@ const SignUp = () => {
                 {t("sign-up-nav-to")}
                 <span
                   className={"text-primary500 font-bold cursor-pointer"}
-                  onClick={() => navigate("/login")}
+                  onClick={() => route("/login")}
                 >
                   {t("sign-up-nav-to-text")}
                 </span>
@@ -245,7 +246,7 @@ const SignUp = () => {
           )}
         </div>
       </section>
-    </>
+    </div>
   );
 };
 

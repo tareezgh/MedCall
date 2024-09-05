@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { route } from 'preact-router';
 import googleIcon from "../assets/icons/google.svg";
 import { auth, googleProvider, signInWithPopup } from "../firebase";
 import { loginUser, registerUser } from "../services/userService";
@@ -9,7 +9,6 @@ interface GoogleButtonProps {
 }
 
 const GoogleButton = ({ text, type }: GoogleButtonProps) => {
-  const navigate = useNavigate();
   const handleGoogleClick = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
@@ -46,7 +45,7 @@ const GoogleButton = ({ text, type }: GoogleButtonProps) => {
   const checkDataAndNavigate = () => {
     const data = isTokenValid();
     if (data) {
-      navigate("/dashboard");
+      route("/dashboard");
     }
   };
   return (

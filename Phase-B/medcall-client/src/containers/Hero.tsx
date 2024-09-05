@@ -4,7 +4,7 @@ import { LocationIcon } from "../components/icons";
 import heroImg from "../assets/hero-image.webp";
 import { useTranslation } from "react-i18next";
 import { useRef, useState } from "preact/hooks";
-import { useNavigate } from "react-router";
+import { route } from 'preact-router';
 import { useDispatch } from "react-redux";
 import { setLocationCoords } from "../redux/Slicers";
 import { Autocomplete, LoadScript } from "@react-google-maps/api";
@@ -12,7 +12,6 @@ import { Autocomplete, LoadScript } from "@react-google-maps/api";
 import { handleGetLocation } from "../utils/geolocationUtils";
 
 const Hero = () => {
-  const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [location, setLocation] = useState("");
@@ -24,7 +23,7 @@ const Hero = () => {
   };
 
   const handleNewRequestClick = () => {
-    navigate("/request-ambulance");
+    route("/request-ambulance");
   };
 
   const handleRightIconClick = async () => {

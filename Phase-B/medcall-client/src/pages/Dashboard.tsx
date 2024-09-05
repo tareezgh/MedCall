@@ -1,6 +1,6 @@
 import { useEffect, useState } from "preact/hooks";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { route } from "preact-router";
 import Sidebar from "../components/common/Sidebar";
 import DashboardContent from "../components/DashboardContent.tsx";
 import Tracking from "../components/Tracking.tsx";
@@ -11,9 +11,9 @@ import DriverRequest from "../components/DriverRequest.tsx";
 import { TabsTypes } from "../interfaces/types.ts";
 import { handleGetLocation } from "../utils/geolocationUtils.ts";
 import LiveChat from "../components/LiveChat.tsx";
+import Navbar from "../components/common/Navbar.tsx";
 
 const Dashboard = () => {
-  const navigate = useNavigate();
   const currentUser = useSelector((state: any) => state.currentUser);
   const [activeTab, setActiveTab] = useState<TabsTypes>("dashboard");
   const [userPosition, setUserPosition] =
@@ -21,7 +21,7 @@ const Dashboard = () => {
   const [userAddress, setUserAddress] = useState("");
   useEffect(() => {
     if (!currentUser) {
-      navigate("/");
+      route("/");
     }
   }, [currentUser]);
 
@@ -98,15 +98,18 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="flex flex-row h-screen w-full">
-      <Sidebar
-        role={currentUser.role}
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-      />
-      <main className="flex-1 bg-dashboardBg overflow-y-auto p-6">
-        {renderContent()}
-      </main>
+    <div className="flex flex-col">
+      <Navbar />
+      <div className="flex flex-row h-screen w-full">
+        <Sidebar
+          role={currentUser.role}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+        />
+        <main className="flex-1 bg-dashboardBg overflow-y-auto p-6">
+          {renderContent()}
+        </main>
+      </div>
     </div>
   );
 };

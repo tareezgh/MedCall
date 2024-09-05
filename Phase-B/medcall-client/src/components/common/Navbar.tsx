@@ -1,15 +1,12 @@
 import { useEffect, useState } from "preact/hooks";
-import { useLocation, useNavigate } from "react-router-dom";
+import { route } from "preact-router";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-
 import Button from "../Button";
 import logo from "../../assets/logo-img.webp";
 import { GlobeIcon, XIcon, MenuIcon, UserIcon } from "../icons";
 
 const Navbar = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
   const { t, i18n } = useTranslation();
   const currentUser = useSelector((state: any) => state.currentUser);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -35,12 +32,12 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    if (location.pathname === "/dashboard") {
+    if (window.location.pathname === "/dashboard") {
       setNavbarMargin(getMargin(selectedLanguage));
     } else {
       setNavbarMargin("w-full");
     }
-  }, [location.pathname, selectedLanguage]);
+  }, [window.location.pathname, selectedLanguage]);
 
   const getMargin = (language: string) => {
     return language === "ar" || language === "he" ? "mr-64" : "ml-64";
@@ -83,7 +80,7 @@ const Navbar = () => {
   const renderLogoSection = () => (
     <div
       className="logo-side hover:cursor-pointer"
-      onClick={() => navigate("/")}
+      onClick={() => route("/")}
     >
       <img src={logo} alt="MedCall Logo" className="h-[3rem] md:h-[3.5rem]" />
     </div>
@@ -101,12 +98,12 @@ const Navbar = () => {
       <Button
         text={t("navbar-login-button")}
         type="secondary"
-        onClick={() => navigate("/login")}
+        onClick={() => route("/login")}
       />
       <Button
         text={t("navbar-sign-up-button")}
         type="primary"
-        onClick={() => navigate("/sign-up")}
+        onClick={() => route("/sign-up")}
       />
     </div>
   );
@@ -118,7 +115,7 @@ const Navbar = () => {
           text={t("navbar-login-button")}
           type="secondary"
           onClick={() => {
-            navigate("/login");
+            route("/login");
             setIsMenuOpen(false);
           }}
           customClassName="w-full mb-2"
@@ -127,7 +124,7 @@ const Navbar = () => {
           text={t("navbar-sign-up-button")}
           type="primary"
           onClick={() => {
-            navigate("/sign-up");
+            route("/sign-up");
             setIsMenuOpen(false);
           }}
           customClassName="w-full"
@@ -154,7 +151,7 @@ const Navbar = () => {
         <div className="flex flex-row gap-4">
           <div
             className="profile-picture rounded-full bg-lightBg px-3 py-3 hover:cursor-pointer"
-            onClick={() => navigate("/dashboard")}
+            onClick={() => route("/dashboard")}
           >
             <UserIcon />
           </div>

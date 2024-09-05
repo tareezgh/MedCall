@@ -1,6 +1,6 @@
 import { useEffect, useState } from "preact/hooks";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router";
+import { route } from "preact-router";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import TabsSelection from "../components/TabsSelection";
@@ -19,9 +19,9 @@ import {
 import { useSelector } from "react-redux";
 import { postNewRequest } from "../services/requestService";
 import { handleGetLocation } from "../utils/geolocationUtils";
+import Navbar from "../components/common/Navbar";
 
 const RequestAmbulance = () => {
-  const navigate = useNavigate();
   const { t } = useTranslation();
   const currentUser = useSelector((state: any) => state.currentUser);
   const currentLocation = useSelector((state: any) => state.location);
@@ -109,7 +109,7 @@ const RequestAmbulance = () => {
     console.log("🚀 ~ newRequestData:", newRequestData);
 
     const status = await postNewRequest(newRequestData);
-    if (status) navigate("/dashboard");
+    if (status) route("/dashboard");
   };
 
   const renderNecessaryInfo = () => {
@@ -244,7 +244,8 @@ const RequestAmbulance = () => {
   };
 
   return (
-    <>
+    <div className="flex flex-col">
+      <Navbar />
       <section className="py-10 flex justify-center items-center w-full px-6">
         <div className="box-modal shadow-2x md:mx-[10%] p-4">
           {isOptionalSection ? renderOptionalInfo() : renderNecessaryInfo()}
@@ -275,7 +276,7 @@ const RequestAmbulance = () => {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 };
 
