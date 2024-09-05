@@ -1,3 +1,4 @@
+import { route } from 'preact-router';
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import Button from "./Button";
@@ -11,7 +12,6 @@ import LocationItem from "./LocationItem";
 import { ChatIcon } from "./icons";
 import MapComponent from "./Map";
 import { capitalizeFirstLetter } from "../utils/helpers";
-import { useNavigate } from "react-router-dom";
 
 
 interface TrackingProps {
@@ -21,7 +21,6 @@ interface TrackingProps {
 }
 
 const Tracking = ({ setActiveTab }: TrackingProps) => {
-  const navigate = useNavigate();
   const { t } = useTranslation();
   const currentUser = useSelector((state: any) => state.currentUser);
   const [activeRequest, setActiveRequest] = useState<AmbulanceRequest | null>(
@@ -179,7 +178,7 @@ const Tracking = ({ setActiveTab }: TrackingProps) => {
           <Button
             text={t("hero-button")}
             type="primary"
-            onClick={() => navigate("/request-ambulance")}
+            onClick={() => route("/request-ambulance")}
             customClassName={" text-xl"}
           />
         </div>

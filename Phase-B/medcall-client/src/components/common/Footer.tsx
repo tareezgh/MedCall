@@ -1,13 +1,12 @@
 import { useTranslation } from "react-i18next";
+import { route } from 'preact-router';
 import logo from "../../assets/logo-img.webp";
 
 import mailIcon from "../../assets/icons/mail.svg";
 import phoneIcon from "../../assets/icons/phone.svg";
 import addressIcon from "../../assets/icons/address.svg";
-import { useNavigate } from "react-router";
 
 const Footer = () => {
-  const navigate = useNavigate();
   const { t } = useTranslation();
   const currentYear = new Date().getFullYear();
   const renderItem = (icon: string, text: string) => {
@@ -28,7 +27,7 @@ const Footer = () => {
             <div
               className="hover:cursor-pointer"
               onClick={() => {
-                navigate("/");
+                route("/");
                 window.scroll(0, 0);
               }}
             >

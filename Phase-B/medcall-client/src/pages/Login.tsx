@@ -1,6 +1,6 @@
 import { useState } from "preact/hooks";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router";
+import { route } from 'preact-router';
 import Button from "../components/Button";
 import Divider from "../components/Divider";
 import GoogleButton from "../components/GoogleButton";
@@ -8,9 +8,9 @@ import Input from "../components/Input";
 import { EyeIcon, EyeOffIcon, LockIcon, MailIcon } from "../components/icons";
 import { SignInFormData } from "../interfaces/types";
 import { handleSignIn, isTokenValid } from "../utils/authHandles";
+import Navbar from "../components/common/Navbar";
 
 const Login = () => {
-  const navigate = useNavigate();
   const { t } = useTranslation();
 
   const [formData, setFormData] = useState<SignInFormData>({
@@ -39,7 +39,7 @@ const Login = () => {
   };
 
   const handleForgetPassword = () => {
-    navigate("/reset-password");
+    route("/reset-password");
   };
 
   const handleSignInClick = async () => {
@@ -48,13 +48,14 @@ const Login = () => {
       const data = isTokenValid();
       if (data) {
         console.log("🚀 ~ handleSignInClick ~ data:", data);
-        navigate("/dashboard");
+        route("/dashboard");
       }
     }
   };
 
   return (
-    <>
+    <div className="flex flex-col">
+      <Navbar />
       <section className="flex justify-center items-center px-6 my-8">
         <div className="box-modal shadow-2xl w-full md:w-2/5">
           <h2 className="text-2xl md:text-4xl font-Pippins font-semibold m-0">
@@ -112,7 +113,7 @@ const Login = () => {
                 {t("login-nav-to")}
                 <span
                   className={"text-primary500 font-bold cursor-pointer"}
-                  onClick={() => navigate("/sign-up")}
+                  onClick={() => route("/sign-up")}
                 >
                   {t("login-nav-to-text")}
                 </span>
@@ -125,7 +126,7 @@ const Login = () => {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 };
 

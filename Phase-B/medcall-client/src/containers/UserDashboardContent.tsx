@@ -1,6 +1,6 @@
 import { useEffect, useState } from "preact/hooks";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { route } from 'preact-router';
 import Button from "../components/Button";
 import HistoryItem from "../components/HistoryItem";
 import { PlusIcon } from "../components/icons";
@@ -14,7 +14,6 @@ interface UserDashboardContentProps {
 }
 
 const UserDashboardContent = ({ setActiveTab }: UserDashboardContentProps) => {
-  const navigate = useNavigate();
   const { t } = useTranslation();
   const [activeRequest, setActiveRequest] = useState<AmbulanceRequest | null>(
     null
@@ -108,7 +107,7 @@ const UserDashboardContent = ({ setActiveTab }: UserDashboardContentProps) => {
           <Button
             text={t("new-request.order-now-button")}
             type="primary"
-            onClick={() => navigate("/request-ambulance")}
+            onClick={() => route("/request-ambulance")}
             customClassName="text-2xl"
           />
         </div>
