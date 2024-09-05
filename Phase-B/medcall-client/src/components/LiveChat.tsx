@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 import Message from "./Messages";
 
 import { PhoneIcon, SendIcon } from "./icons";
@@ -38,7 +38,6 @@ const LiveChat = () => {
 
   const [ws, setWs] = useState<WebSocket | null>(null);
   const currentUser = useSelector((state: any) => state.currentUser);
-  const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const wsUrl = import.meta.env.VITE_WS_URL;
   useEffect(() => {
     const fetchConversations = async () => {
@@ -174,11 +173,10 @@ const LiveChat = () => {
               <button
                 key={conversation._id}
                 onClick={() => handleConversationSelect(conversation)}
-                className={`flex flex-col items-center justify-center p-4 w-full rounded-lg shadow-md ${
-                  isSelected
+                className={`flex flex-col items-center justify-center p-4 w-full rounded-lg shadow-md ${isSelected
                     ? "bg-[#E4E4FD] text-secondary600"
                     : "bg-white hover:bg-[#E4E4FD]"
-                }`}
+                  }`}
               >
                 <h1 className="text-lg font-bold">
                   {receiver
@@ -201,28 +199,26 @@ const LiveChat = () => {
         {renderConversations()}
 
         {/* Right Section */}
-        <div className="right-side flex flex-col gap-4 w-[80%] ">
-          <div className="flex flex-col bg-white rounded-lg shadow-xl  p-4">
+        <div className="right-side flex flex-col gap-4 w-[80%]">
+          <div className="flex flex-col bg-white rounded-lg shadow-xl p-4 max-h-[600px]">
             <div className="flex items-center justify-between pb-2 border-b border-gray-300">
               <h2 className="text-xl font-bold">
                 {selectedConversationUsername}
               </h2>
               <div className="p-2 bg-gray-200 rounded-full">
-                <PhoneIcon onClick={() => {}} />
+                <PhoneIcon onClick={() => { }} />
               </div>
             </div>
-            <div className="flex flex-col overflow-y-auto max-h-fit">
+            <div className="flex flex-col overflow-y-auto max-h-[450px]">
               {messages.map((msg, index) => {
                 return (
                   <Message
-                    key={index}
-                    text={msg.text}
-                    me={msg.senderId === currentUser.id}
+                  key={index}
+                  text={msg.text}
+                  me={msg.senderId === currentUser.id}
                   />
-                );
-              })}
-
-              <div ref={messagesEndRef} />
+                  );
+                })}
             </div>
             {selectedConversation && (
               <form onSubmit={handleSend} className="flex justify-start gap-2">
@@ -243,6 +239,7 @@ const LiveChat = () => {
             )}
           </div>
         </div>
+
       </div>
     </div>
   );
