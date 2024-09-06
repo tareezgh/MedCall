@@ -1,6 +1,5 @@
 import { useEffect, useState } from "preact/hooks";
 import { useSelector } from "react-redux";
-import { route } from "preact-router";
 import Sidebar from "../components/common/Sidebar";
 import DashboardContent from "../components/DashboardContent.tsx";
 import Tracking from "../components/Tracking.tsx";
@@ -19,11 +18,6 @@ const Dashboard = () => {
   const [userPosition, setUserPosition] =
     useState<GeolocationCoordinates | null>(null);
   const [userAddress, setUserAddress] = useState("");
-  useEffect(() => {
-    if (!currentUser) {
-      route("/");
-    }
-  }, [currentUser]);
 
   useEffect(() => {
     const getUserPosition = async () => {

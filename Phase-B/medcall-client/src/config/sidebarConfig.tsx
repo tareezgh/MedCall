@@ -62,6 +62,13 @@ const sidebarConfig: Record<
       activeTab: "messages",
     },
   ],
+  guest: [
+    {
+      text: "Dashboard",
+      icon: <DashboardIcon />,
+      activeTab: "dashboard",
+    },
+  ],
 };
 
 export default sidebarConfig;

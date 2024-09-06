@@ -88,6 +88,25 @@ export class RequestDal {
     }
   }
 
+  public async getGuestRequest(data: { status: string; phoneNumber: string }) {
+    try {
+      const query: any = {
+        userId: null,
+        phoneNumber: data.phoneNumber,
+        status: data.status,
+      };
+
+      const activeRequest = await Request.findOne(query).populate(
+        "userId",
+        "firstName lastName phoneNumber"
+      );
+      return activeRequest;
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  }
+
   public async getRequestsByUserId(userId: string) {
     try {
       const query = userId ? { userId } : {};
@@ -101,7 +120,7 @@ export class RequestDal {
       throw err;
     }
   }
-  
+
   public async updateRequest(requestId: string, updateData: Partial<IRequest>) {
     try {
       const updatedRequest = await Request.findByIdAndUpdate(

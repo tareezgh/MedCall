@@ -5,7 +5,7 @@ const requestSchema = new mongoose.Schema(
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Users",
-      required: true,
+      default: null,
     },
     location: {
       type: {

@@ -1,9 +1,13 @@
 import { useEffect, useState } from "preact/hooks";
 import Message from "./Messages";
 
-import { PhoneIcon, SendIcon } from "./icons";
+import { SendIcon } from "./icons";
 import { useSelector } from "react-redux";
-import { getConversation, getMessages } from "../services/conversationService";
+import {
+  createConversation,
+  getConversation,
+  getMessages,
+} from "../services/conversationService";
 import Input from "./Input";
 import { useTranslation } from "react-i18next";
 
@@ -35,6 +39,9 @@ const LiveChat = () => {
     useState<Conversation | null>(null);
   const [selectedConversationUsername, setSelectedConversationUsername] =
     useState<string>("");
+  const activeRequest = useSelector(
+    (state: any) => state.requests.activeRequest
+  );
 
   const [ws, setWs] = useState<WebSocket | null>(null);
   const currentUser = useSelector((state: any) => state.currentUser);
@@ -46,7 +53,31 @@ const LiveChat = () => {
         console.log("🚀 ~ fetchConversations ~ data:", data);
 
         setConversations(data.reverse());
-        if (data) {
+        if (activeRequest) {
+          const isDriver =
+            activeRequest && activeRequest.driverId === currentUser.id;
+          const targetId = isDriver
+            ? activeRequest.userId
+            : activeRequest.driverId;
+
+          const existingConversation = data.find((conv: Conversation) =>
+            conv.participants.some(
+              (participant) => participant._id === currentUser.id
+            )
+          );
+
+          if (existingConversation)
+            handleConversationSelect(existingConversation);
+          else {
+            // If no conversation exists, create a new one
+            await createConversation(currentUser.id, targetId);
+
+            // Fetch conversations again to ensure complete data
+            const updatedConversations = await getConversation(currentUser.id);
+            setConversations(updatedConversations.reverse());
+          }
+        } else if (data.length > 0) {
+          // If there's no active request, select the first conversation
           handleConversationSelect(data[0]);
         }
       } catch (error) {
@@ -173,10 +204,11 @@ const LiveChat = () => {
               <button
                 key={conversation._id}
                 onClick={() => handleConversationSelect(conversation)}
-                className={`flex flex-col items-center justify-center p-4 w-full rounded-lg shadow-md ${isSelected
+                className={`flex flex-col items-center justify-center p-4 w-full rounded-lg shadow-md ${
+                  isSelected
                     ? "bg-[#E4E4FD] text-secondary600"
                     : "bg-white hover:bg-[#E4E4FD]"
-                  }`}
+                }`}
               >
                 <h1 className="text-lg font-bold">
                   {receiver
@@ -205,20 +237,17 @@ const LiveChat = () => {
               <h2 className="text-xl font-bold">
                 {selectedConversationUsername}
               </h2>
-              <div className="p-2 bg-gray-200 rounded-full">
-                <PhoneIcon onClick={() => { }} />
-              </div>
             </div>
-            <div className="flex flex-col overflow-y-auto max-h-[450px]">
+            <div className="flex flex-col overflow-y-auto min-h-[400px] max-h-[450px]">
               {messages.map((msg, index) => {
                 return (
                   <Message
-                  key={index}
-                  text={msg.text}
-                  me={msg.senderId === currentUser.id}
+                    key={index}
+                    text={msg.text}
+                    me={msg.senderId === currentUser.id}
                   />
-                  );
-                })}
+                );
+              })}
             </div>
             {selectedConversation && (
               <form onSubmit={handleSend} className="flex justify-start gap-2">
@@ -239,7 +268,6 @@ const LiveChat = () => {
             )}
           </div>
         </div>
-
       </div>
     </div>
   );

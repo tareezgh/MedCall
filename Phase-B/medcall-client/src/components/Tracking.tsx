@@ -1,4 +1,4 @@
-import { route } from 'preact-router';
+import { route } from "preact-router";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import Button from "./Button";
@@ -12,7 +12,6 @@ import LocationItem from "./LocationItem";
 import { ChatIcon } from "./icons";
 import MapComponent from "./Map";
 import { capitalizeFirstLetter } from "../utils/helpers";
-
 
 interface TrackingProps {
   setActiveTab: (tab: TabsTypes) => void;
@@ -151,7 +150,7 @@ const Tracking = ({ setActiveTab }: TrackingProps) => {
     <div className="flex flex-col items-start w-full gap-4">
       <div className="flex flex-row items-start justify-between text-center w-full ">
         <h1 className="text-4xl w-full text-start">{t("track")}</h1>
-        {currentUser.role === "driver" && (
+        {currentUser.role === "driver" && activeRequest && (
           <Button
             text={t("confirm-arrival")}
             type="primary"

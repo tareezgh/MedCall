@@ -1,4 +1,6 @@
+import mongoose from "mongoose";
 import Users from "../db/models/users";
+import Request from "../db/models/requests";
 import { User } from "../interfaces/user.interface";
 
 export class UsersDal {
@@ -35,6 +37,28 @@ export class UsersDal {
     return data?.password;
   }
 
+  public async updateGuestRequestUserId(
+    phoneNumber: string,
+    userId: mongoose.Types.ObjectId
+  ) {
+    try {
+      const guestRequest = await Request.findOne({
+        phoneNumber: phoneNumber,
+        userId: null,
+      });
+
+      if (guestRequest) {
+        // Update the request with the user's ID
+        guestRequest.userId = userId;
+        await guestRequest.save();
+      }
+    } catch (error) {
+      console.error("Error updating guest request with userId:", error);
+      throw error;
+    }
+  }
+
+  
   public async checkUser(user: Partial<User>) {
     const data = await Users.findOne({
       email: user.email,

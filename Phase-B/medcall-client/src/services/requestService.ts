@@ -1,6 +1,11 @@
 import axios from "axios";
 import { toast } from "react-toastify";
-import { activeRequestUrl, requestUrl, updateRequestUrl } from "./constants";
+import {
+  activeRequestUrl,
+  guestRequestUrl,
+  requestUrl,
+  updateRequestUrl,
+} from "./constants";
 import { AmbulanceRequest, StatusType } from "../interfaces/types";
 
 export const postNewRequest = async (request: AmbulanceRequest) => {
@@ -69,13 +74,38 @@ export const getRequestById = async (userId: string) => {
   return response.data;
 };
 
-export const getActiveRequest = async (currentUserID: string, status?: string) => {
+export const getActiveRequest = async (
+  currentUserID: string,
+  status?: string
+) => {
   const args = {
     status: status || "active",
     id: currentUserID,
   };
   const response = await axios.post(`${activeRequestUrl}`, args);
   console.log("🚀 ~ getActiveRequest ~ response:", response);
+
+  if (response.data.status === "failure") {
+    toast.error(response.data.message, {
+      position: "bottom-center",
+      hideProgressBar: true,
+    });
+    return null;
+  }
+
+  return response.data;
+};
+
+export const getGuestRequest = async (
+  guestPhoneNumber: string,
+  status?: string
+) => {
+  const args = {
+    status: status || "active",
+    phoneNumber: guestPhoneNumber,
+  };
+  const response = await axios.post(`${guestRequestUrl}`, args);
+  console.log("🚀 ~ getGuestRequest ~ response:", response);
 
   if (response.data.status === "failure") {
     toast.error(response.data.message, {

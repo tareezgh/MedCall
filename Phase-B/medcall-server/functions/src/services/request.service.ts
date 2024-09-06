@@ -28,6 +28,11 @@ export class RequestService {
     return res;
   }
 
+  public async getGuestRequest(data: { status: string; phoneNumber: string }) {
+    const res = await this.requestDal.getGuestRequest(data);
+    return res;
+  }
+  
   public async updateRequest(requestId: string, updateData: Partial<IRequest>) {
     const res = await this.requestDal.updateRequest(requestId, updateData);
     return res;

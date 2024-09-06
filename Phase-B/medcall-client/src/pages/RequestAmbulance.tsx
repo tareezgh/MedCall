@@ -88,7 +88,7 @@ const RequestAmbulance = () => {
   const handleRequestAmbulance = async () => {
     const newRequestData: AmbulanceRequest = {
       _id: `temp_${Date.now()}`,
-      userId: currentUser.id,
+      userId: currentUser.id || null,
       location: {
         lat: currentLocation.latitude,
         long: currentLocation.longitude,
@@ -107,6 +107,9 @@ const RequestAmbulance = () => {
       optionalActivities: formData.optionalActivities,
     };
     console.log("🚀 ~ newRequestData:", newRequestData);
+
+    if (!currentUser.id)
+      localStorage.setItem("guestPhoneNumber", formData.phoneNumber);
 
     const status = await postNewRequest(newRequestData);
     if (status) route("/dashboard");

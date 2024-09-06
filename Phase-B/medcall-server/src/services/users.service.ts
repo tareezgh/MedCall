@@ -36,6 +36,11 @@ export class UsersService {
       return { status: "failure", message: "User data not found" };
     }
 
+    await this.usersDal.updateGuestRequestUserId(
+      userData.phoneNumber!,
+      userData._id
+    );
+
     const token = this.generateToken(
       userData._id,
       userData.email,
@@ -68,6 +73,11 @@ export class UsersService {
     if (!newUser) {
       return { status: "failure", message: "User registration failed" };
     }
+
+    await this.usersDal.updateGuestRequestUserId(
+      newUser.phoneNumber!,
+      newUser._id
+    );
 
     const token = this.generateToken(
       newUser._id,
