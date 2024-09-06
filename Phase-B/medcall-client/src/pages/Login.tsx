@@ -57,7 +57,7 @@ const Login = () => {
     <div className="flex flex-col">
       <Navbar />
       <section className="flex justify-center items-center px-6 my-8">
-        <div className="box-modal shadow-2xl w-full md:w-2/5">
+        <div className="box-modal shadow-2xl w-full md:w-4/5 lg:w-3/5">
           <h2 className="text-2xl md:text-4xl font-Pippins font-semibold m-0">
             {t("login-form-title")}
           </h2>
