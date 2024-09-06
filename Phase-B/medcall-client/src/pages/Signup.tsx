@@ -94,7 +94,6 @@ const SignUp = () => {
   const handleVerifyClick = async () => {
     if (!googleUser) return;
     if (googlePhoneNumber === "") {
-      // TODO
       toast.error(t("error-phone-required"), {
         position: "top-center",
         hideProgressBar: true,
@@ -292,7 +291,7 @@ const SignUp = () => {
               type="primary"
               onClick={
                 signUpDriverFrom
-                  ? () => setActiveModal("verify")
+                  ? handleSignUpClick
                   : handleContinueClick
               }
               customClassName={"font-bold text-xl"}
