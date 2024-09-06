@@ -71,7 +71,7 @@ const DriversTable = ({
   };
 
   return (
-    <>
+    <div className="overflow-x-auto w-full">
       <table className="min-w-full bg-white rounded-2xl shadow">
         <thead>
           <tr className="bg-gray-200 text-gray-600 text-sm leading-normal">
@@ -142,7 +142,7 @@ const DriversTable = ({
           onSave={handleSave}
         />
       )}
-    </>
+    </div>
   );
 };
 

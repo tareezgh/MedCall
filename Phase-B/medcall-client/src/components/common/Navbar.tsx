@@ -6,11 +6,16 @@ import Button from "../Button";
 import logo from "../../assets/logo-img.webp";
 import { GlobeIcon, XIcon, MenuIcon, UserIcon } from "../icons";
 
-const Navbar = () => {
+interface NavbarProps {
+  isSidebarOpen?: boolean;
+  toggleSidebar?: () => void;
+}
+
+const Navbar = ({ isSidebarOpen, toggleSidebar }: NavbarProps) => {
   const { t, i18n } = useTranslation();
   const currentUser = useSelector((state: any) => state.currentUser);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [navbarMargin, setNavbarMargin] = useState("ml-64");
+  const [navbarMargin, setNavbarMargin] = useState("md:ml-64");
   const [showLanguage, setShowLanguage] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState<string>(
     localStorage.getItem("selectedLanguage") || "en"
@@ -40,7 +45,7 @@ const Navbar = () => {
   }, [window.location.pathname, selectedLanguage]);
 
   const getMargin = (language: string) => {
-    return language === "ar" || language === "he" ? "mr-64" : "ml-64";
+    return language === "ar" || language === "he" ? "md:mr-64" : "md:ml-64";
   };
 
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -78,10 +83,7 @@ const Navbar = () => {
   };
 
   const renderLogoSection = () => (
-    <div
-      className="logo-side hover:cursor-pointer"
-      onClick={() => route("/")}
-    >
+    <div className="logo-side hover:cursor-pointer" onClick={() => route("/")}>
       <img src={logo} alt="MedCall Logo" className="h-[3rem] md:h-[3.5rem]" />
     </div>
   );
@@ -165,6 +167,11 @@ const Navbar = () => {
 
         <div className="buttons-side flex flex-row justify-center items-center gap-3">
           {renderLanguageIcon()}
+          {toggleSidebar && (
+            <div className="md:hidden z-50" onClick={() => toggleSidebar()}>
+              {isSidebarOpen ? <></> : <MenuIcon />}
+            </div>
+          )}
         </div>
       </nav>
     );

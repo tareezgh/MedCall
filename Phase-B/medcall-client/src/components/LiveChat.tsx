@@ -210,7 +210,7 @@ const LiveChat = () => {
                     : "bg-white hover:bg-[#E4E4FD]"
                 }`}
               >
-                <h1 className="text-lg font-bold">
+                <h1 className="text-base md:text-lg font-bold">
                   {receiver
                     ? `${receiver.firstName} ${receiver.lastName}`
                     : "Unknown"}
@@ -232,13 +232,13 @@ const LiveChat = () => {
 
         {/* Right Section */}
         <div className="right-side flex flex-col gap-4 w-[80%]">
-          <div className="flex flex-col bg-white rounded-lg shadow-xl p-4 max-h-[600px]">
+          <div className="flex flex-col bg-white rounded-lg shadow-xl p-4 max-h-[850px] md:max-h-[600px]">
             <div className="flex items-center justify-between pb-2 border-b border-gray-300">
               <h2 className="text-xl font-bold">
                 {selectedConversationUsername}
               </h2>
             </div>
-            <div className="flex flex-col overflow-y-auto min-h-[400px] max-h-[450px]">
+            <div className="flex flex-col overflow-y-auto min-h-[400px] md:max-h-[450px]">
               {messages.map((msg, index) => {
                 return (
                   <Message
@@ -258,7 +258,7 @@ const LiveChat = () => {
                   onChange={(e) =>
                     setChatMessage((e.target as HTMLInputElement).value)
                   }
-                  customClassName="min-w-[500px]"
+                  customClassName="md:min-w-[500px]"
                 />
 
                 <button type="submit">

@@ -46,7 +46,7 @@ const MapComponent = ({
         center={[validLatitude, validLongitude]}
         zoom={15}
         style={{ height: "100%", width: "100%" }}
-        className="rounded-lg"
+        className="rounded-lg z-10"
       >
         <TileLayer
           attribution="Google Maps"

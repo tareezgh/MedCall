@@ -7,11 +7,11 @@ interface HistoryItemProps {
 const HistoryItem = ({ date, typeOfEmergency, location }: HistoryItemProps) => {
   return (
     <div className="flex flex-row justify-between p-4 bg-white rounded-xl shadow-xl">
-      <p className="text-xl font-semibold w-3/5">
+      <p className="text-lg md:text-xl font-semibold w-3/5">
         Ambulance Request in {location}
       </p>
       <div className="flex flex-col gap-1">
-        <p className="text-lg font-semibold">{date}</p>
+        <p className="text-base md:text-lg font-semibold">{date}</p>
         <p className="text-md">{typeOfEmergency}</p>
       </div>
     </div>

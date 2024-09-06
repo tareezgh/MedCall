@@ -44,13 +44,13 @@ const DashboardContent = ({
   return (
     <>
       <div className="flex flex-col items-start w-full gap-4">
-        <div className="flex flex-row items-start justify-between text-center w-full ">
+        <div className="flex flex-col md:flex-row items-start justify-between text-center w-full ">
           {isGuest ? (
-            <h1 className="text-4xl w-full text-start">
+            <h1 className="text-2xl md:text-4xl w-full text-start">
               {t("welcome-guest")}
             </h1>
           ) : (
-            <h1 className="text-4xl w-full text-start">
+            <h1 className="text-2xl md:text-4xl w-full text-start">
               {t("welcome")} {`${currentUser.firstName}`}
             </h1>
           )}
@@ -58,7 +58,7 @@ const DashboardContent = ({
             <div className={"w-fit whitespace-nowrap"}>{userAddress}</div>
           )}
         </div>
-        <div className="flex flex-row gap-4 w-full h-full">
+        <div className="flex flex-col md:flex-row gap-4 w-full h-full">
           {renderContent()}
         </div>
       </div>

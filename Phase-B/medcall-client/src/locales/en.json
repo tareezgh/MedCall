@@ -126,7 +126,6 @@
   "driver-new-requests-title": "New Request Near You",
   "driver-emergency-details-title": "Emergency Details",
   "driver-no-request-selected": "No request selected",
-  "driver-location": "Location",
   "driver-emergency-type": "Emergency Type",
   "admin-map-title": "Map",
   "admin-new-requests-title": "New Requests",
@@ -176,5 +175,17 @@
   "error-phone-required": "Phone number is required.",
   "error-invalid-phone": "Please enter a valid phone number.",
 
-  "": ""
+  "your-location": "Your Location",
+  "caller-location": "Caller Location",
+  "driver-location": "Driver Location",
+
+  "Dashboard": "Dashboard",
+  "Tracking": "Tracking",
+  "Messages": "Messages",
+  "Requests": "Requests",
+  "Edit": "Edit",
+  "Active": "Active",
+
+  "Settings": "Settings",
+  "Log out": "Log out"
 }

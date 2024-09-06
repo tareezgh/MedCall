@@ -60,7 +60,7 @@ const AdminDashboardContent = () => {
   const renderMap = () => {
     return (
       <>
-        <div className="flex flex-col justify-start items-start text-start gap-6 p-6 bg-modalBackground rounded-2xl w-full h-screen shadow-xl">
+        <div className="flex flex-col justify-start items-start text-start gap-6 p-6 bg-modalBackground rounded-2xl w-full h-screen shadow-xl z-10">
           <h2 className="text-xl font-bold">{t("admin-map-title")}</h2>
           <MapComponent
             key={hoveredRequest?._id || "default"}
@@ -101,12 +101,10 @@ const AdminDashboardContent = () => {
     );
   };
   return (
-    <>
-      <>
-        <div className="left-side w-1/2">{renderMap()}</div>
-        <div className="right-side w-1/2">{renderNewRequests()}</div>
-      </>
-    </>
+    <div className="w-full flex flex-col-reverse gap-4 md:flex-row">
+      <div className="left-side w-full md:w-1/2">{renderMap()}</div>
+      <div className="right-side w-full md:w-1/2">{renderNewRequests()}</div>
+    </div>
   );
 };
 

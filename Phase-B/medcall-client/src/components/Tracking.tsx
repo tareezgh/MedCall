@@ -84,7 +84,7 @@ const Tracking = ({ setActiveTab }: TrackingProps) => {
 
   const renderMap = () => {
     return (
-      <div className="flex flex-col justify-start items-start text-start gap-6 p-6 bg-modalBackground rounded-2xl w-full h-screen shadow-2xl">
+      <div className="flex flex-col justify-start items-start text-start gap-6 p-6 bg-modalBackground rounded-2xl w-full h-screen shadow-2xl z-10">
         <h2 className="text-xl font-bold">{t("admin-map-title")}</h2>
         {!activeRequest ? (
           <div>Loading...</div>
@@ -148,8 +148,8 @@ const Tracking = ({ setActiveTab }: TrackingProps) => {
 
   return (
     <div className="flex flex-col items-start w-full gap-4">
-      <div className="flex flex-row items-start justify-between text-center w-full ">
-        <h1 className="text-4xl w-full text-start">{t("track")}</h1>
+      <div className="flex flex-col gap-4 md:flex-row items-start justify-between text-center w-full ">
+        <h1 className="text-3xl md:text-4xl w-full text-start">{t("track")}</h1>
         {currentUser.role === "driver" && activeRequest && (
           <Button
             text={t("confirm-arrival")}
@@ -160,14 +160,14 @@ const Tracking = ({ setActiveTab }: TrackingProps) => {
         )}
       </div>
       {activeRequest ? (
-        <div className="flex flex-row gap-4 w-full h-full">
+        <div className="flex flex-col md:flex-row gap-4 w-full h-full">
           {/* left side */}
-          <div className="left-side flex flex-col gap-4 w-[30%]">
+          <div className="left-side flex flex-col gap-4 w-full md:w-[30%]">
             {renderRouteDetails()}
             {renderInfoDetails()}
           </div>
           {/* right side */}
-          <div className="right-side w-[70%]">{renderMap()}</div>
+          <div className="right-side w-full md:w-[70%]">{renderMap()}</div>
         </div>
       ) : (
         <div className="flex flex-col gap-8 items-center justify-center w-full h-screen bg-white rounded-2xl">

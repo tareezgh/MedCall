@@ -53,7 +53,7 @@ const DriverModal = ({ onClose, driver, onSave }: ModalProps) => {
 
   return (
     <section className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="flex flex-col gap-8 justify-center items-center bg-white p-6 rounded-lg shadow-lg w-[60%]">
+      <div className="flex flex-col gap-8 justify-center items-center bg-white p-6 mx-3 rounded-lg shadow-lg w-full md:w-[60%]">
         <h1 className="text-4xl w-full text-center text-black">
           {t("edit-profile")}
         </h1>

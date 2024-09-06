@@ -59,7 +59,7 @@ const Profile = () => {
             </h2>
             <h5 className="text-base">{currentTime} local time</h5>
           </div>
-          <div className={"flex flex-col gap-4 w-2/4 space-y-4"}>
+          <div className={"flex flex-col gap-4 w-full md:w-2/4 space-y-4"}>
             <div className={"flex flex-row gap-4 justify-between"}>
               <Input
                 type="text"
