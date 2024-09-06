@@ -1,33 +1,33 @@
-import { route } from 'preact-router';
+import { route } from "preact-router";
 import googleIcon from "../assets/icons/google.svg";
 import { auth, googleProvider, signInWithPopup } from "../firebase";
-import { loginUser, registerUser } from "../services/userService";
+import { loginUser } from "../services/userService";
 import { isTokenValid } from "../utils/authHandles";
 interface GoogleButtonProps {
   text: string;
   type: "signIn" | "signUp";
+  setActiveModal?: (modal: "main" | "verify") => void;
+  setVerifyType?: (type: "email" | "google") => void;
+  setGoogleUser?: (item: any) => void;
 }
 
-const GoogleButton = ({ text, type }: GoogleButtonProps) => {
+const GoogleButton = ({
+  text,
+  type,
+  setActiveModal,
+  setVerifyType,
+  setGoogleUser,
+}: GoogleButtonProps) => {
   const handleGoogleClick = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
+      setGoogleUser && setGoogleUser(result);
       // The signed-in user info
       const user = result.user;
-      console.log("User:", user);
 
       if (type === "signUp") {
-        const newUser = {
-          firstName: user.displayName?.split(" ")[0] || "",
-          lastName: user.displayName?.split(" ")[1] || "",
-          email: user.email || "",
-          phoneNumber: "",
-          role: "user",
-          isGoogleSignIn: true,
-        };
-
-        const registeredUser = await registerUser(newUser);
-        if (registeredUser) checkDataAndNavigate();
+        setVerifyType && setVerifyType("google");
+        if (user && setActiveModal) setActiveModal("verify");
       } else {
         const userToLogin = {
           email: user.email || "",
