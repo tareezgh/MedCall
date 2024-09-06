@@ -55,7 +55,23 @@ export const locationSlice = createSlice({
   },
 });
 
+export const requestSlice = createSlice({
+  name: "requests",
+  initialState: {
+    activeRequest: null,
+    startingRequest: null,
+  },
+  reducers: {
+    saveActiveRequest: (state, action) => {
+      state.activeRequest = action.payload;
+    },
+    saveStartingRequest: (state, action) => {
+      state.startingRequest = action.payload;
+    },
+  },
+});
+
 // Action creators are generated for each case reducer function
 export const { setUser, setUpdatedUser, resetUser } = userSlice.actions;
 export const { setLocationCoords } = locationSlice.actions;
-
+export const { saveActiveRequest, saveStartingRequest } = requestSlice.actions;

@@ -1,43 +1,50 @@
 import { useEffect, useState } from "preact/hooks";
 import { useTranslation } from "react-i18next";
-import { route } from 'preact-router';
+import { route } from "preact-router";
 import Button from "../components/Button";
 import HistoryItem from "../components/HistoryItem";
 import { PlusIcon } from "../components/icons";
 import { getActiveRequest, getRequestById } from "../services/requestService";
 import { AmbulanceRequest, TabsTypes } from "../interfaces/types";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { capitalizeFirstLetter } from "../utils/helpers";
+import { saveActiveRequest, saveStartingRequest } from "../redux/Slicers";
 
 interface UserDashboardContentProps {
   setActiveTab: (tab: TabsTypes) => void;
 }
 
 const UserDashboardContent = ({ setActiveTab }: UserDashboardContentProps) => {
+  const dispatch = useDispatch();
+  const activeRequest: AmbulanceRequest | null = useSelector(
+    (state: any) => state.requests.activeRequest
+  );
+  const startingRequest: AmbulanceRequest | null = useSelector(
+    (state: any) => state.requests.startingRequest
+  );
   const { t } = useTranslation();
-  const [activeRequest, setActiveRequest] = useState<AmbulanceRequest | null>(
-    null
-  );
-  const [startingRequest, setStartingRequest] = useState<AmbulanceRequest | null>(
-    null
-  );
+
   const [userRequests, setUserRequests] = useState<any[]>([]);
   const currentUser = useSelector((state: any) => state.currentUser);
 
   useEffect(() => {
     const fetchActiveRequest = async () => {
       try {
-        const fetchedRequest = await getActiveRequest(currentUser.id);
-        console.log("Fetched request:", fetchedRequest);
+        if (!activeRequest) {
+          const fetchedRequest = await getActiveRequest(currentUser.id);
+          console.log("Fetched request:", fetchedRequest);
 
-        if (fetchedRequest) {
-          setStartingRequest(null)
-          setActiveRequest(fetchedRequest);
-        }else{
-          const fetchedRequest = await getActiveRequest(currentUser.id,"starting");
-          console.log("🚀 ~ fetchActiveRequest ~ fetchedRequest:", fetchedRequest)
-          setActiveRequest(null);
-          setStartingRequest(fetchedRequest);
+          if (fetchedRequest) {
+            dispatch(saveStartingRequest(null)); // Reset startingRequest if there's an active one
+            dispatch(saveActiveRequest(fetchedRequest)); // Dispatch active request to Redux
+          } else {
+            const fetchedStartingRequest = await getActiveRequest(
+              currentUser.id,
+              "starting"
+            );
+            dispatch(saveActiveRequest(null)); // Reset activeRequest if there's none
+            dispatch(saveStartingRequest(fetchedStartingRequest)); // Dispatch starting request to Redux
+          }
         }
       } catch (error) {
         console.error("Failed to fetch active request:", error);
@@ -84,10 +91,11 @@ const UserDashboardContent = ({ setActiveTab }: UserDashboardContentProps) => {
       <>
         <div className="flex flex-col justify-start items-center text-center gap-6 p-6 bg-modalBackground rounded-2xl w-full h-fit shadow-xl">
           <div className="flex flex-col justify-center items-center gap-2">
-            <h2 className="text-3xl font-bold">{t("starting-request.title")}</h2>
+            <h2 className="text-3xl font-bold">
+              {t("starting-request.title")}
+            </h2>
             <h5 className="text-xl">{t("starting-request.subtitle")}</h5>
           </div>
-         
         </div>
       </>
     );
@@ -141,7 +149,7 @@ const UserDashboardContent = ({ setActiveTab }: UserDashboardContentProps) => {
       <div className="left-side flex flex-col gap-4 w-1/2">
         {activeRequest && renderActiveRequest()}
         {startingRequest && renderStartingRequest()}
-        {renderNewRequest()}
+        {!activeRequest && renderNewRequest()}
       </div>
       <div className="right-side w-1/2">{renderHistory()}</div>
     </>

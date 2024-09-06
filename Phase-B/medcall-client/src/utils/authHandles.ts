@@ -18,7 +18,13 @@ import {
   getSessionStorageWithExpiry,
   removeSessionStorageItem,
 } from "./sessionStorageHandler";
-import { resetUser, setUpdatedUser, setUser } from "../redux/Slicers";
+import {
+  resetUser,
+  saveActiveRequest,
+  saveStartingRequest,
+  setUpdatedUser,
+  setUser,
+} from "../redux/Slicers";
 import store from "../redux/store";
 
 export const handleSignUp = async (
@@ -155,6 +161,8 @@ export const isTokenValid = () => {
     const userData = decodeToken(token);
     if (userData) {
       store.dispatch(setUser(userData));
+      store.dispatch(saveActiveRequest(null));
+      store.dispatch(saveStartingRequest(null));
       return userData;
     }
   }

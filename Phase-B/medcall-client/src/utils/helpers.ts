@@ -35,3 +35,10 @@ export const haversineDistance = (
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return R * c; // Distance in kilometers
 };
+
+
+export const isValidPhoneNumber = (phoneNumber: string) => {
+  // Regex to validate phone numbers (supports different formats)
+  const phoneRegex = /^\+?[1-9]\d{1,14}$/; 
+  return phoneRegex.test(phoneNumber);
+};

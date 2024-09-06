@@ -103,10 +103,13 @@
   "zip-code": "Zip Code",
   "attach-license": "Attach Driver License",
   "welcome": "Welcome",
+  "welcome-guest": "Welcome to Guests Dashboard",
   "active-request": {
     "title": "Active Request",
     "subtitle": "The ambulance is on its way, you can track its route.",
-    "track-now-button": "Track Now"
+    "track-now-button": "Track Now",
+    "guest-subtitle": "The ambulance is on its way",
+    "guest-button": "Sign up to get more features"
   },
   "starting-request": {
     "title": "Looking for a Driver...",
@@ -170,8 +173,8 @@
   "no-active-request-message": "No active requests at the moment. Please make a new request or check back later.",
   "message-title": "Messages",
   "message-history-title": "History",
-  "": "",
-  "": "",
+  "error-phone-required": "Phone number is required.",
+  "error-invalid-phone": "Please enter a valid phone number.",
 
   "": ""
 }

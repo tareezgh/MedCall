@@ -1,4 +1,5 @@
 import { route } from "preact-router";
+import { useSelector } from "react-redux";
 import logo from "../../assets/logo-img.webp";
 import { handleLogout } from "../../utils/authHandles";
 import { TabsTypes } from "../../interfaces/types";
@@ -15,6 +16,8 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ role, activeTab, setActiveTab }: SidebarProps) => {
+  const currentUser = useSelector((state: any) => state.currentUser);
+  const isGuest = !currentUser.id;
   const renderSidebarTab = (
     text: string,
     icon: React.ReactNode,
@@ -56,18 +59,21 @@ const Sidebar = ({ role, activeTab, setActiveTab }: SidebarProps) => {
             <img src={logo} alt={"MedCall Logo"} className="h-[2.5rem]" />
           </div>
           <div className="buttons-side flex flex-col gap-3 items-start">
-            {sidebarConfig[role]?.map(({ text, icon, activeTab: tab }) =>
-              renderSidebarTab(text, icon, tab)
+            {sidebarConfig[isGuest ? "guest" : role]?.map(
+              ({ text, icon, activeTab: tab }) =>
+                renderSidebarTab(text, icon, tab)
             )}
           </div>
         </div>
-        <div className="buttons-side flex flex-col gap-3 items-start">
-          {renderSidebarTab("Settings", <SettingsIcon />, "profile")}
-          {renderSidebarTab("Log out", <LogoutIcon />, "logout", () => {
-            handleLogout();
-            route("/");
-          })}
-        </div>
+        {!isGuest && (
+          <div className="buttons-side flex flex-col gap-3 items-start">
+            {renderSidebarTab("Settings", <SettingsIcon />, "profile")}
+            {renderSidebarTab("Log out", <LogoutIcon />, "logout", () => {
+              handleLogout();
+              route("/");
+            })}
+          </div>
+        )}
       </nav>
     </>
   );

@@ -20,9 +20,15 @@ import {
   PinIcon,
 } from "../components/icons";
 import Navbar from "../components/common/Navbar";
+import { UserCredential } from "firebase/auth";
+import { registerUser } from "../services/userService";
+import { toast } from "react-toastify";
+import { isValidPhoneNumber } from "../utils/helpers";
 
 const SignUp = () => {
   const { t } = useTranslation();
+  const [activeModal, setActiveModal] = useState<"main" | "verify">("main");
+  const [verifyType, setVerifyType] = useState<"email" | "google">("email");
   const [signUpDriverFrom, setSignUpDriverForm] = useState<boolean>(false);
 
   const [activeTab, setActiveTab] = useState<"user" | "driver">("user");
@@ -42,10 +48,14 @@ const SignUp = () => {
     zipCode: "",
   });
 
+  const [googleUser, setGoogleUser] = useState<UserCredential | null>(null);
+  const [googlePhoneNumber, setGooglePhoneNumber] = useState("");
+
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
     useState(false);
 
+  //***************** handle form data
   const handleChange =
     (field: keyof SignUpFormData) =>
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,11 +88,52 @@ const SignUp = () => {
 
   const handleSignUpClick = async () => {
     const status = await handleSignUp(formData, activeTab);
-    if (status) {
-      const data = isTokenValid();
-      if (data) route("/dashboard");
+    if (status) checkDataAndNavigate();
+  };
+
+  const handleVerifyClick = async () => {
+    if (!googleUser) return;
+    if (googlePhoneNumber === "") {
+      toast.error(t("error-phone-required"), {
+        position: "top-center",
+        hideProgressBar: true,
+      });
+      return;
+    }
+    if (!isValidPhoneNumber(googlePhoneNumber)) {
+      toast.error(t("error-invalid-phone"), {
+        position: "top-center",
+        hideProgressBar: true,
+      });
+      return;
+    }
+    if (verifyType === "google") {
+      const user = googleUser.user;
+
+      const newUser = {
+        firstName: user.displayName?.split(" ")[0] || "",
+        lastName: user.displayName?.split(" ")[1] || "",
+        email: user.email || "",
+        phoneNumber: googlePhoneNumber,
+        role: "user",
+        isGoogleSignIn: true,
+      };
+
+      const registeredUser = await registerUser(newUser);
+
+      if (registeredUser) checkDataAndNavigate();
+    } else {
+      console.log("email");
     }
   };
+
+  const checkDataAndNavigate = () => {
+    const data = isTokenValid();
+    if (data) {
+      route("/dashboard");
+    }
+  };
+  //***************** RENDER Forms
 
   const renderSignUp = () => {
     return (
@@ -199,52 +250,123 @@ const SignUp = () => {
     );
   };
 
+  const renderPhoneNumberForm = () => {
+    return (
+      <>
+        <h2 className="text-2xl md:text-4xl font-Pippins font-semibold m-0">
+          {t("one-last-step")}
+        </h2>
+
+        <Input
+          type="text"
+          placeholder={t("sign-up-phone-placeholder")}
+          value={googlePhoneNumber}
+          onChange={(e) =>
+            setGooglePhoneNumber((e.target as HTMLInputElement).value)
+          }
+          leftIcon={<PhoneIcon />}
+        />
+      </>
+    );
+  };
+
+  //***************** RENDER Screens
+  const renderMainScreen = () => {
+    return (
+      <div className="box-modal shadow-2xl w-full md:w-2/4">
+        {signUpDriverFrom ? renderDriverSignUpForm() : renderSignUp()}
+
+        <div className={"flex flex-col gap-2 justify-center w-auto"}>
+          <div className={"flex flex-row gap-2 justify-start w-full"}>
+            {signUpDriverFrom && (
+              <Button
+                text={t("back-button")}
+                type="secondary"
+                onClick={() => setSignUpDriverForm(false)}
+                customClassName={"text-xl"}
+              />
+            )}
+            <Button
+              text={t("sign-up-form-button")}
+              type="primary"
+              onClick={
+                signUpDriverFrom
+                  ? handleSignUpClick
+                  : handleContinueClick
+              }
+              customClassName={"font-bold text-xl"}
+            />
+          </div>
+          <div className="text-sm md:text-base">
+            <h2>
+              {t("sign-up-nav-to")}
+              <span
+                className={"text-primary500 font-bold cursor-pointer"}
+                onClick={() => route("/login")}
+              >
+                {t("sign-up-nav-to-text")}
+              </span>
+            </h2>
+          </div>
+        </div>
+
+        {!signUpDriverFrom && (
+          <div className={"flex flex-col gap-6 w-full"}>
+            <Divider />
+            <GoogleButton
+              text="Sign Up with Google"
+              type="signUp"
+              setActiveModal={setActiveModal}
+              setVerifyType={setVerifyType}
+              setGoogleUser={setGoogleUser}
+            />
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const renderVerifyScreen = () => {
+    return (
+      <div className="box-modal shadow-2xl w-full md:w-2/4">
+        {verifyType === "google" ? renderPhoneNumberForm() : <></>}
+        <div className={"flex flex-col gap-2 justify-center w-auto"}>
+          <div className={"flex flex-row gap-2 justify-start w-full"}>
+            <Button
+              text={t("back-button")}
+              type="secondary"
+              onClick={() => setActiveModal("main")}
+              customClassName={"text-xl"}
+            />
+
+            <Button
+              text={t("sign-up-form-button")}
+              type="primary"
+              onClick={handleVerifyClick}
+              customClassName={"font-bold text-xl"}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const renderPages = () => {
+    switch (activeModal) {
+      case "main":
+        return renderMainScreen();
+      case "verify":
+        return renderVerifyScreen();
+      default:
+        return renderMainScreen();
+    }
+  };
+
   return (
     <div className="flex flex-col">
       <Navbar />
       <section className="flex justify-center items-center px-6 my-8">
-        <div className="box-modal shadow-2xl w-full md:w-2/4">
-          {signUpDriverFrom ? renderDriverSignUpForm() : renderSignUp()}
-
-          <div className={"flex flex-col gap-2 justify-center w-auto"}>
-            <div className={"flex flex-row gap-2 justify-start w-full"}>
-              {signUpDriverFrom && (
-                <Button
-                  text={t("back-button")}
-                  type="secondary"
-                  onClick={() => setSignUpDriverForm(false)}
-                  customClassName={"text-xl"}
-                />
-              )}
-              <Button
-                text={t("sign-up-form-button")}
-                type="primary"
-                onClick={
-                  signUpDriverFrom ? handleSignUpClick : handleContinueClick
-                }
-                customClassName={"font-bold text-xl"}
-              />
-            </div>
-            <div className="text-sm md:text-base">
-              <h2>
-                {t("sign-up-nav-to")}
-                <span
-                  className={"text-primary500 font-bold cursor-pointer"}
-                  onClick={() => route("/login")}
-                >
-                  {t("sign-up-nav-to-text")}
-                </span>
-              </h2>
-            </div>
-          </div>
-
-          {!signUpDriverFrom && (
-            <div className={"flex flex-col gap-6 w-full"}>
-              <Divider />
-              <GoogleButton text="Sign Up with Google" type="signUp" />
-            </div>
-          )}
-        </div>
+        {renderPages()}
       </section>
     </div>
   );
