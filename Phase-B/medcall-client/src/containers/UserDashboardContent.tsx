@@ -72,14 +72,18 @@ const UserDashboardContent = ({ setActiveTab }: UserDashboardContentProps) => {
       <>
         <div className="flex flex-col justify-start items-center text-center gap-6 p-6 bg-modalBackground rounded-2xl w-full h-fit shadow-xl">
           <div className="flex flex-col justify-center items-center gap-2">
-            <h2 className="text-3xl font-bold">{t("active-request.title")}</h2>
-            <h5 className="text-xl">{t("active-request.subtitle")}</h5>
+            <h2 className="text-xl md:text-3xl font-bold">
+              {t("active-request.title")}
+            </h2>
+            <h5 className="text-lg md:text-xl">
+              {t("active-request.subtitle")}
+            </h5>
           </div>
           <Button
             text={t("active-request.track-now-button")}
             type="primary"
             onClick={() => setActiveTab("tracking")}
-            customClassName="text-2xl custom-green-button"
+            customClassName="text-xl md:text-2xl custom-green-button"
           />
         </div>
       </>
@@ -91,10 +95,12 @@ const UserDashboardContent = ({ setActiveTab }: UserDashboardContentProps) => {
       <>
         <div className="flex flex-col justify-start items-center text-center gap-6 p-6 bg-modalBackground rounded-2xl w-full h-fit shadow-xl">
           <div className="flex flex-col justify-center items-center gap-2">
-            <h2 className="text-3xl font-bold">
+            <h2 className="text-2xl md:text-3xl font-bold">
               {t("starting-request.title")}
             </h2>
-            <h5 className="text-xl">{t("starting-request.subtitle")}</h5>
+            <h5 className="text-base md:text-xl">
+              {t("starting-request.subtitle")}
+            </h5>
           </div>
         </div>
       </>
@@ -109,14 +115,18 @@ const UserDashboardContent = ({ setActiveTab }: UserDashboardContentProps) => {
             <PlusIcon width={37} height={36} />
           </div>
           <div className="flex flex-col justify-center items-center gap-2">
-            <h2 className="text-3xl font-bold">{t("new-request.title")}</h2>
-            <h5 className="text-xl w-[65%]">{t("new-request.subtitle")}</h5>
+            <h2 className="text-2xl md:text-3xl font-bold">
+              {t("new-request.title")}
+            </h2>
+            <h5 className="text-lg md:text-xl w-[65%]">
+              {t("new-request.subtitle")}
+            </h5>
           </div>
           <Button
             text={t("new-request.order-now-button")}
             type="primary"
             onClick={() => route("/request-ambulance")}
-            customClassName="text-2xl"
+            customClassName="text-xl md:text-2xl"
           />
         </div>
       </>
@@ -127,7 +137,9 @@ const UserDashboardContent = ({ setActiveTab }: UserDashboardContentProps) => {
     return (
       <>
         <div className="flex flex-col justify-start text-start gap-8 p-6 bg-modalBackground rounded-2xl w-full h-fit shadow-xl">
-          <h2 className="text-3xl font-bold">{t("history.title")}</h2>
+          <h2 className="text-2xl md:text-3xl font-bold">
+            {t("history.title")}
+          </h2>
           <div className="flex flex-col gap-4">
             {userRequests
               .filter((request) => request.status === "completed")
@@ -146,12 +158,12 @@ const UserDashboardContent = ({ setActiveTab }: UserDashboardContentProps) => {
   };
   return (
     <>
-      <div className="left-side flex flex-col gap-4 w-1/2">
+      <div className="left-side flex flex-col gap-4 w-full md:w-1/2">
         {activeRequest && renderActiveRequest()}
         {startingRequest && renderStartingRequest()}
-        {!activeRequest && renderNewRequest()}
+        {!activeRequest && !startingRequest && renderNewRequest()}
       </div>
-      <div className="right-side w-1/2">{renderHistory()}</div>
+      <div className="right-side w-full md:w-1/2">{renderHistory()}</div>
     </>
   );
 };
