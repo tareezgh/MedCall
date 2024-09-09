@@ -15,7 +15,7 @@ export class UsersController {
         });
         res.status(200).json(result);
       } else {
-        res.status(401).json(result);
+        res.status(200).json(result);
       }
     } catch (error) {
       console.error("Error in login:", error);

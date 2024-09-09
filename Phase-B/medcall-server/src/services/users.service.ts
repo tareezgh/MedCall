@@ -8,6 +8,7 @@ import {
   LoginSuccessResult,
   User,
 } from "../interfaces/user.interface";
+import { validateEmail, validatePassword } from "../utils/validators";
 
 type LoginResult = LoginSuccessResult | LoginFailureResult;
 
@@ -19,21 +20,39 @@ export class UsersService {
   }
 
   public async login(user: Partial<User>): Promise<LoginResult> {
+    if (!user.email || !user.password) {
+      return {
+        status: "failure",
+        message: "Please provide both email and password.",
+      };
+    }
+
     if (!user.isGoogleSignIn) {
       const hashedPasswordFromDB = await this.usersDal.getUserPassword(user);
-      if (!hashedPasswordFromDB)
-        return { status: "failure", message: "User doesn't exist!!" };
+      if (!hashedPasswordFromDB) {
+        return {
+          status: "failure",
+          message: "Email not found. Please check your email or sign up.",
+        };
+      }
       const passwordMatch = await bcrypt.compare(
         user.password,
         hashedPasswordFromDB
       );
       if (!passwordMatch) {
-        return { status: "failure", message: "Incorrect email or password" };
+        return {
+          status: "failure",
+          message: "Incorrect password. Please try again.",
+        };
       }
     }
-    const userData = await this.usersDal.getUserByEmail(user.email || "");
+
+    const userData = await this.usersDal.getUserByEmail(user.email);
     if (!userData) {
-      return { status: "failure", message: "User data not found" };
+      return {
+        status: "failure",
+        message: "User data not found. Please contact support.",
+      };
     }
 
     await this.usersDal.updateGuestRequestUserId(
@@ -53,35 +72,90 @@ export class UsersService {
 
     return {
       status: "success",
-      message: "User logged in",
+      message: "Login successful. Welcome back!",
       token,
     };
   }
 
-  public async register(user: User) {
-    const saltRounds = 10;
-    const isUserExist = await this.usersDal.checkUser(user);
-    if (isUserExist)
-      return { status: "failure", message: "Email already used!" };
-
-    if (!user.isGoogleSignIn) {
-      const hashedPassword = await bcrypt.hash(user.password, saltRounds);
-      user.password = hashedPassword;
+  public async register(userData: User) {
+    // Input validation
+    if (
+      !userData.email ||
+      !userData.password ||
+      !userData.firstName ||
+      !userData.lastName
+    ) {
+      return {
+        status: "failure",
+        message: "Please fill in all required fields.",
+      };
     }
 
-    const newUser = await this.usersDal.createUser(user);
+    if (!validateEmail(userData.email)) {
+      return {
+        status: "failure",
+        message: "Please enter a valid email address.",
+      };
+    }
+
+    if (!userData.isGoogleSignIn && !validatePassword(userData.password)) {
+      return {
+        status: "failure",
+        message:
+          "Password must be at least 8 characters long and include uppercase, lowercase, and numbers.",
+      };
+    }
+
+    // Check if user already exists
+    const isUserExist = await this.usersDal.checkUser(userData);
+    if (isUserExist) {
+      return {
+        status: "failure",
+        message: "Email already in use. Please choose another.",
+      };
+    }
+
+    // Prepare user object
+    const user: Partial<User> = {
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      email: userData.email,
+      role: userData.role || "user", // Default role if not provided
+      isGoogleSignIn: userData.isGoogleSignIn || false,
+      requests: [],
+    };
+
+    // Optional fields
+    if (userData.phoneNumber) user.phoneNumber = userData.phoneNumber;
+    if (userData.city) user.city = userData.city;
+    if (userData.address) user.address = userData.address;
+    if (userData.zipCode) user.zipCode = userData.zipCode;
+    if (userData.driverStatus) user.driverStatus = userData.driverStatus;
+
+    // Hash password for non-Google sign-ins
+    if (!user.isGoogleSignIn && userData.password) {
+      const saltRounds = 10;
+      user.password = await bcrypt.hash(userData.password, saltRounds);
+    }
+
+    // Create new user
+    const newUser = await this.usersDal.createUser(user as User);
     if (!newUser) {
-      return { status: "failure", message: "User registration failed" };
+      throw new Error("User creation failed");
     }
 
-    await this.usersDal.updateGuestRequestUserId(
-      newUser.phoneNumber!,
-      newUser._id
-    );
+    // Update guest request user ID if phone number is provided
+    if (newUser.phoneNumber) {
+      await this.usersDal.updateGuestRequestUserId(
+        newUser.phoneNumber,
+        newUser._id
+      );
+    }
 
+    // Generate token
     const token = this.generateToken(
       newUser._id,
-      user.email,
+      newUser.email,
       newUser.role,
       newUser.firstName,
       newUser.lastName,
@@ -91,7 +165,7 @@ export class UsersService {
 
     return {
       status: "success",
-      message: "User registered",
+      message: "Registration successful. Welcome!",
       token,
     };
   }

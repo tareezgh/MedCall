@@ -79,13 +79,15 @@ export const handleSignUp = async (
       newUser.driverStatus = "pending";
     }
     // Call registerUser function to send newUser to backend
-    await registerUser(newUser);
+    const response = await registerUser(newUser);
 
-    toast.success("Registered successfully!", {
-      position: "bottom-center",
-      hideProgressBar: true,
-    });
-    return true;
+    if (response.status === "success") {
+      toast.success("Registration successful. Welcome!", {
+        position: "bottom-center",
+        hideProgressBar: true,
+      });
+      return true;
+    }
   } catch (error) {
     console.error("Error signing up:", error);
     toast.error("Failed to register user", {
@@ -116,13 +118,15 @@ export const handleSignIn = async (
     };
 
     // Call loginUser function to send user to backend
-    await loginUser(user, rememberMe);
+    const response = await loginUser(user, rememberMe);
 
-    toast.success("Sign in successfully!", {
-      position: "bottom-center",
-      hideProgressBar: true,
-    });
-    return true;
+    if (response.status === "success") {
+      toast.success("Welcome!", {
+        position: "bottom-center",
+        hideProgressBar: true,
+      });
+      return true;
+    }
   } catch (error) {
     console.error("Error signing in:", error);
     toast.error("Failed to sign in", {
