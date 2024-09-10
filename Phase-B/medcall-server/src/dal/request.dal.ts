@@ -48,7 +48,7 @@ export class RequestDal {
 
       return savedRequest;
     } catch (err) {
-      console.error(err);
+      // console.error(err);
       throw err;
     }
   }
@@ -61,7 +61,7 @@ export class RequestDal {
       );
       return requests;
     } catch (err) {
-      console.error(err);
+      // console.error(err);
       throw err;
     }
   }
@@ -83,7 +83,7 @@ export class RequestDal {
       );
       return activeRequest;
     } catch (err) {
-      console.error(err);
+      // console.error(err);
       throw err;
     }
   }
@@ -102,7 +102,7 @@ export class RequestDal {
       );
       return activeRequest;
     } catch (err) {
-      console.error(err);
+      // console.error(err);
       throw err;
     }
   }
@@ -116,7 +116,7 @@ export class RequestDal {
       );
       return requests;
     } catch (err) {
-      console.error(err);
+      // console.error(err);
       throw err;
     }
   }
@@ -130,7 +130,7 @@ export class RequestDal {
       );
       return updatedRequest;
     } catch (err) {
-      console.error(err);
+      // console.error(err);
       throw err;
     }
   }

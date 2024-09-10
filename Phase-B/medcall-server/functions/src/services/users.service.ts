@@ -285,7 +285,7 @@ export class UsersService {
         drivers,
       };
     } catch (error) {
-      console.error("Error fetching drivers:", error);
+      // console.error("Error fetching drivers:", error);
       return { status: "failure", message: "Failed to fetch drivers" };
     }
   }
@@ -302,7 +302,7 @@ export class UsersService {
         drivers,
       };
     } catch (error) {
-      console.error("Error fetching pending drivers:", error);
+      // console.error("Error fetching pending drivers:", error);
       return { status: "failure", message: "Failed to fetch pending drivers" };
     }
   }

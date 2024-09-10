@@ -10,7 +10,6 @@ export class RequestService {
 
   public async postRequest(request: IRequest) {
     if (
-      !request.userId ||
       !request.location ||
       !request.callerName ||
       !request.phoneNumber ||

@@ -24,7 +24,7 @@ export class UsersDal {
       const savedUser = await newUser.save();
       return savedUser;
     } catch (err) {
-      console.error(err);
+      // console.error(err);
       throw err;
     }
   }
@@ -53,7 +53,7 @@ export class UsersDal {
         await guestRequest.save();
       }
     } catch (error) {
-      console.error("Error updating guest request with userId:", error);
+      // console.error("Error updating guest request with userId:", error);
       throw error;
     }
   }
@@ -81,7 +81,7 @@ export class UsersDal {
     try {
       return await Users.findOne({ email });
     } catch (error) {
-      console.error("Error fetching user by email:", error);
+      // console.error("Error fetching user by email:", error);
       throw error;
     }
   }
@@ -94,7 +94,7 @@ export class UsersDal {
       );
       return result.modifiedCount > 0;
     } catch (error) {
-      console.error("Error updating password:", error);
+      // console.error("Error updating password:", error);
       throw error;
     }
   }
@@ -108,7 +108,7 @@ export class UsersDal {
       );
       return updatedData;
     } catch (error) {
-      console.error("Error updating data:", error);
+      // console.error("Error updating data:", error);
       throw error;
     }
   }
@@ -122,7 +122,7 @@ export class UsersDal {
       );
       return updatedData;
     } catch (error) {
-      console.error("Error updating driver data:", error);
+      // console.error("Error updating driver data:", error);
       throw error;
     }
   }
@@ -132,7 +132,7 @@ export class UsersDal {
       const deletedUser = await Users.findByIdAndDelete(userId);
       return deletedUser;
     } catch (error) {
-      console.error("Error deleting driver:", error);
+      // console.error("Error deleting driver:", error);
       throw error;
     }
   }
@@ -146,7 +146,7 @@ export class UsersDal {
         await user.save();
       }
     } catch (error) {
-      console.error("Error saving OTP:", error);
+      // console.error("Error saving OTP:", error);
       throw error;
     }
   }
@@ -162,7 +162,7 @@ export class UsersDal {
       }
       return false;
     } catch (error) {
-      console.error("Error verifying OTP:", error);
+      // console.error("Error verifying OTP:", error);
       throw error;
     }
   }

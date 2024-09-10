@@ -19,7 +19,7 @@ export class ConversationDal {
       await newConversation.save();
       return newConversation;
     } catch (err) {
-      console.error(err);
+      // console.error(err);
       throw err;
     }
   }
@@ -32,7 +32,7 @@ export class ConversationDal {
 
       return conversation;
     } catch (err) {
-      console.error(err);
+      // console.error(err);
       throw err;
     }
   }
@@ -44,7 +44,7 @@ export class ConversationDal {
         return conversation.messages;
       return null;
     } catch (err) {
-      console.error(err);
+      // console.error(err);
       throw err;
     }
   }
