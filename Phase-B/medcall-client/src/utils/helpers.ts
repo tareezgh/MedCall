@@ -39,6 +39,6 @@ export const haversineDistance = (
 
 export const isValidPhoneNumber = (phoneNumber: string) => {
   // Regex to validate phone numbers (supports different formats)
-  const phoneRegex = /^\+?[1-9]\d{1,14}$/; 
+  const phoneRegex = /^0?[1-9]\d{1,14}$/; 
   return phoneRegex.test(phoneNumber);
 };

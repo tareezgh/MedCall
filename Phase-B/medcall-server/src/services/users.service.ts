@@ -64,7 +64,7 @@ export class UsersService {
       userData.email,
       userData.role,
       userData.firstName,
-      userData.lastName,
+      userData.lastName!,
       userData.isGoogleSignIn,
       userData.phoneNumber
     );
@@ -77,32 +77,34 @@ export class UsersService {
   }
 
   public async register(userData: User) {
-    // Input validation
-    if (
-      !userData.email ||
-      !userData.password ||
-      !userData.firstName ||
-      !userData.lastName
-    ) {
-      return {
-        status: "failure",
-        message: "Please fill in all required fields.",
-      };
-    }
+    if (!userData.isGoogleSignIn) {
+      // Input validation
+      if (
+        !userData.email ||
+        !userData.password ||
+        !userData.firstName ||
+        !userData.lastName
+      ) {
+        return {
+          status: "failure",
+          message: "Please fill in all required fields.",
+        };
+      }
 
-    if (!validateEmail(userData.email)) {
-      return {
-        status: "failure",
-        message: "Please enter a valid email address.",
-      };
-    }
+      if (!validateEmail(userData.email)) {
+        return {
+          status: "failure",
+          message: "Please enter a valid email address.",
+        };
+      }
 
-    if (!userData.isGoogleSignIn && !validatePassword(userData.password)) {
-      return {
-        status: "failure",
-        message:
-          "Password must be at least 8 characters long and include uppercase, lowercase, and numbers.",
-      };
+      if (!validatePassword(userData.password)) {
+        return {
+          status: "failure",
+          message:
+            "Password must be at least 8 characters long and include uppercase, lowercase, and numbers.",
+        };
+      }
     }
 
     // Check if user already exists
@@ -157,7 +159,7 @@ export class UsersService {
       newUser.email,
       newUser.role,
       newUser.firstName,
-      newUser.lastName,
+      newUser.lastName!,
       newUser.isGoogleSignIn,
       newUser.phoneNumber
     );
@@ -180,7 +182,7 @@ export class UsersService {
       updatedUser.email,
       updatedUser.role,
       updatedUser.firstName,
-      updatedUser.lastName,
+      updatedUser.lastName!,
       updatedUser.isGoogleSignIn,
       updatedUser.phoneNumber
     );

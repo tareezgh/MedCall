@@ -3,7 +3,7 @@ import mongoose, { Document } from "mongoose";
 export interface User extends Document {
   _id: mongoose.Types.ObjectId;
   firstName: string;
-  lastName: string;
+  lastName?: string;
   phoneNumber?: string | null;
   email: string;
   password?: string | null;
