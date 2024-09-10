@@ -12,8 +12,6 @@ app.use(express.json());
 app.post("/request", RequestController.postRequest);
 app.get("/request", RequestController.getAllRequests);
 app.get("/request/:id", RequestController.getRequestByUserId);
-app.post("/request/active-request", RequestController.getActiveRequest);
-app.post("/request/guest-request", RequestController.getGuestRequest);
 app.patch("/request/:id", RequestController.updateRequest);
 
 describe("Request API", () => {
@@ -178,6 +176,150 @@ describe("Request API", () => {
       _id: mockUpdatedRequest._id.toString(),
       userId: mockUpdatedRequest.userId.toString(),
       driverId: updateData.driverId.toString(),
+    });
+  });
+
+  describe("Ambulance Request API", () => {
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
+
+    it("should accept ambulance request with valid information", async () => {
+      const requestId = new mongoose.Types.ObjectId();
+      const driverId = new mongoose.Types.ObjectId();
+      const userId = new mongoose.Types.ObjectId();
+      const updateData = {
+        status: "accepted",
+        driverId: driverId.toString(),
+        driverName: "John Doe",
+        driverLocation: {
+          address: "789 Oak St",
+          lat: 40.72,
+          long: -74.0,
+        },
+      };
+
+      const mockUpdatedRequest = {
+        _id: requestId,
+        ...updateData,
+        userId: userId,
+        location: { address: "123 Main St", lat: 40.7128, long: -74.006 },
+        callerName: "Jane Smith",
+        phoneNumber: "1234567890",
+        patientAge: 30,
+        emergencyType: "Medical",
+      };
+
+      const mockUpdateRequest = jest.fn().mockResolvedValue({
+        status: "success",
+        message: "Request accepted successfully",
+        data: mockUpdatedRequest,
+      });
+      (RequestService.prototype.updateRequest as jest.Mock) = mockUpdateRequest;
+
+      const response = await request(app)
+        .patch(`/request/${requestId.toString()}`)
+        .send(updateData);
+
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual({
+        status: "success",
+        message: "Request accepted successfully",
+        data: {
+          ...mockUpdatedRequest,
+          _id: mockUpdatedRequest._id.toString(),
+          userId: mockUpdatedRequest.userId.toString(),
+          driverId: updateData.driverId.toString(),
+        },
+      });
+      expect(mockUpdateRequest).toHaveBeenCalledWith(
+        requestId.toString(),
+        updateData
+      );
+    });
+
+    it("should decline ambulance request with valid information", async () => {
+      const requestId = new mongoose.Types.ObjectId();
+      const updateData = {
+        status: "declined",
+        driverId: undefined,
+        driverName: undefined,
+        driverLocation: undefined
+      };
+
+      const mockUpdateRequest = jest.fn().mockResolvedValue({
+        status: "success",
+        message: "Request declined successfully",
+      });
+      (RequestService.prototype.updateRequest as jest.Mock) = mockUpdateRequest;
+
+      const response = await request(app)
+        .patch(`/request/${requestId.toString()}`)
+        .send(updateData);
+
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual({
+        status: "success",
+        message: "Request declined successfully",
+      });
+      expect(mockUpdateRequest).toHaveBeenCalledWith(
+        requestId.toString(),
+        updateData
+      );
+    });
+
+    it("should fail to accept invalid ambulance request", async () => {
+      const invalidRequestId = new mongoose.Types.ObjectId();
+      const driverId = new mongoose.Types.ObjectId();
+      const updateData = {
+        status: "accepted",
+        driverId: driverId.toString(),
+        driverName: "John Doe",
+            // Note: driverLocation is not included here
+    };
+
+
+      const mockUpdateRequest = jest.fn().mockResolvedValue({
+        status: "failure",
+        message: "Invalid request",
+      });
+      (RequestService.prototype.updateRequest as jest.Mock) = mockUpdateRequest;
+
+      const response = await request(app)
+        .patch(`/request/${invalidRequestId.toString()}`)
+        .send(updateData);
+
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual({
+        status: "failure",
+        message: "Invalid request",
+      });
+    
+
+      expect(mockUpdateRequest).toHaveBeenCalledWith(
+        invalidRequestId.toString(),
+        updateData
+      );
+    });
+
+    it("should handle internal server error during request update", async () => {
+      const requestId = new mongoose.Types.ObjectId();
+      const updateData = {
+        status: "accepted",
+        driverId: new mongoose.Types.ObjectId(),
+      };
+
+      const mockUpdateRequest = jest
+        .fn()
+        .mockRejectedValue(new Error("Database error"));
+      (RequestService.prototype.updateRequest as jest.Mock) = mockUpdateRequest;
+
+      const response = await request(app)
+        .patch(`/request/${requestId.toString()}`)
+        .send(updateData);
+
+      expect(response.status).toBe(500);
+      expect(response.body).toEqual({ error: "Internal server error" });
     });
   });
 });

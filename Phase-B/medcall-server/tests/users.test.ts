@@ -2,6 +2,7 @@ import request from "supertest";
 import express from "express";
 import { UsersController } from "../src/controllers/usersController";
 import { UsersService } from "../src/services/users.service";
+import mongoose from "mongoose";
 
 jest.mock("../src/services/users.service");
 
@@ -9,6 +10,7 @@ const app = express();
 app.use(express.json());
 app.post("/login", UsersController.login);
 app.post("/register", UsersController.register);
+app.patch("/drivers/:id", UsersController.editDriverData);
 
 describe("User API", () => {
   afterEach(() => {
@@ -203,6 +205,136 @@ describe("User API", () => {
       expect(response.body.message).toBe(
         "Email already in use. Please choose another."
       );
+    });
+  });
+
+  describe("Accept/Decline/Edit Drivers API", () => {
+    it("should accept driver request with valid information", async () => {
+      const userId = new mongoose.Types.ObjectId();
+      const updateData = {
+        driverStatus: "accepted",
+      };
+
+      const mockUpdateStatus = jest.fn().mockResolvedValue({
+        status: "success",
+        message: "Driver request accepted successfully",
+      });
+      (UsersService.prototype.editDriverData as jest.Mock) = mockUpdateStatus;
+
+      const response = await request(app)
+        .patch(`/drivers/${userId.toString()}`)
+        .send(updateData);
+
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual({
+        status: "success",
+        message: "Driver request accepted successfully",
+      });
+      expect(mockUpdateStatus).toHaveBeenCalledWith(userId.toString(), {
+        driverStatus: "accepted",
+      });
+    });
+
+    it("should decline driver request with valid information", async () => {
+      const userId = new mongoose.Types.ObjectId();
+      const updateData = {
+        driverStatus: "declined",
+      };
+
+      const mockUpdateStatus = jest.fn().mockResolvedValue({
+        status: "success",
+        message: "Driver request declined successfully",
+      });
+      (UsersService.prototype.editDriverData as jest.Mock) = mockUpdateStatus;
+
+      const response = await request(app)
+        .patch(`/drivers/${userId.toString()}`)
+        .send(updateData);
+
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual({
+        status: "success",
+        message: "Driver request declined successfully",
+      });
+      expect(mockUpdateStatus).toHaveBeenCalledWith(userId.toString(), {
+        driverStatus: "declined",
+      });
+    });
+
+    it("should update driver information with valid input data", async () => {
+      const userId = new mongoose.Types.ObjectId();
+      const updateData = {
+        firstName: "John",
+        lastName: "Doe",
+        phoneNumber: "1234567890",
+        email: "john.doe@example.com",
+        city: "New York",
+        address: "123 Main St",
+        zipCode: "10001",
+      };
+
+      const mockUpdateStatus = jest.fn().mockResolvedValue({
+        status: "success",
+        message: "Profile updated successfully",
+      });
+      (UsersService.prototype.editDriverData as jest.Mock) = mockUpdateStatus;
+
+      const response = await request(app)
+        .patch(`/drivers/${userId.toString()}`)
+        .send(updateData);
+
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual({
+        status: "success",
+        message: "Profile updated successfully",
+      });
+      expect(mockUpdateStatus).toHaveBeenCalledWith(
+        userId.toString(),
+        updateData
+      );
+    });
+
+    it("should fail to update driver information with missing necessary fields", async () => {
+      const userId = new mongoose.Types.ObjectId();
+      const updateData = {
+        // Missing required fields
+      };
+
+      const mockUpdateStatus = jest.fn().mockResolvedValue({
+        status: "failure",
+        message: "Profile update failed",
+      });
+      (UsersService.prototype.editDriverData as jest.Mock) = mockUpdateStatus;
+
+      const response = await request(app)
+        .patch(`/drivers/${userId.toString()}`)
+        .send(updateData);
+
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual({
+        status: "failure",
+        message: "Profile update failed",
+      });
+    });
+
+    it("should handle internal server error during driver data update", async () => {
+      const userId = new mongoose.Types.ObjectId();
+      const updateData = {
+        firstName: "John",
+        lastName: "Doe",
+      };
+
+      const mockUpdateStatus = jest
+        .fn()
+        .mockRejectedValue(new Error("Database error"));
+      (UsersService.prototype.editDriverData as jest.Mock) = mockUpdateStatus;
+
+      const response = await request(app)
+        .patch(`/drivers/${userId.toString()}`)
+        .send(updateData);
+
+      expect(response.status).toBe(500);
+      expect(response.body).toEqual({ error: "Internal server error" });
     });
   });
 });
