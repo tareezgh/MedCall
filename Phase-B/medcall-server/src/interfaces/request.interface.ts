@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 export interface IRequest {
-  userId: mongoose.Schema.Types.ObjectId;
+  userId: mongoose.Types.ObjectId;
   requestId: string;
   key: string;
   location: {
@@ -9,7 +9,7 @@ export interface IRequest {
     lat: number;
     long: number;
   };
-  driverId: mongoose.Schema.Types.ObjectId;
+  driverId: mongoose.Types.ObjectId;
   driverName: string;
   driverLocation: {
     address: string;

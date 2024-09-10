@@ -9,6 +9,22 @@ export class RequestService {
   }
 
   public async postRequest(request: IRequest) {
+    if (
+      !request.location ||
+      !request.callerName ||
+      !request.phoneNumber ||
+      !request.patientAge ||
+      !request.emergencyType ||
+      !request.consciousness ||
+      !request.breathingStatus ||
+      !request.bleeding ||
+      !request.painLevel
+    ) {
+      return {
+        status: "failure",
+        message: "Please fill in all the fields.",
+      };
+    }
     const res = await this.requestDal.postRequest(request);
     return res;
   }

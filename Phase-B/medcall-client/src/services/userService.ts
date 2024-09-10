@@ -37,10 +37,11 @@ export const registerUser = async (user: User) => {
       position: "bottom-center",
       hideProgressBar: true,
     });
+    return response.data;
   } else {
     const token = response.data.token;
     setSessionStorageWithExpiry("token", token, 60);
-    return args;
+    return response.data;
   }
 };
 
@@ -58,7 +59,7 @@ export const loginUser = async (user: Partial<User>, rememberMe: boolean) => {
       position: "bottom-center",
       hideProgressBar: true,
     });
-    return;
+    return response.data;
   } else {
     const token = response.data.token;
 
@@ -68,7 +69,7 @@ export const loginUser = async (user: Partial<User>, rememberMe: boolean) => {
       : 60 * 60 * 1000;
     setSessionStorageWithExpiry("token", token, expiryDuration / (60 * 1000)); // Convert ms to minutes for session storage
 
-    return args;
+    return response.data;
   }
 };
 

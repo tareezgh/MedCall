@@ -15,10 +15,10 @@ export class UsersController {
         });
         res.status(200).json(result);
       } else {
-        res.status(401).json(result);
+        res.status(200).send(result);
       }
     } catch (error) {
-      console.error("Error in login:", error);
+      // console.error("Error in login:", error);
       return res.status(500).json({ error: "Internal server error" });
     }
   }
@@ -30,7 +30,7 @@ export class UsersController {
       const user = await service.register(params);
       return res.status(200).send(user);
     } catch (error) {
-      console.error("Error in register:", error);
+      // console.error("Error in register:", error);
       return res.status(500).json({ error: "Internal server error" });
     }
   }
@@ -48,7 +48,7 @@ export class UsersController {
       });
       return res.status(200).send(user);
     } catch (error) {
-      console.error("Error in edit profile:", error);
+      // console.error("Error in edit profile:", error);
       return res.status(500).json({ error: "Internal server error" });
     }
   }
@@ -79,7 +79,7 @@ export class UsersController {
       });
       return res.status(200).send(user);
     } catch (error) {
-      console.error("Error in edit profile:", error);
+      // console.error("Error in edit profile:", error);
       return res.status(500).json({ error: "Internal server error" });
     }
   }
@@ -91,7 +91,7 @@ export class UsersController {
       const user = await service.deleteDriver(userId);
       return res.status(200).send(user);
     } catch (error) {
-      console.error("Error in edit profile:", error);
+      // console.error("Error in edit profile:", error);
       return res.status(500).json({ error: "Internal server error" });
     }
   }
@@ -107,7 +107,7 @@ export class UsersController {
         return res.status(400).json(result);
       }
     } catch (error) {
-      console.error("Error in requestOtp:", error);
+      // console.error("Error in requestOtp:", error);
       return res.status(500).json({ error: "Internal server error" });
     }
   }
@@ -123,7 +123,7 @@ export class UsersController {
         return res.status(400).json(result);
       }
     } catch (error) {
-      console.error("Error in verifyOtp:", error);
+      // console.error("Error in verifyOtp:", error);
       return res.status(500).json({ error: "Internal server error" });
     }
   }
@@ -139,7 +139,7 @@ export class UsersController {
         return res.status(400).json(result);
       }
     } catch (error) {
-      console.error("Error in resetPassword:", error);
+      // console.error("Error in resetPassword:", error);
       return res.status(500).json({ error: "Internal server error" });
     }
   }
@@ -155,7 +155,7 @@ export class UsersController {
         return res.status(400).json(result);
       }
     } catch (error) {
-      console.error("Error in getPendingDrivers:", error);
+      // console.error("Error in getPendingDrivers:", error);
       return res.status(500).json({ error: "Internal server error" });
     }
   }
@@ -169,7 +169,7 @@ export class UsersController {
         return res.status(400).json(result);
       }
     } catch (error) {
-      console.error("Error in getDrivers:", error);
+      // console.error("Error in getDrivers:", error);
       return res.status(500).json({ error: "Internal server error" });
     }
   }
