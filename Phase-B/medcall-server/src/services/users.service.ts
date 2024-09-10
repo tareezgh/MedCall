@@ -20,14 +20,13 @@ export class UsersService {
   }
 
   public async login(user: Partial<User>): Promise<LoginResult> {
-    if (!user.email || !user.password) {
-      return {
-        status: "failure",
-        message: "Please provide both email and password.",
-      };
-    }
-
     if (!user.isGoogleSignIn) {
+      if (!user.email || !user.password) {
+        return {
+          status: "failure",
+          message: "Please provide both email and password.",
+        };
+      }
       const hashedPasswordFromDB = await this.usersDal.getUserPassword(user);
       if (!hashedPasswordFromDB) {
         return {
@@ -47,7 +46,7 @@ export class UsersService {
       }
     }
 
-    const userData = await this.usersDal.getUserByEmail(user.email);
+    const userData = await this.usersDal.getUserByEmail(user.email || "");
     if (!userData) {
       return {
         status: "failure",

@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const requestSchema = new mongoose.Schema(
   {
     userId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: mongoose.Types.ObjectId,
       ref: "Users",
       default: null,
     },
@@ -16,7 +16,7 @@ const requestSchema = new mongoose.Schema(
       required: true,
     },
     driverId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: mongoose.Types.ObjectId,
       ref: "Users",
       required: false,
     },
