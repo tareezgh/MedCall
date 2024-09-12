@@ -87,7 +87,7 @@ const Tracking = ({ setActiveTab }: TrackingProps) => {
       <div className="flex flex-col justify-start items-start text-start gap-6 p-6 bg-modalBackground rounded-2xl w-full h-screen shadow-2xl z-10">
         <h2 className="text-xl font-bold">{t("admin-map-title")}</h2>
         {!activeRequest ? (
-          <div>Loading...</div>
+          <div>{t("loading")}</div>
         ) : (
           <MapComponent
             markers={markers}

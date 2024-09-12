@@ -120,13 +120,13 @@ const DriverModal = ({ onClose, driver, onSave }: ModalProps) => {
         </div>
         <div className="flex justify-center gap-4">
           <Button
-            text="Close"
+            text={t("close-btn")}
             type="secondary"
             onClick={onClose}
             customClassName={"text-lg"}
           />
           <Button
-            text="Save"
+            text={t("save-btn")}
             type="primary"
             onClick={handleSave}
             customClassName={"text-xl"}

@@ -46,12 +46,6 @@ const NewRequestItem = ({
         <span className="text-sm md:text-base px-3 py-2 rounded-full bg-secondary500 text-white">
           {typeOfEmergency}
         </span>
-    
-        {/* {typeOfEmergency.toLowerCase() === "fire" && (
-          <span className="text-base item-cen px-3 py-1 rounded-full bg-red-600 text-white">
-            Urgent
-          </span>
-        )} */}
       </div>
     </button>
   );

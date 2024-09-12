@@ -101,7 +101,7 @@
   "city": "City",
   "address": "Address",
   "zip-code": "Zip Code",
-  "attach-license": "Attach Driver License",
+
   "welcome": "Welcome",
   "welcome-guest": "Welcome to Guests Dashboard",
   "active-request": {
@@ -154,7 +154,7 @@
 
   "accept-request": "Accept Request",
   "decline-request": "Decline",
-  "approve": "Approve",
+  "approve-btn": "Approve",
   "edit-profile": "Edit Profile",
   "drivers-requests-title": "Drivers Requests",
   "edit-drivers-title": "Edit Drivers",
@@ -163,6 +163,7 @@
   "phone": "Phone",
   "driver-license": "Driver License",
   "action": "Action",
+  
   "driver-status-placeholder": "Driver Status",
 
   "track": "Track Emergency Details",
@@ -187,5 +188,15 @@
   "Active": "Active",
 
   "Settings": "Settings",
-  "Log out": "Log out"
+  "Log out": "Log out",
+  "close-btn": "Close",
+  "save-btn": "Save",
+  "save-changes-btn": "Save Changes",
+  "ambulance-location": "Ambulance Request in ",
+  "local-time": " local time",
+  "loading": "Loading...",
+  "location-error": "Please provide location",
+  "empty-requests": "There is no new requests",
+  "empty-history": "There is no previous requests",
+  "empty-messages":"There is no previous messages"
 }

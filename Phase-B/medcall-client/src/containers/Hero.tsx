@@ -10,6 +10,7 @@ import { setLocationCoords } from "../redux/Slicers";
 import { Autocomplete, LoadScript } from "@react-google-maps/api";
 
 import { handleGetLocation } from "../utils/geolocationUtils";
+import { toast } from "react-toastify";
 
 const Hero = () => {
   const { t } = useTranslation();
@@ -23,7 +24,14 @@ const Hero = () => {
   };
 
   const handleNewRequestClick = () => {
-    route("/request-ambulance");
+    if(location)
+      route("/request-ambulance");
+    else{
+      toast.error(t("location-error"), {
+        position: "top-center",
+        hideProgressBar: true,
+      });
+    }
   };
 
   const handleRightIconClick = async () => {

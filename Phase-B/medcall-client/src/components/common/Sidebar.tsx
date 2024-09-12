@@ -42,8 +42,6 @@ const Sidebar = ({
       activeTab == formattedTab ? "bg-lightBg" : "hover:opacity-70"
     }`;
 
-  
-
     return (
       <button
         className={`${buttonStyle} flex items-center justify-center gap-2 text-xl px-6 py-3 rounded-3xl`}

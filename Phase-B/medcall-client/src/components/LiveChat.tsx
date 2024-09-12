@@ -188,37 +188,46 @@ const LiveChat = () => {
 
   const renderConversations = () => {
     return (
-      <div className="left-side flex flex-col gap-4 w-[20%]">
-        <h1 className="text-2xl w-full text-start">
-          {" "}
-          {t("message-history-title")}
-        </h1>
-        <div className="flex flex-col items-center justify-center gap-4 w-full text-center">
-          {conversations.map((conversation) => {
-            // Get the receiver's information
-            const receiver = conversation.participants.find(
-              (participant: any) => participant._id !== currentUser.id
-            );
-            const isSelected = selectedConversation?._id === conversation._id;
-            return (
-              <button
-                key={conversation._id}
-                onClick={() => handleConversationSelect(conversation)}
-                className={`flex flex-col items-center justify-center p-4 w-full rounded-lg shadow-md ${
-                  isSelected
-                    ? "bg-[#E4E4FD] text-secondary600"
-                    : "bg-white hover:bg-[#E4E4FD]"
-                }`}
-              >
-                <h1 className="text-base md:text-lg font-bold">
-                  {receiver
-                    ? `${receiver.firstName} ${receiver.lastName}`
-                    : "Unknown"}
-                </h1>
-              </button>
-            );
-          })}
-        </div>
+      <div className={`left-side flex flex-col gap-4 ${conversations.length > 0 ? "w-[20%]":"w-[100%]"}`}>
+        {conversations.length > 0 ? (
+          <>
+            <h1 className="text-2xl w-full text-start">
+              {" "}
+              {t("message-history-title")}
+            </h1>
+            <div className="flex flex-col items-center justify-center gap-4 w-full text-center">
+              {conversations.map((conversation) => {
+                // Get the receiver's information
+                const receiver = conversation.participants.find(
+                  (participant: any) => participant._id !== currentUser.id
+                );
+                const isSelected =
+                  selectedConversation?._id === conversation._id;
+                return (
+                  <button
+                    key={conversation._id}
+                    onClick={() => handleConversationSelect(conversation)}
+                    className={`flex flex-col items-center justify-center p-4 w-full rounded-lg shadow-md ${
+                      isSelected
+                        ? "bg-[#E4E4FD] text-secondary600"
+                        : "bg-white hover:bg-[#E4E4FD]"
+                    }`}
+                  >
+                    <h1 className="text-base md:text-lg font-bold">
+                      {receiver
+                        ? `${receiver.firstName} ${receiver.lastName}`
+                        : "Unknown"}
+                    </h1>
+                  </button>
+                );
+              })}
+            </div>
+          </>
+        ) : (
+          <div className="flex items-center justify-center w-full text-xl text-black">
+            {t("empty-messages")}
+          </div>
+        )}
       </div>
     );
   };
@@ -226,12 +235,12 @@ const LiveChat = () => {
   return (
     <div className="flex flex-col gap-8 p-6 bg-modalBackground rounded-2xl w-full h-screen shadow-xl">
       <h2 className="text-3xl font-bold h-fit">{t("message-title")}</h2>
-      <div className="flex flex-row justify-between gap-8 ">
+      <div className="flex flex-row justify-between gap-8">
         {/* Left Section */}
         {renderConversations()}
 
         {/* Right Section */}
-        <div className="right-side flex flex-col gap-4 w-[80%]">
+        <div className={`right-side flex flex-col gap-4 w-[80%] ${conversations.length > 0 ? "w-[80%]":"hidden w-0"}`}>
           <div className="flex flex-col bg-white rounded-lg shadow-xl p-4 max-h-[850px] md:max-h-[600px]">
             <div className="flex items-center justify-between pb-2 border-b border-gray-300">
               <h2 className="text-xl font-bold">

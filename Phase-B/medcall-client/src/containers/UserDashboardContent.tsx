@@ -140,18 +140,26 @@ const UserDashboardContent = ({ setActiveTab }: UserDashboardContentProps) => {
           <h2 className="text-2xl md:text-3xl font-bold">
             {t("history.title")}
           </h2>
-          <div className="flex flex-col gap-4">
-            {userRequests
-              .filter((request) => request.status === "completed")
-              .map((request, index) => (
-                <HistoryItem
-                  key={index}
-                  date={new Date(request.createdAt).toLocaleDateString()}
-                  typeOfEmergency={capitalizeFirstLetter(request.emergencyType)}
-                  location={request.location.address}
-                />
-              ))}
-          </div>
+          {userRequests.length > 0 ? (
+            <div className="flex flex-col gap-4">
+              {userRequests
+                .filter((request) => request.status === "completed")
+                .map((request, index) => (
+                  <HistoryItem
+                    key={index}
+                    date={new Date(request.createdAt).toLocaleDateString()}
+                    typeOfEmergency={capitalizeFirstLetter(
+                      request.emergencyType
+                    )}
+                    location={request.location.address}
+                  />
+                ))}
+            </div>
+          ) : (
+            <div className="flex items-center justify-center w-full text-xl text-black">
+              {t("empty-history")}
+            </div>
+          )}
         </div>
       </>
     );

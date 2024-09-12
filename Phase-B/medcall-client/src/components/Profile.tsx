@@ -57,7 +57,7 @@ const Profile = () => {
             <h2 className="text-3xl font-bold">
               {currentUser.firstName} {currentUser.lastName}
             </h2>
-            <h5 className="text-base">{currentTime} local time</h5>
+            <h5 className="text-base">{currentTime} {t("local-time")}</h5>
           </div>
           <div className={"flex flex-col gap-4 w-full md:w-2/4 space-y-4"}>
             <div className={"flex flex-row gap-4 justify-between"}>
@@ -96,7 +96,7 @@ const Profile = () => {
             />
           </div>
           <Button
-            text="Save Changes"
+            text={t("save-changes-btn")}
             type="primary"
             onClick={handleSaveClick}
             customClassName={"text-xl"}

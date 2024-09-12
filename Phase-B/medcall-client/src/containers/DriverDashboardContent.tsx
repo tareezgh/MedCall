@@ -238,19 +238,29 @@ const DriverDashboardContent = ({
         <h2 className="text-xl font-bold text-gray-800">
           {t("driver-new-requests-title")}
         </h2>
-        <div className="flex flex-col gap-4 w-full">
-          {nearestRequests.map((request) => (
-            <NewRequestItem
-              key={request._id}
-              location={request.location.address!}
-              typeOfEmergency={capitalizeFirstLetter(request.emergencyType)}
-              distance={`${request.distance.toFixed(2)} km`}
-              onClick={() => {
-                setSelectedRequest(request);
-              }}
-            />
-          ))}
-        </div>
+        {nearestRequests.length > 0 ? (
+          <div className="flex flex-col gap-4 w-full">
+            {nearestRequests.map((request) => (
+              <NewRequestItem
+                key={request._id}
+                location={request.location.address!}
+                typeOfEmergency={capitalizeFirstLetter(request.emergencyType)}
+                distance={`${request.distance.toFixed(2)} km`}
+                onClick={() => {
+                  setSelectedRequest(request);
+                }}
+              />
+            ))}
+          </div>
+        ) : (
+          <div
+            className={
+              "flex items-center justify-center w-full text-xl text-black"
+            }
+          >
+            {t("empty-requests")}
+          </div>
+        )}
       </div>
     );
   };

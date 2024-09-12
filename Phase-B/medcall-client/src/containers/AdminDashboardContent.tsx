@@ -79,6 +79,29 @@ const AdminDashboardContent = () => {
         <div className="flex flex-col justify-start items-start text-start gap-6 p-6 bg-modalBackground rounded-2xl w-full h-fit shadow-xl">
           <h2 className="text-xl font-bold">{t("admin-new-requests-title")}</h2>
 
+          {requests.length >0 ? (
+            <div className="flex flex-col gap-4 w-full">
+              {requests.map((request) => (
+                <div
+                  key={request._id}
+                  onMouseEnter={() => handleMouseEnter(request._id)}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <NewRequestItem
+                    key={request._id}
+                    location={request.location.address || ""}
+                    typeOfEmergency={capitalizeFirstLetter(
+                      request.emergencyType
+                    )}
+                    onClick={() => setSelectedRequest(request)}
+                    status={request.status}
+                  />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className={"flex items-center justify-center w-full text-xl text-black"}>{t("empty-requests")}</div>
+          )}
           <div className="flex flex-col gap-4 w-full">
             {requests.map((request) => (
               <div

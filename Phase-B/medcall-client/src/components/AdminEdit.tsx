@@ -1,5 +1,4 @@
 import DriversTable from "./DriversTable";
-import Button from "./Button";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "preact/hooks";
 import { User } from "../interfaces/types";
@@ -41,14 +40,6 @@ const AdminEdit = () => {
             type={"edit"}
             setDrivers={setDrivers}
           />
-          <div className="flex justify-end mt-4">
-            <Button
-              text={t("save-button")}
-              type="primary"
-              onClick={() => {}}
-              customClassName={"text-base"}
-            />
-          </div>
         </div>
       </div>
     </>

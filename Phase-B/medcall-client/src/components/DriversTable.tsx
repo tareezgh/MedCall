@@ -115,7 +115,7 @@ const DriversTable = ({
                 ) : (
                   <div className="flex item-center justify-center gap-4">
                     <Button
-                      text={t("approve")}
+                      text={t("approve-btn")}
                       type="primary"
                       onClick={() => handleChangeStatus(driver?._id!, "accept")}
                       customClassName={"text-xs bg-blue-900 hover:bg-blue-950"}

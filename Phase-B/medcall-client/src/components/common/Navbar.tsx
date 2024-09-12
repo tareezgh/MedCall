@@ -22,7 +22,7 @@ const Navbar = ({ isSidebarOpen, toggleSidebar }: NavbarProps) => {
   );
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
-  console.log("🚀 ~ Navbar ~ currentUser:", currentUser);
+  // console.log("🚀 ~ Navbar ~ currentUser:", currentUser);
 
   useEffect(() => {
     const handleResize = () => {
@@ -76,6 +76,7 @@ const Navbar = ({ isSidebarOpen, toggleSidebar }: NavbarProps) => {
             <option value="en">En</option>
             <option value="ar">Ar</option>
             <option value="he">He</option>
+            <option value="ru">Ru</option>
           </select>
         )}
       </div>
