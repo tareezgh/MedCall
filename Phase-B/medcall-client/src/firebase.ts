@@ -6,7 +6,7 @@ import { getAnalytics } from "firebase/analytics";
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-console.log("🚀 ~ firebaseConfig:", firebaseConfig)
+// console.log("🚀 ~ firebaseConfig:", firebaseConfig)
 
 // Initialize Firebase Authentication and get a reference to the service
 const auth = getAuth(app);

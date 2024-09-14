@@ -50,7 +50,7 @@ const LiveChat = () => {
     const fetchConversations = async () => {
       try {
         const data = await getConversation(currentUser.id);
-        console.log("🚀 ~ fetchConversations ~ data:", data);
+        // console.log("🚀 ~ fetchConversations ~ data:", data);
 
         setConversations(data.reverse());
         if (activeRequest) {
@@ -81,7 +81,7 @@ const LiveChat = () => {
           handleConversationSelect(data[0]);
         }
       } catch (error) {
-        console.error("Failed to fetch conversations:", error);
+        // console.error("Failed to fetch conversations:", error);
       }
     };
 
@@ -91,29 +91,23 @@ const LiveChat = () => {
     const socket = new WebSocket(
       `${wsProtocol}//${wsUrl}?userId=${encodeURIComponent(currentUser.id)}`
     );
-    console.log(
-      "🚀 ~ useEffect ~ ${wsProtocol}//${wsUrl}:",
-      wsProtocol,
-      "//",
-      wsUrl
-    );
 
     socket.onopen = () => {
-      console.log("WebSocket connection established");
+      // console.log("WebSocket connection established");
     };
 
     socket.onmessage = (event) => {
-      console.log("Received message:", event.data);
+      // console.log("Received message:", event.data);
       const newMessage = JSON.parse(event.data);
       setMessages((prevMessages) => [...prevMessages, newMessage]);
     };
 
-    socket.onclose = (event) => {
-      console.log("WebSocket connection closed", event.reason);
+    socket.onclose = () => { //event
+      // console.log("WebSocket connection closed", event.reason);
     };
 
-    socket.onerror = (error) => {
-      console.error("WebSocket error:", error);
+    socket.onerror = () => { //error
+      // console.error("WebSocket error:", error);
     };
 
     setWs(socket);
@@ -132,11 +126,11 @@ const LiveChat = () => {
       const fetchMessages = async () => {
         try {
           const data = await getMessages(selectedConversation._id);
-          console.log("🚀 ~ fetchConversations ~ data:", data);
+          // console.log("🚀 ~ fetchConversations ~ data:", data);
 
           setMessages(data);
         } catch (error) {
-          console.error("Failed to fetch messages:", error);
+          // console.error("Failed to fetch messages:", error);
         }
       };
 
@@ -159,19 +153,19 @@ const LiveChat = () => {
 
       if (targetParticipant) {
         const targetId = targetParticipant._id;
-        console.log("🚀 ~ handleSend ~ targetId:", targetId);
+        // console.log("🚀 ~ handleSend ~ targetId:", targetId);
         const newMessage = {
           text: chatMessage,
           me: false,
           senderId: currentUser.id,
           targetId, // Ensure this is the correct target ID
         };
-        console.log("🚀 ~ handleSend ~ newMessage:", newMessage);
+        // console.log("🚀 ~ handleSend ~ newMessage:", newMessage);
         ws.send(JSON.stringify(newMessage));
         setMessages((prevMessages) => [...prevMessages, newMessage]);
         setChatMessage("");
       } else {
-        console.error("Target ID not found for the selected conversation.");
+        // console.error("Target ID not found for the selected conversation.");
       }
     }
   };

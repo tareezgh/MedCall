@@ -12,13 +12,13 @@ const DriverRequest = () => {
     const fetchPendingDrivers = async () => {
       try {
         const results = await getDrivers("pending");
-        console.log("🚀 ~ fetchPendingDrivers ~ results:", results);
+        // console.log("🚀 ~ fetchPendingDrivers ~ results:", results);
 
         if (results) {
           setDrivers(results.drivers);
         }
       } catch (error) {
-        console.error("Failed to fetch requests:", error);
+        // console.error("Failed to fetch requests:", error);
       }
     };
 

@@ -21,7 +21,7 @@ const AdminEdit = () => {
           setDrivers(filteredDrivers);
         }
       } catch (error) {
-        console.error("Failed to fetch requests:", error);
+        // console.error("Failed to fetch requests:", error);
       }
     };
 

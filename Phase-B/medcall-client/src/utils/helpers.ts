@@ -7,7 +7,7 @@ export const base64UrlDecode = (str: string): string => {
         .join("")
     );
   } catch (e) {
-    console.error("Error decoding base64 string:", e);
+    // console.error("Error decoding base64 string:", e);
     throw e;
   }
 };

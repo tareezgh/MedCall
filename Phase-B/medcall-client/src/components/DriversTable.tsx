@@ -41,14 +41,14 @@ const DriversTable = ({
   const handleDeleteDriver = async (driverId: string) => {
     try {
       const response = await deleteDriver(driverId);
-      console.log("🚀 ~ handleDeleteDriver ~ response:", response);
+      // console.log("🚀 ~ handleDeleteDriver ~ response:", response);
       if (response?.data.status === "success") {
         setDrivers((prevDrivers) =>
           prevDrivers.filter((driver) => driver._id !== driverId)
         );
       }
     } catch (error) {
-      console.error("Failed to change driver status:", error);
+      // console.error("Failed to change driver status:", error);
     }
   };
 

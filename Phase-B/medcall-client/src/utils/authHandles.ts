@@ -89,7 +89,7 @@ export const handleSignUp = async (
       return true;
     }
   } catch (error) {
-    console.error("Error signing up:", error);
+    // console.error("Error signing up:", error);
     toast.error("Failed to register user", {
       position: "bottom-center",
       hideProgressBar: true,
@@ -128,7 +128,7 @@ export const handleSignIn = async (
       return true;
     }
   } catch (error) {
-    console.error("Error signing in:", error);
+    // console.error("Error signing in:", error);
     toast.error("Failed to sign in", {
       position: "bottom-center",
       hideProgressBar: true,
@@ -154,7 +154,7 @@ export const decodeToken = (token: string): DecodedToken | null => {
 
     return decoded;
   } catch (err) {
-    console.error("Error decoding token:", err);
+    // console.error("Error decoding token:", err);
     throw err;
   }
 };

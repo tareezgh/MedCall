@@ -47,7 +47,7 @@ const Login = () => {
     if (success) {
       const data = isTokenValid();
       if (data) {
-        console.log("🚀 ~ handleSignInClick ~ data:", data);
+        // console.log("🚀 ~ handleSignInClick ~ data:", data);
         route("/dashboard");
       }
     }

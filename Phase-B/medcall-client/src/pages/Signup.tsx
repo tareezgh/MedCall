@@ -76,6 +76,20 @@ const SignUp = () => {
   const handleContinueClick = async () => {
     switch (activeTab) {
       case "driver": {
+        if (
+          !formData.firstName ||
+          !formData.lastName ||
+          !formData.phoneNumber ||
+          !formData.email ||
+          !formData.password ||
+          !formData.confirmPassword
+        ) {
+          toast.error(t("fields-error"), {
+            position: "bottom-center",
+            hideProgressBar: true,
+          });
+          return;
+        }
         setSignUpDriverForm(true);
         break;
       }
@@ -122,9 +136,7 @@ const SignUp = () => {
       const registeredUser = await registerUser(newUser);
 
       if (registeredUser) checkDataAndNavigate();
-    } else {
-      console.log("email");
-    }
+    } 
   };
 
   const checkDataAndNavigate = () => {
@@ -290,9 +302,7 @@ const SignUp = () => {
               text={t("sign-up-form-button")}
               type="primary"
               onClick={
-                signUpDriverFrom
-                  ? handleSignUpClick
-                  : handleContinueClick
+                signUpDriverFrom ? handleSignUpClick : handleContinueClick
               }
               customClassName={"font-bold text-xl"}
             />

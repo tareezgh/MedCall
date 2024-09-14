@@ -20,6 +20,7 @@ import { useSelector } from "react-redux";
 import { postNewRequest } from "../services/requestService";
 import { handleGetLocation } from "../utils/geolocationUtils";
 import Navbar from "../components/common/Navbar";
+import { toast } from "react-toastify";
 
 const RequestAmbulance = () => {
   const { t } = useTranslation();
@@ -46,10 +47,10 @@ const RequestAmbulance = () => {
   });
 
   useEffect(() => {
-    console.log("🚀 ~ RequestAmbulance ~ currentLocation:", currentLocation);
+    // console.log("🚀 ~ RequestAmbulance ~ currentLocation:", currentLocation);
     if (currentLocation.address === "") {
-      handleGetLocation().catch((error) => {
-        console.error("Failed to get location:", error);
+      handleGetLocation().catch(() => {
+        // console.error("Failed to get location:", error);
       });
     }
   }, [currentLocation]);
@@ -81,7 +82,13 @@ const RequestAmbulance = () => {
   };
 
   const handleNecessaryInfoSubmit = () => {
-    console.log("Form submitted with data:", formData);
+    if (!formData.callerName.trim() || !formData.phoneNumber.trim() || !formData.patientAge.trim()) {
+      toast.error(t("fields-error"), {
+        position: "bottom-center",
+        hideProgressBar: true,
+      });
+      return;
+    }
     setIsOptionalSection(true);
   };
 
@@ -106,7 +113,7 @@ const RequestAmbulance = () => {
       optionalMedications: formData.optionalMedications,
       optionalActivities: formData.optionalActivities,
     };
-    console.log("🚀 ~ newRequestData:", newRequestData);
+    // console.log("🚀 ~ newRequestData:", newRequestData);
 
     if (!currentUser.id)
       localStorage.setItem("guestPhoneNumber", formData.phoneNumber);
@@ -250,7 +257,7 @@ const RequestAmbulance = () => {
     <div className="flex flex-col">
       <Navbar />
       <section className="py-10 flex justify-center items-center w-full px-6">
-        <div className="box-modal shadow-2x md:mx-[10%] p-4">
+        <div className="box-modal shadow-2x md:mx-[10%] p-4 shadow-2xl">
           {isOptionalSection ? renderOptionalInfo() : renderNecessaryInfo()}
 
           <div className={"flex flex-row gap-2 justify-start md:w-auto"}>

@@ -51,7 +51,7 @@
   "caller-contact-info-title": "Контактная информация заявителя:",
   "name-placeholder": "Имя",
   "phone-placeholder": "Номер телефона",
-  "patient-age-title": "Возраст пациента:",
+  "patient-age-title": "Возраст пациента",
   "age-placeholder": "Возраст",
   "emergency-type-title": "Тип чрезвычайной ситуации",
   "consciousness-title": "Сознание пациента",
@@ -199,5 +199,6 @@
   "location-error": "Пожалуйста, укажите местоположение",
   "empty-requests": "Новых заявок нет",
   "empty-history": "Предыдущие заявки отсутствуют",
-  "empty-messages": "Предыдущие сообщения отсутствуют"
+  "empty-messages": "Предыдущие сообщения отсутствуют",
+  "fields-error":"Пожалуйста, заполните все поля"
 }

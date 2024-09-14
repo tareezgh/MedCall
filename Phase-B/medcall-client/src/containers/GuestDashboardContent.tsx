@@ -21,7 +21,7 @@ const GuestDashboardContent = () => {
         const savedPhoneNumber = localStorage.getItem("guestPhoneNumber");
 
         const fetchedRequest = await getGuestRequest(savedPhoneNumber!);
-        console.log("Fetched request:", fetchedRequest);
+        // console.log("Fetched request:", fetchedRequest);
 
         if (fetchedRequest) {
           setStartingRequest(null);
@@ -35,7 +35,7 @@ const GuestDashboardContent = () => {
           setStartingRequest(fetchedRequest);
         }
       } catch (error) {
-        console.error("Failed to fetch active request:", error);
+        // console.error("Failed to fetch active request:", error);
       }
     };
 
