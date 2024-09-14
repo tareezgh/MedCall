@@ -10,6 +10,7 @@ export const userSlice = createSlice({
     lastName: "",
     phoneNumber: "",
     isGoogleSignIn: false,
+    driverStatus: "",
   },
   reducers: {
     setUser: (state, action) => {
@@ -20,6 +21,7 @@ export const userSlice = createSlice({
       state.lastName = action.payload.lastName;
       state.phoneNumber = action.payload.phoneNumber;
       state.isGoogleSignIn = action.payload.isGoogleSignIn;
+      state.driverStatus = action.payload.driverStatus;
     },
     setUpdatedUser: (state, action) => {
       state.email = action.payload.email;

@@ -38,21 +38,31 @@ const Sidebar = ({
     const restOfText = tab.slice(1);
     const formattedTab = lowercasedFirstLetter + restOfText;
 
+    const isProfileOrLogout = tab === "profile" || tab === "logout";
+
+    const isDriverPending =
+      currentUser.role === "driver" &&
+      currentUser.driverStatus === "pending" &&
+      !isProfileOrLogout;
+
     const buttonStyle = `${
-      activeTab == formattedTab ? "bg-lightBg" : "hover:opacity-70"
-    }`;
+      activeTab === formattedTab ? "bg-lightBg" : "hover:opacity-70"
+    } ${isDriverPending ? "cursor-not-allowed opacity-50" : ""}`;
 
     return (
       <button
         className={`${buttonStyle} flex items-center justify-center gap-2 text-xl px-6 py-3 rounded-3xl`}
         onClick={() => {
-          if (onClick) {
-            onClick();
-          } else {
-            setActiveTab(tab);
-            toggleSidebar(false);
+          if (!isDriverPending) {
+            if (onClick) {
+              onClick();
+            } else {
+              setActiveTab(tab);
+              toggleSidebar(false);
+            }
           }
         }}
+        disabled={isDriverPending}
       >
         {icon}
         {text}

@@ -288,7 +288,7 @@ const DriverDashboardContent = ({
             <div className="flex flex-col items-start justify-start gap-4 w-full md:w-1/2">
               {details.map((item, index) => (
                 <p key={index} className="text-start">
-                  <strong>{item.label}:</strong>
+                  <strong>{item.label} : </strong>
                   {item.isBadge ? (
                     <span className="text-base px-5 py-1 rounded-full ml-2 bg-secondary500 text-white">
                       {item.value}

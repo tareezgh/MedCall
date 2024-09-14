@@ -20,6 +20,7 @@ import { useSelector } from "react-redux";
 import { postNewRequest } from "../services/requestService";
 import { handleGetLocation } from "../utils/geolocationUtils";
 import Navbar from "../components/common/Navbar";
+import { toast } from "react-toastify";
 
 const RequestAmbulance = () => {
   const { t } = useTranslation();
@@ -81,6 +82,13 @@ const RequestAmbulance = () => {
   };
 
   const handleNecessaryInfoSubmit = () => {
+    if (!formData.callerName.trim() || !formData.phoneNumber.trim() || !formData.patientAge.trim()) {
+      toast.error(t("fields-error"), {
+        position: "bottom-center",
+        hideProgressBar: true,
+      });
+      return;
+    }
     console.log("Form submitted with data:", formData);
     setIsOptionalSection(true);
   };
@@ -250,7 +258,7 @@ const RequestAmbulance = () => {
     <div className="flex flex-col">
       <Navbar />
       <section className="py-10 flex justify-center items-center w-full px-6">
-        <div className="box-modal shadow-2x md:mx-[10%] p-4">
+        <div className="box-modal shadow-2x md:mx-[10%] p-4 shadow-2xl">
           {isOptionalSection ? renderOptionalInfo() : renderNecessaryInfo()}
 
           <div className={"flex flex-row gap-2 justify-start md:w-auto"}>

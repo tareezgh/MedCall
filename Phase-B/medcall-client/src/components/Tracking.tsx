@@ -25,8 +25,42 @@ const Tracking = ({ setActiveTab }: TrackingProps) => {
   const [activeRequest, setActiveRequest] = useState<AmbulanceRequest | null>(
     null
   );
+  const [socket, setSocket] = useState<WebSocket | null>(null);
+  const wsUrl = import.meta.env.VITE_WS_URL;
+  const wsProtocol = window.location.protocol === "https:" ? "wss:" : "ws:";
 
   const currentRole = currentUser.role;
+
+  useEffect(() => {
+    if (!activeRequest && currentUser.role !== "driver") return;
+    // WebSocket connection
+    const connectWebSocket = () => {
+      const newSocket = new WebSocket(
+        `${wsProtocol}//${wsUrl}?userId=${encodeURIComponent(currentUser.id)}`
+      );
+      setSocket(newSocket);
+
+      newSocket.addEventListener("open", () => {
+        console.log("WebSocket connection opened.");
+      });
+
+      newSocket.addEventListener("close", () => {
+        console.log("WebSocket connection closed. Reconnecting...");
+        setTimeout(connectWebSocket, 5000); // Try to reconnect after 5 seconds
+      });
+
+      newSocket.addEventListener("error", (error) => {
+        console.error("WebSocket error:", error);
+      });
+    };
+
+    connectWebSocket();
+
+    // Cleanup on component unmount
+    return () => {
+      socket?.close();
+    };
+  }, [currentUser.id, wsUrl]);
 
   useEffect(() => {
     const fetchActiveRequest = async () => {
@@ -44,6 +78,74 @@ const Tracking = ({ setActiveTab }: TrackingProps) => {
 
     fetchActiveRequest();
   }, []);
+
+  useEffect(() => {
+    if (!activeRequest && currentUser.role !== "driver") return;
+
+    const sendDriverLocation = () => {
+      if (navigator.geolocation) {
+        const watchId = navigator.geolocation.watchPosition((position) => {
+          const { latitude, longitude } = position.coords;
+          console.log("🚀 ~ watchId ~ latitude, longitude:", latitude, longitude)
+
+          if (socket?.readyState === WebSocket.OPEN) {
+            socket.send(
+              JSON.stringify({
+                requestId: activeRequest?._id,
+                driverLocation: { lat: latitude, long: longitude },
+              })
+            );
+          } else {
+            console.error("WebSocket is not open. State:", socket?.readyState);
+          }
+        });
+
+        return () => {
+          navigator.geolocation.clearWatch(watchId);
+        };
+      }
+    };
+
+    // Send initial location immediately
+    const cleanupWatch = sendDriverLocation();
+
+    // Set interval to send location every 2 minutes (120000 milliseconds)
+    const intervalId = setInterval(sendDriverLocation, 120000);
+    console.log("🚀 ~ useEffect ~ intervalId:", intervalId);
+
+    // Cleanup on component unmount
+    return () => {
+      clearInterval(intervalId);
+      cleanupWatch && cleanupWatch();
+    };
+  }, [activeRequest, currentUser.id, socket]);
+
+  useEffect(() => {
+    if (!socket) return;
+    const handleOpen = () => {
+      console.log("WebSocket connection opened.");
+    };
+
+    const handleClose = () => {
+      console.log("WebSocket connection closed.");
+      // Optionally try to reconnect here
+    };
+
+    const handleError = (error: Event) => {
+      console.error("WebSocket error:", error);
+    };
+
+    socket.addEventListener("open", handleOpen);
+    socket.addEventListener("close", handleClose);
+    socket.addEventListener("error", handleError);
+
+    return () => {
+      socket.removeEventListener("open", handleOpen);
+      socket.removeEventListener("close", handleClose);
+      socket.removeEventListener("error", handleError);
+      socket.close(); // Make sure to close the socket when the component unmounts
+    };
+  }, [socket]);
 
   const handleAcceptRequest = async () => {
     await updateRequestStatus(

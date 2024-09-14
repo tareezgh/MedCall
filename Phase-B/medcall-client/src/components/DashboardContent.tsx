@@ -59,7 +59,14 @@ const DashboardContent = ({
           )}
         </div>
         <div className="flex flex-col md:flex-row gap-4 w-full h-full">
-          {renderContent()}
+          {currentUser.role === "driver" &&
+          currentUser.driverStatus === "pending" ? (
+            <div className="flex justify-center items-center bg-modalBackground rounded-xl w-full h-72 text-xl p-1">
+              {t("driver-status-pending-message")}
+            </div>
+          ) : (
+            renderContent()
+          )}
         </div>
       </div>
     </>

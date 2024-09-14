@@ -51,7 +51,7 @@
   "caller-contact-info-title": "Caller's Contact Information:",
   "name-placeholder": "Name",
   "phone-placeholder": "Phone Number",
-  "patient-age-title": "Patient's Age:",
+  "patient-age-title": "Patient's Age",
   "age-placeholder": "Age",
   "emergency-type-title": "Type of emergency",
   "consciousness-title": "Patient's Consciousness",
@@ -198,5 +198,8 @@
   "location-error": "Please provide location",
   "empty-requests": "There is no new requests",
   "empty-history": "There is no previous requests",
-  "empty-messages":"There is no previous messages"
+  "empty-messages":"There is no previous messages",
+  "driver-status-pending-message": "We’re almost there! Your driver profile is currently being reviewed. As soon as it's approved, you'll be ready to help others.",
+  "fields-error":"Please fill all the fields"
+
 }

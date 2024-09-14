@@ -66,7 +66,8 @@ export class UsersService {
       userData.firstName,
       userData.lastName!,
       userData.isGoogleSignIn,
-      userData.phoneNumber
+      userData.phoneNumber,
+      userData.driverStatus
     );
 
     return {
@@ -161,7 +162,8 @@ export class UsersService {
       newUser.firstName,
       newUser.lastName!,
       newUser.isGoogleSignIn,
-      newUser.phoneNumber
+      newUser.phoneNumber,
+      newUser.driverStatus
     );
 
     return {
@@ -318,29 +320,33 @@ export class UsersService {
     firstName: string,
     lastName: string,
     isGoogleSignIn: boolean,
-    phoneNumber?: string | null
+    phoneNumber?: string | null,
+    driverStatus?: string | null
   ) {
     const JWT_SECRET = process.env.JWT_SECRET_KEY;
     if (!JWT_SECRET) {
       throw new Error("JWT_SECRET is not defined in environment variables");
     }
 
+    const tokenPayload: any = {
+      id: id,
+      email: email,
+      role: role,
+      firstName: firstName,
+      lastName: lastName,
+      phoneNumber: phoneNumber,
+      isGoogleSignIn: isGoogleSignIn,
+    };
+
+    // Conditionally add driverStatus if it exists
+    if (driverStatus) {
+      tokenPayload.driverStatus = driverStatus;
+    }
+
     // Create a JWT token
-    const token = jwt.sign(
-      {
-        id: id,
-        email: email,
-        role: role,
-        firstName: firstName,
-        lastName: lastName,
-        phoneNumber: phoneNumber,
-        isGoogleSignIn: isGoogleSignIn,
-      },
-      JWT_SECRET,
-      {
-        expiresIn: "1h",
-      }
-    );
+    const token = jwt.sign(tokenPayload, JWT_SECRET, {
+      expiresIn: "1h",
+    });
 
     return token;
   }
