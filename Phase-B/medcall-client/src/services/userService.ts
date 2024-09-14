@@ -161,7 +161,7 @@ export const sendOtp = async (email: string) => {
       });
     }
   } catch (error) {
-    console.error("Error sending OTP:", error);
+    // console.error("Error sending OTP:", error);
     toast.error("Failed to send OTP", {
       position: "top-center",
       hideProgressBar: true,
@@ -187,7 +187,7 @@ export const verifyOtp = async (email: string, otp: string) => {
       return true;
     }
   } catch (error) {
-    console.error("Error verifying OTP:", error);
+    // console.error("Error verifying OTP:", error);
     toast.error("Failed to verify OTP", {
       position: "top-center",
       hideProgressBar: true,
@@ -207,7 +207,7 @@ export const resetPassword = async (email: string, newPassword: string) => {
       });
     }
   } catch (error) {
-    console.error("Error resetting password:", error);
+    // console.error("Error resetting password:", error);
     toast.error("Failed to reset password", {
       position: "top-center",
       hideProgressBar: true,

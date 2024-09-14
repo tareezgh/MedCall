@@ -32,7 +32,7 @@ const UserDashboardContent = ({ setActiveTab }: UserDashboardContentProps) => {
       try {
         if (!activeRequest) {
           const fetchedRequest = await getActiveRequest(currentUser.id);
-          console.log("Fetched request:", fetchedRequest);
+          // console.log("Fetched request:", fetchedRequest);
 
           if (fetchedRequest) {
             dispatch(saveStartingRequest(null)); // Reset startingRequest if there's an active one
@@ -47,19 +47,19 @@ const UserDashboardContent = ({ setActiveTab }: UserDashboardContentProps) => {
           }
         }
       } catch (error) {
-        console.error("Failed to fetch active request:", error);
+        // console.error("Failed to fetch active request:", error);
       }
     };
 
     const fetchUserRequests = async () => {
       try {
         const requests = await getRequestById(currentUser.id);
-        console.log("🚀 ~ fetchUserRequests ~ requests:", requests);
+        // console.log("🚀 ~ fetchUserRequests ~ requests:", requests);
         if (requests) {
           setUserRequests(requests);
         }
       } catch (error) {
-        console.error("Failed to fetch user requests:", error);
+        // console.error("Failed to fetch user requests:", error);
       }
     };
 

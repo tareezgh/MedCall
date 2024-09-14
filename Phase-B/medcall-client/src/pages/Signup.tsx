@@ -136,9 +136,7 @@ const SignUp = () => {
       const registeredUser = await registerUser(newUser);
 
       if (registeredUser) checkDataAndNavigate();
-    } else {
-      console.log("email");
-    }
+    } 
   };
 
   const checkDataAndNavigate = () => {

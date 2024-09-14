@@ -11,7 +11,7 @@ export const createConversation = async (
       participants: [userId, targetUserId],
     });
 
-    console.log("🚀 ~ createConversation ~ response:", response);
+    // console.log("🚀 ~ createConversation ~ response:", response);
     if (response.data.status === "failure") {
       toast.error(response.data.message, {
         position: "top-center",
@@ -32,7 +32,7 @@ export const getConversation = async (userId: string) => {
   try {
     const response = await axios.get(`${conversationUrl}/${userId}`);
 
-    console.log("🚀 ~ getConversation ~ response:", response);
+    // console.log("🚀 ~ getConversation ~ response:", response);
     if (response.data.status === "failure") {
       toast.error(response.data.message, {
         position: "top-center",

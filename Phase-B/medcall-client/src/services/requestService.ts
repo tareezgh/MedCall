@@ -32,7 +32,7 @@ export const postNewRequest = async (request: AmbulanceRequest) => {
   };
 
   const response = await axios.post(requestUrl, args);
-  console.log("🚀 ~ postNewRequest ~ response:", response);
+  // console.log("🚀 ~ postNewRequest ~ response:", response);
 
   if (response.data.status === "failure") {
     toast.error(response.data.message, {
@@ -46,7 +46,7 @@ export const postNewRequest = async (request: AmbulanceRequest) => {
 
 export const getAllRequests = async () => {
   const response = await axios.get(requestUrl);
-  console.log("🚀 ~ getAllRequest ~ response:", response);
+  // console.log("🚀 ~ getAllRequest ~ response:", response);
 
   if (response.data.status === "failure") {
     toast.error(response.data.message, {
@@ -61,7 +61,7 @@ export const getAllRequests = async () => {
 
 export const getRequestById = async (userId: string) => {
   const response = await axios.get(`${requestUrl}/${userId}`);
-  console.log("🚀 ~ getRequestById ~ response:", response);
+  // console.log("🚀 ~ getRequestById ~ response:", response);
 
   if (response.data.status === "failure") {
     toast.error(response.data.message, {
@@ -83,7 +83,7 @@ export const getActiveRequest = async (
     id: currentUserID,
   };
   const response = await axios.post(`${activeRequestUrl}`, args);
-  console.log("🚀 ~ getActiveRequest ~ response:", response);
+  // console.log("🚀 ~ getActiveRequest ~ response:", response);
 
   if (response.data.status === "failure") {
     toast.error(response.data.message, {
@@ -105,7 +105,7 @@ export const getGuestRequest = async (
     phoneNumber: guestPhoneNumber,
   };
   const response = await axios.post(`${guestRequestUrl}`, args);
-  console.log("🚀 ~ getGuestRequest ~ response:", response);
+  // console.log("🚀 ~ getGuestRequest ~ response:", response);
 
   if (response.data.status === "failure") {
     toast.error(response.data.message, {
@@ -132,7 +132,7 @@ export const updateRequestStatus = async (
     driverLocation: currentDriverLocation,
   };
   const response = await axios.patch(`${updateRequestUrl}/${requestId}`, args);
-  console.log("🚀 ~ updateRequestStatus ~ response:", response);
+  // console.log("🚀 ~ updateRequestStatus ~ response:", response);
 
   if (response.data.status === "failure") {
     toast.error(response.data.message, {

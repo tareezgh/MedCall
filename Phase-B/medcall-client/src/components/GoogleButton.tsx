@@ -38,7 +38,7 @@ const GoogleButton = ({
         if (loggedInUser) checkDataAndNavigate();
       }
     } catch (error) {
-      console.error("Error signing in with Google:", error);
+      // console.error("Error signing in with Google:", error);
     }
   };
 

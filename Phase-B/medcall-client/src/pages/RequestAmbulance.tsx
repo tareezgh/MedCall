@@ -47,10 +47,10 @@ const RequestAmbulance = () => {
   });
 
   useEffect(() => {
-    console.log("🚀 ~ RequestAmbulance ~ currentLocation:", currentLocation);
+    // console.log("🚀 ~ RequestAmbulance ~ currentLocation:", currentLocation);
     if (currentLocation.address === "") {
-      handleGetLocation().catch((error) => {
-        console.error("Failed to get location:", error);
+      handleGetLocation().catch(() => {
+        // console.error("Failed to get location:", error);
       });
     }
   }, [currentLocation]);
@@ -89,7 +89,6 @@ const RequestAmbulance = () => {
       });
       return;
     }
-    console.log("Form submitted with data:", formData);
     setIsOptionalSection(true);
   };
 
@@ -114,7 +113,7 @@ const RequestAmbulance = () => {
       optionalMedications: formData.optionalMedications,
       optionalActivities: formData.optionalActivities,
     };
-    console.log("🚀 ~ newRequestData:", newRequestData);
+    // console.log("🚀 ~ newRequestData:", newRequestData);
 
     if (!currentUser.id)
       localStorage.setItem("guestPhoneNumber", formData.phoneNumber);

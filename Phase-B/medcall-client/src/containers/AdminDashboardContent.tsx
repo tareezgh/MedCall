@@ -17,12 +17,12 @@ const AdminDashboardContent = () => {
     const fetchAllRequests = async () => {
       try {
         const requests = await getAllRequests();
-        console.log("🚀 ~ fetchAllRequests ~ requests:", requests);
+        // console.log("🚀 ~ fetchAllRequests ~ requests:", requests);
         if (requests) {
           setRequests(requests);
         }
       } catch (error) {
-        console.error("Failed to fetch requests:", error);
+        // console.error("Failed to fetch requests:", error);
       }
     };
 

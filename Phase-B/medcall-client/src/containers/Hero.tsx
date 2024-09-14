@@ -46,10 +46,10 @@ const Hero = () => {
       const place = autocompleteRef.current.getPlace();
       if (place) {
         const formattedAddress = place.formatted_address || "";
-        console.log(
-          "🚀 ~ handlePlaceChanged ~ formattedAddress:",
-          formattedAddress
-        );
+        // console.log(
+        //   "🚀 ~ handlePlaceChanged ~ formattedAddress:",
+        //   formattedAddress
+        // );
         setLocation(formattedAddress);
 
         if (place.geometry && place.geometry.location) {

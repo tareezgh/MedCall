@@ -41,13 +41,13 @@ const DriverDashboardContent = ({
     const fetchAllRequests = async () => {
       try {
         const fetchedRequests = await getAllRequests();
-        console.log("Fetched requests:", fetchedRequests);
+        // console.log("Fetched requests:", fetchedRequests);
 
         if (fetchedRequests) {
           setRequests(fetchedRequests);
         }
       } catch (error) {
-        console.error("Failed to fetch requests:", error);
+        // console.error("Failed to fetch requests:", error);
       }
     };
 
@@ -58,13 +58,13 @@ const DriverDashboardContent = ({
     const fetchActiveRequest = async () => {
       try {
         const fetchedRequest = await getActiveRequest(currentUser.id);
-        console.log("Fetched active request:", fetchedRequest);
+        // console.log("Fetched active request:", fetchedRequest);
         if (fetchedRequest) {
           dispatch(saveActiveRequest(fetchedRequest));
           setActiveRequest(fetchedRequest);
         }
       } catch (error) {
-        console.error("Failed to fetch active request:", error);
+        // console.error("Failed to fetch active request:", error);
       }
     };
 
@@ -118,7 +118,7 @@ const DriverDashboardContent = ({
       })
       .sort((a, b) => a.distance - b.distance);
   }, [driverLocation, requests, declinedRequests, activeRequest]);
-  console.log("🚀 ~ nearestRequests ~ nearestRequests:", nearestRequests);
+  // console.log("🚀 ~ nearestRequests ~ nearestRequests:", nearestRequests);
 
   const handleDeclineRequest = () => {
     if (selectedRequest) {
@@ -140,11 +140,11 @@ const DriverDashboardContent = ({
         long: driverLocation?.longitude || 0,
       }
     );
-    let conversation = await createConversation(
+    await createConversation(
       currentUser.id,
       selectedRequest.userId!
     );
-    console.log("🚀 ~ handleChatClick ~ conversation:", conversation);
+    // console.log("🚀 ~ handleChatClick ~ conversation:", conversation);
     setActiveTab("driverTracking");
   };
 

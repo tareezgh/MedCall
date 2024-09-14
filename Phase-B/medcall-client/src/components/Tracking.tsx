@@ -41,16 +41,16 @@ const Tracking = ({ setActiveTab }: TrackingProps) => {
       setSocket(newSocket);
 
       newSocket.addEventListener("open", () => {
-        console.log("WebSocket connection opened.");
+        // console.log("WebSocket connection opened.");
       });
 
       newSocket.addEventListener("close", () => {
-        console.log("WebSocket connection closed. Reconnecting...");
+        // console.log("WebSocket connection closed. Reconnecting...");
         setTimeout(connectWebSocket, 5000); // Try to reconnect after 5 seconds
       });
 
-      newSocket.addEventListener("error", (error) => {
-        console.error("WebSocket error:", error);
+      newSocket.addEventListener("error", () => {
+        // console.error("WebSocket error:", error);
       });
     };
 
@@ -66,13 +66,13 @@ const Tracking = ({ setActiveTab }: TrackingProps) => {
     const fetchActiveRequest = async () => {
       try {
         const fetchedRequest = await getActiveRequest(currentUser.id);
-        console.log("Fetched request:", fetchedRequest);
+        // console.log("Fetched request:", fetchedRequest);
 
         if (fetchedRequest) {
           setActiveRequest(fetchedRequest);
         }
       } catch (error) {
-        console.error("Failed to fetch active request:", error);
+        // console.error("Failed to fetch active request:", error);
       }
     };
 
@@ -86,7 +86,7 @@ const Tracking = ({ setActiveTab }: TrackingProps) => {
       if (navigator.geolocation) {
         const watchId = navigator.geolocation.watchPosition((position) => {
           const { latitude, longitude } = position.coords;
-          console.log("🚀 ~ watchId ~ latitude, longitude:", latitude, longitude)
+          // console.log("🚀 ~ watchId ~ latitude, longitude:", latitude, longitude)
 
           if (socket?.readyState === WebSocket.OPEN) {
             socket.send(
@@ -96,7 +96,7 @@ const Tracking = ({ setActiveTab }: TrackingProps) => {
               })
             );
           } else {
-            console.error("WebSocket is not open. State:", socket?.readyState);
+            // console.error("WebSocket is not open. State:", socket?.readyState);
           }
         });
 
@@ -111,7 +111,7 @@ const Tracking = ({ setActiveTab }: TrackingProps) => {
 
     // Set interval to send location every 2 minutes (120000 milliseconds)
     const intervalId = setInterval(sendDriverLocation, 120000);
-    console.log("🚀 ~ useEffect ~ intervalId:", intervalId);
+    // console.log("🚀 ~ useEffect ~ intervalId:", intervalId);
 
     // Cleanup on component unmount
     return () => {
@@ -123,16 +123,15 @@ const Tracking = ({ setActiveTab }: TrackingProps) => {
   useEffect(() => {
     if (!socket) return;
     const handleOpen = () => {
-      console.log("WebSocket connection opened.");
+      // console.log("WebSocket connection opened.");
     };
 
     const handleClose = () => {
-      console.log("WebSocket connection closed.");
-      // Optionally try to reconnect here
+      // console.log("WebSocket connection closed.");
     };
 
-    const handleError = (error: Event) => {
-      console.error("WebSocket error:", error);
+    const handleError = () => { //error: Event
+      // console.error("WebSocket error:", error);
     };
 
     socket.addEventListener("open", handleOpen);

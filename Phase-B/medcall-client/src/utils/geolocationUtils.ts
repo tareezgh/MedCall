@@ -21,7 +21,7 @@ export const handleGetLocation = async (
             const results = response.data.results;
             if (results.length > 0) {
               const formattedAddress = results[0].formatted_address;
-              console.log("Formatted Address:", formattedAddress);
+              // console.log("Formatted Address:", formattedAddress);
               if (!driverLocation) {
                 store.dispatch(
                   setLocationCoords({
@@ -33,16 +33,16 @@ export const handleGetLocation = async (
               }
               resolve(formattedAddress);
             } else {
-              console.error("Geocoder returned no results");
+              // console.error("Geocoder returned no results");
               resolve(null);
             }
           } catch (error) {
-            console.error("Error fetching address:", error);
+            // console.error("Error fetching address:", error);
             reject(error);
           }
         },
         (error) => {
-          console.error("Error obtaining location", error);
+          // console.error("Error obtaining location", error);
           reject(error);
         }
       );
