@@ -1,7 +1,10 @@
 # MedCall
 Capstone Project Phase B – 61999
+
 MedCall 24-1-D-10
+
 Supervisor: Mr. Alex Keselman
+
 Team: Tareez Ghandour & Leen Hawa
 
 ## Project Phases and Deliverables
@@ -15,7 +18,7 @@ In the **Phase A** folder, we have included all the products related to the init
 In the **Phase B** folder, we have the implementation phase, which includes the code and additional deliverables. The products are:
 - **The book**: Updated documentation reflecting the development and outcomes of the project.
 - **Presentation (PPT)**: A PowerPoint presentation summarizing the project progress and results.
-- **A demo for MedCall**: A video demonstrating the main scenario of MedCall in action.
+- **MedCall Demo**: A video demonstrating the main scenario of MedCall in action.
 - **Code Implementation**: The actual code for the frontend and backend, showcasing the working platform.
 
 ---
